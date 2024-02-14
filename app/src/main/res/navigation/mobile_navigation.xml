@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_map">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="ru.hse.goodtrip.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_map"
+        android:name="ru.hse.goodtrip.ui.map.MapsFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_maps" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ru.hse.goodtrip.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_feed"
+        android:name="ru.hse.goodtrip.ui.feed.FeedFragment"
+        android:label="@string/title_feed"
+        tools:layout="@layout/fragment_feed" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="ru.hse.goodtrip.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_places"
+        android:name="ru.hse.goodtrip.ui.places.PlacesFragment"
+        android:label="@string/title_places"
+        tools:layout="@layout/fragment_places" />
 </navigation>
