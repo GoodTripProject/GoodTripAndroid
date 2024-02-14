@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GoodTrip"
 include(":app")
+ 
