@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/_082383"
         android:title="@string/title_map" />
 
     <item
