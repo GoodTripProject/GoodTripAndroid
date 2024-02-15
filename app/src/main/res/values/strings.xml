@@ -12,4 +12,13 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="signup_failed">"Sign up failed"</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="you_are_already_registered">You are Already Registered?</string>
+    <string name="you_are_not_registered">You are not registered?</string>
+    <string name="handle">Handle</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login">login</string>
+    <string name="register">Register</string>
 </resources>

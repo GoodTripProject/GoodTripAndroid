@@ -51,4 +51,13 @@ public class LoginRepository {
         }
         return result;
     }
+
+    public Result<LoggedInUser> signUp(String username, String password, String handle, String name, String surname) {
+        // handle signup
+        Result<LoggedInUser> result = dataSource.signup(username, password, handle, name, surname);
+        if (result instanceof Result.Success) {
+            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+        }
+        return result;
+    }
 }

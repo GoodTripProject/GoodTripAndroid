@@ -41,6 +41,20 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
+    public void signUp(String username, String password,
+                       String surname, String name,
+                       String handle) {
+        loginDataChanged(username,password);
+        Result<LoggedInUser> result = loginRepository.signUp(username, password,handle,name,surname);
+
+        if (result instanceof Result.Success) {
+            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+        } else {
+            loginResult.setValue(new LoginResult(R.string.signup_failed));
+        }
+    }
+
     public void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
             loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));

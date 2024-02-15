@@ -45,17 +45,47 @@ public class LoginFragment extends Fragment {
 
     }
 
+    private void setRegisterFields(int visibilityOption) {
+        final Button registerButton = binding.register;
+        final EditText handleEditText = binding.handle;
+        final EditText surnameEditText = binding.surname;
+        final EditText nameEditText = binding.name;
+        final Button goToLoginButton = binding.goToLogin;
+        goToLoginButton.setVisibility(visibilityOption);
+        nameEditText.setVisibility(visibilityOption);
+        surnameEditText.setVisibility(visibilityOption);
+        handleEditText.setVisibility(visibilityOption);
+        registerButton.setVisibility(visibilityOption);
+        final Button goToSignUpButton = binding.goToSignUp;
+        final Button login = binding.login;
+        final Button signUp = binding.register;
+        if (visibilityOption == View.INVISIBLE) {
+            goToLoginButton.setVisibility(View.INVISIBLE);
+            goToSignUpButton.setVisibility(View.VISIBLE);
+            login.setVisibility(View.VISIBLE);
+            signUp.setVisibility(View.INVISIBLE);
+        } else {
+            goToLoginButton.setVisibility(View.VISIBLE);
+            goToSignUpButton.setVisibility(View.INVISIBLE);
+            login.setVisibility(View.INVISIBLE);
+            signUp.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
-
+        final Button goToSignUpButton = binding.goToSignUp;
+        final Button goToLoginButton = binding.goToLogin;
+        setRegisterFields(View.INVISIBLE);
+        goToSignUpButton.setEnabled(true);
+        goToLoginButton.setEnabled(true);
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) {
                 return;
@@ -113,6 +143,20 @@ public class LoginFragment extends Fragment {
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.login(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());
+        });
+        goToSignUpButton.setOnClickListener(v -> setRegisterFields(View.VISIBLE));
+        goToLoginButton.setOnClickListener(v -> setRegisterFields(View.INVISIBLE));
+        final Button signUp = binding.register;
+        signUp.setOnClickListener(v -> {
+            final EditText handleEditText = binding.handle;
+            final EditText surnameEditText = binding.surname;
+            final EditText nameEditText = binding.name;
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.signUp(usernameEditText.getText().toString(),
+                    passwordEditText.getText().toString(),
+                    surnameEditText.getText().toString(),
+                    nameEditText.getText().toString(),
+                    handleEditText.getText().toString());
         });
     }
 

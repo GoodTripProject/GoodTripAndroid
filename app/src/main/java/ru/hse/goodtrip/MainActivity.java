@@ -1,5 +1,6 @@
 package ru.hse.goodtrip;
 
+import android.credentials.CredentialManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.ui.login.LoginFragment;
