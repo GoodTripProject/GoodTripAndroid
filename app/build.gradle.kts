@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "ru.hse.goodtrip"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -32,6 +32,8 @@ android {
 }
 
 dependencies {
+
+    implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.6.1")
