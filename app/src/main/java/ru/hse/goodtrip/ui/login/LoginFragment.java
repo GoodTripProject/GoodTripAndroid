@@ -86,7 +86,6 @@ public class LoginFragment extends Fragment {
     }
 
     public void handleSignIn(GetCredentialResponse result) {
-        // Handle the successfully returned credential.
         Credential credential = result.getCredential();
 
         if (credential instanceof PasswordCredential) {
@@ -128,7 +127,7 @@ public class LoginFragment extends Fragment {
         final Button signInViaGoogle = binding.googleSignInButton;
         signInViaGoogle.setEnabled(true);
         signInViaGoogle.setOnClickListener(v -> {
-            String serverClientId = "";
+            String serverClientId = getString(R.string.OAUTH_API_KEY);
             GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
                     .setFilterByAuthorizedAccounts(false)
                     .setServerClientId(serverClientId)

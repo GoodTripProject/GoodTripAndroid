@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     id("com.android.application")
 }
@@ -14,6 +15,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        val apiKey = properties.getProperty("google_oath_token")
+        resValue ("string", "OAUTH_API_KEY", apiKey)
     }
 
     buildTypes {
