@@ -22,4 +22,7 @@
     <string name="login">login</string>
     <string name="register">Register</string>
     <string name="sign_in_via_google">Sign in via Google</string>
+    <string name="title_map">Map</string>
+    <string name="title_feed">Feed</string>
+    <string name="title_places">Places</string>
 </resources>
