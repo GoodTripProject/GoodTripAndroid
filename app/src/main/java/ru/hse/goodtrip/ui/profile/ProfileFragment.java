@@ -21,46 +21,29 @@ import ru.hse.goodtrip.databinding.FragmentProfileBinding;
 import ru.hse.goodtrip.ui.places.PlacesFragment;
 import ru.hse.goodtrip.ui.places.PlacesViewModel;
 
-public class ProfileFragment extends Fragment implements View.OnClickListener {
+public class ProfileFragment extends Fragment {
 
     private ProfileViewModel mViewModel;
+
+
+    private FragmentProfileBinding binding;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
 
-    private FragmentProfileBinding binding;
-
-    Button backButton;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        PlacesViewModel placesViewModel =
-                new ViewModelProvider(this).get(PlacesViewModel.class);
+        ProfileViewModel profileViewModel =
+                new ViewModelProvider(this).get(ProfileViewModel.class);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.goBackButton.setOnClickListener(this);
-
         final TextView textView = binding.textProfile;
-        placesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
-    }
-
-    // TODO: Does not go to previous fragment
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.goBackButton) {
-            goBack();
-        } else {
-            // some other buttons
-        }
-    }
-
-    public void goBack() {
-        getParentFragmentManager().popBackStack();
     }
 
     @Override

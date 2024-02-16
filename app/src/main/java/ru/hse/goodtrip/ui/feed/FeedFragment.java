@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
 public class FeedFragment extends Fragment {
