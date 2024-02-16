@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     id("com.android.application")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -9,12 +10,16 @@ android {
 
     defaultConfig {
         applicationId = "ru.hse.goodtrip"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        val apiKey = properties.getProperty("google_oath_token")
+        resValue ("string", "OAUTH_API_KEY", apiKey)
     }
 
     buildTypes {
@@ -34,6 +39,9 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
+    implementation("androidx.credentials:credentials:1.3.0-alpha01")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -41,6 +49,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.navigation:navigation-fragment:2.6.0")
     implementation("androidx.navigation:navigation-ui:2.6.0")
+    implementation("androidx.navigation:navigation-runtime:2.7.7")
+    implementation("androidx.annotation:annotation:1.6.0")
+    implementation("com.google.android.gms:play-services-base:18.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
