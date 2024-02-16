@@ -150,4 +150,6 @@
   <string name="Friends">Friends</string>
   <string name="Settings">Settings</string>
   <string name="profileImg">ProfileImg</string>
+  <string name="userHandle">Handle</string>
+  <string name="fullName">Full Name</string>
 </resources>

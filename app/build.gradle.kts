@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
@@ -63,6 +64,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.compose.ui:ui-text-android:1.6.2")
+    implementation("com.github.dhaval2404:imagepicker:2.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
