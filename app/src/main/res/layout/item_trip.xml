@@ -24,6 +24,6 @@
         android:padding="10dp"
         android:src="@drawable/ic_map"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constrintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

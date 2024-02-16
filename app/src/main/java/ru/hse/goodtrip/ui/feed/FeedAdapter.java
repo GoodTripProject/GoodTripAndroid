@@ -34,7 +34,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
     public void onBindViewHolder(@NonNull FeedHolder holder, int position) {
         Trip trip = trips.get(position);
 //        var binding
-        holder.
     }
 
     @Override
