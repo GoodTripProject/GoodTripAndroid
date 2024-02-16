@@ -35,15 +35,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         profileButton = findViewById(R.id.profile_button);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, new ProfileFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        profileButton.setOnClickListener(v -> getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new ProfileFragment())
+                .addToBackStack(null)
+                .commit());
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_feed, R.id.navigation_map, R.id.navigation_places)

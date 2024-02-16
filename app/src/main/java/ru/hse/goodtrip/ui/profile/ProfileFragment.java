@@ -36,7 +36,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ru.hse.goodtrip.ui.places.PlacesViewModel placesViewModel =
+        PlacesViewModel placesViewModel =
                 new ViewModelProvider(this).get(PlacesViewModel.class);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
