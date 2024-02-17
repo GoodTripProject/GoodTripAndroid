@@ -1,4 +1,5 @@
 import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -18,8 +19,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
-        val apiKey = properties.getProperty("google_oath_token")
-        resValue ("string", "OAUTH_API_KEY", apiKey)
+        val apiKey = properties.getProperty("GOOGLE_OAUTH_TOKEN")
+        resValue("string", "OAUTH_API_KEY", apiKey)
     }
 
     buildTypes {

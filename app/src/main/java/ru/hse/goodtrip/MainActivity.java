@@ -20,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 import java.util.Objects;
 
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.ui.login.LoginFragment;
