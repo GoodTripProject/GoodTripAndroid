@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
 public class FeedFragment extends Fragment {
@@ -34,8 +33,8 @@ public class FeedFragment extends Fragment {
         binding = FragmentFeedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textFeed;
-        feedViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = TextView;
+//        feedViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

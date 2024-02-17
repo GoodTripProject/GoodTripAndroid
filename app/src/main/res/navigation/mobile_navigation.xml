@@ -9,7 +9,23 @@
         android:id="@+id/navigation_map"
         android:name="ru.hse.goodtrip.ui.map.MapsFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_feed"
+            app:destination="@id/navigation_feed" />
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_places"
+            app:destination="@id/navigation_places" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="ru.hse.goodtrip.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/navigation_feed"
