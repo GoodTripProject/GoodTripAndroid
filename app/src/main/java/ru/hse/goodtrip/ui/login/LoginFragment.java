@@ -162,10 +162,7 @@ public class LoginFragment extends Fragment {
     });
 
     loginViewModel.getLoginFormState().
-
-        observe(getViewLifecycleOwner(), loginFormState ->
-
-        {
+        observe(getViewLifecycleOwner(), loginFormState -> {
           if (loginFormState == null) {
             return;
           }
@@ -179,10 +176,7 @@ public class LoginFragment extends Fragment {
         });
 
     loginViewModel.getLoginResult().
-
-        observe(getViewLifecycleOwner(), loginResult ->
-
-        {
+        observe(getViewLifecycleOwner(), loginResult -> {
           if (loginResult == null) {
             return;
           }
@@ -214,9 +208,7 @@ public class LoginFragment extends Fragment {
     };
     usernameEditText.addTextChangedListener(afterTextChangedListener);
     passwordEditText.addTextChangedListener(afterTextChangedListener);
-    passwordEditText.setOnEditorActionListener((v, actionId, event) ->
-
-    {
+    passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         loginViewModel.login(usernameEditText.getText().toString(),
             passwordEditText.getText().toString());
@@ -224,23 +216,15 @@ public class LoginFragment extends Fragment {
       return false;
     });
 
-    loginButton.setOnClickListener(v ->
-
-    {
+    loginButton.setOnClickListener(v -> {
       loadingProgressBar.setVisibility(View.VISIBLE);
       loginViewModel.login(usernameEditText.getText().toString(),
           passwordEditText.getText().toString());
     });
-    goToSignUpButton.setOnClickListener(v ->
-
-        setRegisterFields(View.VISIBLE));
-    goToLoginButton.setOnClickListener(v ->
-
-        setRegisterFields(View.INVISIBLE));
+    goToSignUpButton.setOnClickListener(v -> setRegisterFields(View.VISIBLE));
+    goToLoginButton.setOnClickListener(v -> setRegisterFields(View.INVISIBLE));
     final Button signUp = binding.register;
-    signUp.setOnClickListener(v ->
-
-    {
+    signUp.setOnClickListener(v -> {
       final EditText handleEditText = binding.handle;
       final EditText surnameEditText = binding.surname;
       final EditText nameEditText = binding.name;
