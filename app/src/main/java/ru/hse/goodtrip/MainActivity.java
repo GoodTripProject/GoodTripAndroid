@@ -10,8 +10,8 @@ import ru.hse.goodtrip.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-  Toolbar mActionBar;
-  NavController mNavController;
+  Toolbar actionBar;
+  NavController navController;
   private ActivityMainBinding binding;
 
   @Override
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     setupNavigation();
 
     if (isUserLoggedIn()) { // TODO: move logic somewhere
-      mNavController.navigate(R.id.navigation_login);
+      navController.navigate(R.id.navigation_login);
     }
   }
 
@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
    * Setup navController.
    */
   public void setupNavigation() {
-    mActionBar = (Toolbar) findViewById(R.id.my_toolbar);
-    setSupportActionBar(mActionBar);
-    mActionBar.hideOverflowMenu();
+    actionBar = findViewById(R.id.my_toolbar);
+    setSupportActionBar(actionBar);
+    actionBar.hideOverflowMenu();
 
-    mNavController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
-    NavigationUI.setupWithNavController(binding.bottomNavigationView, mNavController);
+    navController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
+    NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
   }
 }
