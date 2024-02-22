@@ -12,34 +12,34 @@ import ru.hse.goodtrip.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar mActionBar;
-    private ActivityMainBinding binding;
+  Toolbar mActionBar;
+  private ActivityMainBinding binding;
 
-    NavController mNavController;
+  NavController mNavController;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        setupNavigation();
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    binding = ActivityMainBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
+    setupNavigation();
 
-        if (isUserLoggedIn()) { // TODO: move logic somewhere
-            mNavController.navigate(R.id.navigation_login);
-        }
+    if (isUserLoggedIn()) { // TODO: move logic somewhere
+      mNavController.navigate(R.id.navigation_login);
     }
+  }
 
-    public boolean isUserLoggedIn() {
-        return true;
-    }
+  public boolean isUserLoggedIn() {
+    return true;
+  }
 
-    // TODO: move to another class
-    public void setupNavigation() {
-        mActionBar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(mActionBar);
-        mActionBar.hideOverflowMenu();
+  // TODO: move to another class
+  public void setupNavigation() {
+    mActionBar = (Toolbar) findViewById(R.id.my_toolbar);
+    setSupportActionBar(mActionBar);
+    mActionBar.hideOverflowMenu();
 
-        mNavController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, mNavController);
-    }
+    mNavController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
+    NavigationUI.setupWithNavController(binding.bottomNavigationView, mNavController);
+  }
 }
