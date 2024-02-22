@@ -25,7 +25,7 @@
     <string name="title_map">Map</string>
     <string name="title_feed">Feed</string>
     <string name="title_places">Places</string>
-    <string name="title_profile_button">Profile</string>
+    <string name="title_profile">Profile</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -115,4 +115,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="plantripbutton">planTripButton</string>
 </resources>
