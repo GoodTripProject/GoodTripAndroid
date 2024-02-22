@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
     return true;
   }
 
-  // TODO: move to another class
+  /**
+   * TODO: move to another class
+   * Setup navController.
+   */
   public void setupNavigation() {
     mActionBar = (Toolbar) findViewById(R.id.my_toolbar);
     setSupportActionBar(mActionBar);
