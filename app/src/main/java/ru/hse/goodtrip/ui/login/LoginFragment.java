@@ -26,11 +26,13 @@ import androidx.credentials.PasswordCredential;
 import androidx.credentials.exceptions.GetCredentialException;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.FragmentLoginBinding;
 
@@ -41,6 +43,17 @@ public class LoginFragment extends Fragment {
 
     CredentialManager credentialManager;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
+    }
 
     @Nullable
     @Override
@@ -49,13 +62,9 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
-        navView.setVisibility(View.INVISIBLE);
         credentialManager = CredentialManager.create(requireContext());
-        View mainFragmentsView = requireActivity().findViewById(R.id.nav_host_fragment_activity_main);
-        mainFragmentsView.setVisibility(View.INVISIBLE);
-        return binding.getRoot();
 
+        return binding.getRoot();
     }
 
     private void setRegisterFields(int visibilityOption) {
@@ -251,11 +260,7 @@ public class LoginFragment extends Fragment {
 
 
     private void updateUiWithUser(LoggedInUserView model) {
-        requireActivity().getSupportFragmentManager().popBackStack();
-        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
-        navView.setVisibility(View.VISIBLE);
-        View mainFragmentsView = requireActivity().findViewById(R.id.nav_host_fragment_activity_main);
-        mainFragmentsView.setVisibility(View.VISIBLE);
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_container).popBackStack();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
