@@ -115,6 +115,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
         app:layout_constraintVertical_bias="0.335" />
+
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
@@ -189,13 +190,13 @@
     <Button
         android:id="@+id/go_to_sign_up"
         android:layout_width="wrap_content"
-        android:background="@color/purple_700"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
+        android:background="@color/purple_700"
         android:enabled="false"
         android:text="@string/you_are_not_registered"
         app:layout_constraintBottom_toBottomOf="parent"
