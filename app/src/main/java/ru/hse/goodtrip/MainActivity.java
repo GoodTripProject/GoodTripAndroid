@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 
@@ -39,7 +40,26 @@ public class MainActivity extends AppCompatActivity {
     setSupportActionBar(actionBar);
     getSupportActionBar().hide();
 
+    binding.planTripButton.setOnClickListener(v -> {
+      getSupportActionBar().show();
+      navController.navigate(R.id.navigation_plan_trip);
+    });
+
+    AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+        R.id.navigation_feed, R.id.navigation_map, R.id.navigation_places, R.id.navigation_profile)
+        .build();
+
     navController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
     NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+    NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
   }
+
+  @Override
+  public boolean onSupportNavigateUp() {
+    getSupportActionBar().hide();
+    navController.popBackStack();
+    return true;
+  }
+
 }
