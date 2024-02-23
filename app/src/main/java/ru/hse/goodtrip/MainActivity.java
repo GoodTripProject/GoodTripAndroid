@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
   public void setupNavigation() {
     actionBar = findViewById(R.id.my_toolbar);
     setSupportActionBar(actionBar);
-    actionBar.hideOverflowMenu();
+    getSupportActionBar().hide();
 
     navController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
     NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
