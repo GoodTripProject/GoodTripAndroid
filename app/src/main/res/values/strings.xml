@@ -116,4 +116,25 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="plantripbutton">planTripButton</string>
+    <string name="create_new_trip">Create new trip</string>
+    <string name="trip_name">Trip Name:</string>
+    <string name="add_trip">Add Trip</string>
+    <string name="select_dates">Select Dates</string>
+    <string name="trip">Trip</string>
+    <string name="select_arrival_date">Select Arrival Date</string>
+    <string name="arrival">Arrival</string>
+    <string name="select_departure_date">Select Departure Date</string>
+    <string name="departure">Departure</string>
+    <string name="enter_travel_name">Enter Travel Name</string>
+    <string name="travel_name">Travel Name</string>
+    <string name="add_country">Add country</string>
+    <string name="trip_word">Trip</string>
+    <string name="budget_usd">Budget (USD):</string>
+    <string name="enter_budget">Enter Budget</string>
+    <string name="not_valid_name">Trip name should have less than 32 characters</string>
+    <string name="not_valid_date">Date should write in dd.mm.yyyy format</string>
+    <string name="country_error">Country error</string>
+    <string name="money_error">Money should be positive number</string>
+
+
 </resources>

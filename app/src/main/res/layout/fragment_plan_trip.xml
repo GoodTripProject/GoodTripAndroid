@@ -1,14 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".ui.trips.PlanTripFragment">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
   <TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:text="Add Trip!!" />
+      android:id="@+id/headerTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/trip_word"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:padding="16dp"/>
 
-</FrameLayout>
+  <!-- Travel Name Input -->
+  <TextView
+      android:id="@+id/travelNameLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/travel_name"
+      app:layout_constraintTop_toBottomOf="@id/headerTextView"
+      app:layout_constraintStart_toStartOf="parent"
+      android:padding="16dp"/>
+
+  <EditText
+      android:id="@+id/travelNameEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toEndOf="@id/travelNameLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/travelNameLabel"
+      android:padding="16dp"
+      android:hint="@string/enter_travel_name"
+      android:inputType="text"
+      android:autofillHints=""/>
+
+  <!-- Departure Date Input -->
+  <TextView
+      android:id="@+id/departureDateLabel"
+      android:layout_width="111dp"
+      android:layout_height="51dp"
+      android:padding="16dp"
+      android:text="@string/departure"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/travelNameEditText" />
+
+  <EditText
+      android:id="@+id/departureDateEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toEndOf="@id/departureDateLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/departureDateLabel"
+      android:padding="16dp"
+      android:hint="@string/select_departure_date"
+      android:inputType="date"
+      android:autofillHints="" />
+
+  <!-- Arrival Date Input -->
+  <TextView
+      android:id="@+id/arrivalDateLabel"
+      android:layout_width="111dp"
+      android:layout_height="55dp"
+      android:padding="16dp"
+      android:text="@string/arrival"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/departureDateEditText" />
+
+  <EditText
+      android:id="@+id/arrivalDateEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toEndOf="@id/arrivalDateLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/arrivalDateLabel"
+      android:padding="16dp"
+      android:hint="@string/select_arrival_date"
+      android:inputType="date"
+      android:autofillHints=""/>
+
+  <TextView
+      android:id="@+id/budgetLabel"
+      android:layout_width="111dp"
+      android:layout_height="52dp"
+      android:padding="16dp"
+      android:text="@string/budget_usd"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/arrivalDateEditText" />
+
+  <EditText
+      android:id="@+id/budgetEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toTopOf="@id/budgetLabel"
+      app:layout_constraintStart_toEndOf="@id/budgetLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:padding="16dp"
+      android:inputType="numberDecimal"
+      android:hint="@string/enter_budget"/>
+
+  <Button
+      android:id="@+id/add_country"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="120dp"
+      android:layout_marginBottom="24dp"
+      android:text="@string/add_country"
+      app:layout_constraintTop_toBottomOf="@id/budgetEditText"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <!-- City Input for Each Country -->
+
+
+  <Button
+      android:id="@+id/saveButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="120dp"
+      android:layout_marginBottom="24dp"
+      android:text="@string/create_new_trip"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
