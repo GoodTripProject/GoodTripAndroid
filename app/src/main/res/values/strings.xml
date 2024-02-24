@@ -115,6 +115,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+<<<<<<< HEAD
   <string name="plantripbutton">planTripButton</string>
   <string name="create_new_trip">Create new trip</string>
   <string name="trip_name">Trip Name:</string>
