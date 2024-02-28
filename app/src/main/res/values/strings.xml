@@ -135,6 +135,7 @@
     <string name="not_valid_date">Date should write in dd.mm.yyyy format</string>
     <string name="country_error">Country error</string>
     <string name="money_error">Money should be positive number</string>
+    <string name="route">Route</string>
 
 
 </resources>

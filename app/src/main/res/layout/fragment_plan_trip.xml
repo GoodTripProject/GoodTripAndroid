@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,19 +15,20 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/trip_word"
-      android:textSize="20sp"
+      android:textColor="@color/black"
+      android:textSize="25sp"
       android:textStyle="bold"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       android:padding="16dp"/>
 
-  <!-- Travel Name Input -->
   <TextView
       android:id="@+id/travelNameLabel"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/travel_name"
+      android:textStyle="bold"
       app:layout_constraintTop_toBottomOf="@id/headerTextView"
       app:layout_constraintStart_toStartOf="parent"
       android:padding="16dp"/>
@@ -37,16 +42,17 @@
       app:layout_constraintTop_toTopOf="@id/travelNameLabel"
       android:padding="16dp"
       android:hint="@string/enter_travel_name"
+
       android:inputType="text"
       android:autofillHints=""/>
 
-  <!-- Departure Date Input -->
   <TextView
       android:id="@+id/departureDateLabel"
       android:layout_width="111dp"
       android:layout_height="51dp"
       android:padding="16dp"
       android:text="@string/departure"
+      android:textStyle="bold"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/travelNameEditText" />
 
@@ -62,13 +68,14 @@
       android:inputType="date"
       android:autofillHints="" />
 
-  <!-- Arrival Date Input -->
   <TextView
       android:id="@+id/arrivalDateLabel"
       android:layout_width="111dp"
       android:layout_height="55dp"
       android:padding="16dp"
       android:text="@string/arrival"
+      android:textStyle="bold"
+
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/departureDateEditText" />
 
@@ -89,6 +96,8 @@
       android:layout_width="111dp"
       android:layout_height="52dp"
       android:padding="16dp"
+      android:textStyle="bold"
+
       android:text="@string/budget_usd"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/arrivalDateEditText" />
@@ -102,7 +111,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       android:padding="16dp"
       android:inputType="numberDecimal"
-      android:hint="@string/enter_budget"/>
+      android:hint="@string/enter_budget" />
 
   <Button
       android:id="@+id/add_country"
@@ -114,9 +123,18 @@
       app:layout_constraintTop_toBottomOf="@id/budgetEditText"
       app:layout_constraintStart_toStartOf="parent" />
 
-  <!-- City Input for Each Country -->
 
-
+  <TextView
+      android:id="@+id/countries_text_title"
+      android:layout_width="128dp"
+      android:layout_height="68dp"
+      android:padding="16dp"
+      android:text="@string/route"
+      android:textColor="@color/black"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/add_country" />
   <Button
       android:id="@+id/saveButton"
       android:layout_width="wrap_content"
@@ -125,9 +143,34 @@
       android:layout_marginBottom="24dp"
       android:text="@string/create_new_trip"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/route"
       app:layout_constraintStart_toStartOf="parent" />
+  <LinearLayout
+      android:id="@+id/route"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/countries_text_title"
+      app:layout_constraintStart_toStartOf="parent"
+      android:background="@color/white"
+      android:orientation="vertical">
+    <include
+        layout="@layout/item_country" />
+    <include
+        layout="@layout/item_country" />
+    <include
+        layout="@layout/item_country" />
+    <include
+        layout="@layout/item_country" />
+    <include
+        layout="@layout/item_country" />
+    <include
+        layout="@layout/item_country" />
+    <include
+        layout="@layout/item_country" />
 
+  </LinearLayout>
 
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
