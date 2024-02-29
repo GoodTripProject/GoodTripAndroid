@@ -22,6 +22,9 @@ public class GTNavigationGraph extends NavHostFragment {
     initializeNavigation();
   }
 
+  /**
+   * Initialize main navigation graph.
+   */
   public void initializeNavigation() {
     Toolbar actionBar = activity.findViewById(R.id.my_toolbar);
     activity.setSupportActionBar(actionBar);
@@ -35,10 +38,11 @@ public class GTNavigationGraph extends NavHostFragment {
     NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
     NavigationUI.setupActionBarWithNavController(activity, navController, appBarConfiguration);
 
-    binding.planTripButton.setOnClickListener(v -> {
-      activity.getSupportActionBar().show();
-      navController.navigate(R.id.navigation_plan_trip);
-    });
+    setupButtonsClickListeners();
+  }
+
+  public void setupButtonsClickListeners() {
+    binding.planTripButton.setOnClickListener(v -> navigateToPlanTrip());
   }
 
   public void navigateToLogin() {
@@ -47,5 +51,10 @@ public class GTNavigationGraph extends NavHostFragment {
 
   public void navigateUp() {
     navController.popBackStack();
+  }
+
+  public void navigateToPlanTrip() {
+    activity.getSupportActionBar().show();
+    navController.navigate(R.id.navigation_plan_trip);
   }
 }
