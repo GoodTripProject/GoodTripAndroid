@@ -21,6 +21,8 @@ android {
         properties.load(project.rootProject.file("local.properties").inputStream())
         val apiKey = properties.getProperty("GOOGLE_OAUTH_TOKEN")
         resValue("string", "OAUTH_API_KEY", apiKey)
+        val mapApiKey = properties.getProperty("MAPS_API_KEY")
+        resValue("string", "MAPS_API_KEY", mapApiKey)
     }
 
     buildTypes {
@@ -44,6 +46,10 @@ dependencies {
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("com.google.android.gms:play-services-location:21.1.0")
+    implementation ("com.google.android.gms:play-services-places:17.0.0")
+    implementation ("com.google.android.libraries.places:places:3.3.0")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
@@ -56,6 +62,7 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.compose.ui:ui-text-android:1.6.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

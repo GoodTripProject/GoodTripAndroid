@@ -136,6 +136,9 @@
     <string name="country_error">Country error</string>
     <string name="money_error">Money should be positive number</string>
     <string name="route">Route</string>
+    <string name="add_country_and_cities_there">Add country and cities there</string>
+    <string name="country_name">Country name</string>
+    <string name="enter_country_name">Enter country name</string>
 
 
 </resources>

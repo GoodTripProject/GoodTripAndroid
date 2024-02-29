@@ -8,8 +8,7 @@ import java.io.File;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.model.CountryVisit;
@@ -72,7 +71,24 @@ public class PlanTripViewModel extends ViewModel {
         }
     }
 
+    // code from https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os]
+    public List<String> getCountriesList(){
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> countries = new ArrayList<String>();
+        for (Locale locale : locales) {
+            String country = locale.getDisplayCountry();
+            if (country.trim().length()>0 && !countries.contains(country)) {
+                countries.add(country);
+            }
+        }
+        Collections.sort(countries);
+        return countries;
+    }
     private boolean isNameValid(String name) {
         return name != null && name.trim().length() <= 32;
+    }
+
+    public void addCountry() {
+        //TODO
     }
 }
