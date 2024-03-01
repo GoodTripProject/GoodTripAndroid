@@ -19,6 +19,10 @@ public class GtNavigationGraph extends NavHostFragment {
   private final ActivityMainBinding binding;
   private NavController navController;
 
+  /**
+   * @param activity Activity context navigation associated with.
+   * @param binding  Binding context navigation appeared in.
+   */
   public GtNavigationGraph(MainActivity activity, ActivityMainBinding binding) {
     this.activity = activity;
     this.binding = binding;

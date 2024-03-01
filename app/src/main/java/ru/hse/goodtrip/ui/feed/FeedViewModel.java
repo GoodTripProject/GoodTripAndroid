@@ -9,6 +9,9 @@ public class FeedViewModel extends ViewModel {
 
   private ArrayList<PostTrip> posts = new ArrayList<>();
 
+  /**
+   * Initialize FeedViewModel.
+   */
   public FeedViewModel() {
     PostTrip testPost = new PostTrip();
     User testUser = new User();
