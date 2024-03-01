@@ -21,9 +21,8 @@ import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedPostViewHolder;
 public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements View.OnClickListener {
 
-  private final String TAG = "FeedAdapter";
-  private final int VIEW_TYPE_ITEM = 0;
-  private final int VIEW_TYPE_LOADING = 1;
+  private static final int VIEW_TYPE_ITEM = 0;
+  private static final int VIEW_TYPE_LOADING = 1;
   List<PostTrip> items = Collections.emptyList();
 
   @SuppressLint("NotifyDataSetChanged")
@@ -51,6 +50,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     if (viewHolder instanceof FeedPostViewHolder) {
       showPostView((FeedPostViewHolder) viewHolder, position);
     } else if (viewHolder instanceof FeedLoadingViewHolder) {
+      String TAG = "FeedAdapter";
       Log.d(TAG, "LoadingView appeared");
     }
   }

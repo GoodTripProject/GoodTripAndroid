@@ -2,6 +2,9 @@ package ru.hse.goodtrip.model;
 
 import java.util.ArrayList;
 
+/**
+ * Post data class.
+ */
 public class PostTrip {
 
   public String timeOfPublication;

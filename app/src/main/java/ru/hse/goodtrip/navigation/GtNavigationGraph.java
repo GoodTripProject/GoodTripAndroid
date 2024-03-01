@@ -10,13 +10,16 @@ import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 
-public class GTNavigationGraph extends NavHostFragment {
+/**
+ * Main application navigation fragment.
+ */
+public class GtNavigationGraph extends NavHostFragment {
 
   private final MainActivity activity;
   private final ActivityMainBinding binding;
   private NavController navController;
 
-  public GTNavigationGraph(MainActivity activity, ActivityMainBinding binding) {
+  public GtNavigationGraph(MainActivity activity, ActivityMainBinding binding) {
     this.activity = activity;
     this.binding = binding;
     initializeNavigation();
