@@ -17,9 +17,13 @@ public class MainActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     navigationGraph = new GTNavigationGraph(this, binding);
 
-    if (isUserLoggedIn()) { // TODO: move logic somewhere
-      navigationGraph.navigateToLogin();
-    }
+//    if (isUserLoggedIn()) { // TODO: move logic somewhere
+//      navigationGraph.navigateToLogin();
+//    }
+  }
+
+  public GTNavigationGraph getNavigationGraph() {
+    return navigationGraph;
   }
 
   public boolean isUserLoggedIn() {
