@@ -5,19 +5,19 @@ package ru.hse.goodtrip.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
-    private String displayName;
+  private String userId;
+  private String displayName;
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
-        this.displayName = displayName;
-    }
+  public LoggedInUser(String userId, String displayName) {
+    this.userId = userId;
+    this.displayName = displayName;
+  }
 
-    public String getUserId() {
-        return userId;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+  public String getDisplayName() {
+    return displayName;
+  }
 }

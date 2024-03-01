@@ -1,178 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:layout_height="wrap_content">
 
 
-        <TextView
-            android:id="@+id/headerTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/trip_word"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <Button
+      android:id="@+id/add_country"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:layout_marginStart="252dp"
+      android:text="@string/add_country"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/budgetEditText" />
 
-        <TextView
-            android:id="@+id/travelNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/travel_name"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerTextView" />
+    <Button
+      android:id="@+id/saveButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="24dp"
+      android:layout_marginStart="120dp"
+      android:text="@string/create_new_trip"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/route" />
 
-        <EditText
-            android:id="@+id/travelNameEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:hint="@string/enter_travel_name"
-            android:inputType="text"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
+    <EditText
+      android:id="@+id/travelNameEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:autofillHints=""
+      android:hint="@string/enter_travel_name"
+      android:inputType="text"
+      app:layout_constraintEnd_toEndOf="parent"
 
-            app:layout_constraintStart_toEndOf="@id/travelNameLabel"
-            app:layout_constraintTop_toTopOf="@id/travelNameLabel" />
+      app:layout_constraintStart_toEndOf="@id/travelNameLabel"
+      app:layout_constraintTop_toTopOf="@id/travelNameLabel" />
 
-        <TextView
-            android:id="@+id/departureDateLabel"
-            android:layout_width="111dp"
-            android:layout_height="51dp"
-            android:padding="16dp"
-            android:text="@string/departure"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/travelNameEditText" />
+    <EditText
+      android:id="@+id/departureDateEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:autofillHints=""
+      android:hint="@string/select_departure_date"
+      android:inputType="date"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/departureDateLabel"
+      app:layout_constraintTop_toTopOf="@id/departureDateLabel" />
 
-        <EditText
-            android:id="@+id/departureDateEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:hint="@string/select_departure_date"
-            android:inputType="date"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/departureDateLabel"
-            app:layout_constraintTop_toTopOf="@id/departureDateLabel" />
+    <EditText
+      android:id="@+id/arrivalDateEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:autofillHints=""
+      android:hint="@string/select_arrival_date"
+      android:inputType="date"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/arrivalDateLabel"
+      app:layout_constraintTop_toTopOf="@id/arrivalDateLabel" />
 
-        <TextView
-            android:id="@+id/arrivalDateLabel"
-            android:layout_width="111dp"
-            android:layout_height="55dp"
-            android:padding="16dp"
-            android:text="@string/arrival"
-            android:textStyle="bold"
+    <EditText
+      android:id="@+id/budgetEditText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:autofillHints=""
+      android:hint="@string/enter_budget"
+      android:inputType="numberDecimal"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/budgetLabel"
+      app:layout_constraintTop_toTopOf="@id/budgetLabel" />
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/departureDateEditText" />
+    <LinearLayout
+      android:id="@+id/route"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@color/white"
+      android:orientation="vertical"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/countries_text_title">
 
-        <EditText
-            android:id="@+id/arrivalDateEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:hint="@string/select_arrival_date"
-            android:inputType="date"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/arrivalDateLabel"
-            app:layout_constraintTop_toTopOf="@id/arrivalDateLabel" />
+      <include layout="@layout/item_country" />
 
-        <TextView
-            android:id="@+id/budgetLabel"
-            android:layout_width="111dp"
-            android:layout_height="52dp"
-            android:padding="16dp"
-            android:text="@string/budget_usd"
+      <include layout="@layout/item_country" />
 
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/arrivalDateEditText" />
+      <include layout="@layout/item_country" />
 
-        <EditText
-            android:id="@+id/budgetEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_budget"
-            android:inputType="numberDecimal"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/budgetLabel"
-            app:layout_constraintTop_toTopOf="@id/budgetLabel"
-            android:autofillHints="" />
+      <include layout="@layout/item_country" />
 
+      <include layout="@layout/item_country" />
 
-        <Button
-            android:id="@+id/add_country"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="252dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/add_country"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/budgetEditText" />
+      <include layout="@layout/item_country" />
 
-        <TextView
-            android:id="@+id/countries_text_title"
-            android:layout_width="128dp"
-            android:layout_height="68dp"
-            android:padding="16dp"
-            android:text="@string/route"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_country" />
+      <include layout="@layout/item_country" />
 
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-            android:layout_marginBottom="24dp"
-            android:text="@string/create_new_trip"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/route" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/route"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/countries_text_title">
+    <TextView
+      android:id="@+id/headerTextView"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:text="@string/trip_word"
+      android:textColor="@color/black"
+      android:textSize="25sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
-            <include layout="@layout/item_country" />
-
-            <include layout="@layout/item_country" />
-
-            <include layout="@layout/item_country" />
-
-            <include layout="@layout/item_country" />
-
-            <include layout="@layout/item_country" />
-
-            <include layout="@layout/item_country" />
-
-            <include layout="@layout/item_country" />
-
-        </LinearLayout>
+    <TextView
+      android:id="@+id/travelNameLabel"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:text="@string/travel_name"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/headerTextView" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+      android:id="@+id/departureDateLabel"
+      android:textStyle="bold"
+      android:layout_width="111dp"
+      android:layout_height="51dp"
+      android:padding="16dp"
+      android:text="@string/departure"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/travelNameEditText" />
+
+    <TextView
+      android:id="@+id/arrivalDateLabel"
+      android:textStyle="bold"
+      android:layout_width="111dp"
+      android:layout_height="55dp"
+      android:padding="16dp"
+      android:text="@string/arrival"
+
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/departureDateEditText" />
+
+    <TextView
+      android:id="@+id/budgetLabel"
+      android:textStyle="bold"
+      android:layout_width="111dp"
+      android:layout_height="52dp"
+      android:padding="16dp"
+
+      android:text="@string/budget_usd"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/arrivalDateEditText" />
+
+    <TextView
+      android:id="@+id/countries_text_title"
+      android:textStyle="bold"
+      android:layout_width="128dp"
+      android:layout_height="68dp"
+      android:padding="16dp"
+      android:text="@string/route"
+      android:textColor="@color/black"
+      android:textSize="24sp"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/add_country" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
