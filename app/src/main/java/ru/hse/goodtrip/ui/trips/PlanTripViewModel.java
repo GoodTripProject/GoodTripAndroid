@@ -35,7 +35,7 @@ public class PlanTripViewModel extends ViewModel {
   }
 
   /**
-   * Creates trip and checks that trip values is correct
+   * Creates trip and checks that trip values is correct.
    *
    * @param name                     name of trip.
    * @param startTripDate            departure date in string.

@@ -33,6 +33,7 @@ public class PlanTripFragment extends Fragment {
 
   /**
    * Creates new instance of plantripfragment.
+   *
    * @return new instance of plan trip fragment.
    */
   public static PlanTripFragment newInstance() {

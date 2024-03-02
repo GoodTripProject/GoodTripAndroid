@@ -71,6 +71,8 @@ public class LoginRepository {
   }
 
   /**
+   * Sign up user.
+   *
    * @param username username.
    * @param password password.
    * @param handle handle.
