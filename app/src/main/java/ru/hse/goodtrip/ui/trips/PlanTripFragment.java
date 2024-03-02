@@ -58,13 +58,13 @@ public class PlanTripFragment extends Fragment {
 
   private void addCountryView(String country, List<String> cities) {
     View countryView = LayoutInflater.from(requireContext())
-        .inflate(R.layout.item_country, binding.getRoot());
+        .inflate(R.layout.item_country, null);
     TextView countryTitle = countryView.findViewById(R.id.titleCountry);
     countryTitle.setText(country);
     LinearLayout citiesLayout = countryView.findViewById(R.id.cities);
     for (String city : cities) {
       View cityView = LayoutInflater.from(requireContext())
-          .inflate(R.layout.item_city, binding.getRoot());
+          .inflate(R.layout.item_city, null);
       ((TextView) cityView.findViewById(R.id.cityelement)).setText(city);
       citiesLayout.addView(cityView);
     }
@@ -100,7 +100,7 @@ public class PlanTripFragment extends Fragment {
 
     addCity.setOnClickListener(v -> {
       View view = LayoutInflater.from(requireContext())
-          .inflate(R.layout.item_add_city, binding.getRoot());
+          .inflate(R.layout.item_add_city, null);
       view.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
               LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -127,7 +127,7 @@ public class PlanTripFragment extends Fragment {
     final EditText moneyEditText = binding.budgetEditText;
     LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
         LAYOUT_INFLATER_SERVICE);
-    View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, binding.getRoot());
+    View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, null);
     final PopupWindow popupWindow = new PopupWindow(popupView,
         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
     popupWindow.setOutsideTouchable(false);

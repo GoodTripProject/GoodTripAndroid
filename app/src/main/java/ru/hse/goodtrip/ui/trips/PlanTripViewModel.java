@@ -37,7 +37,7 @@ public class PlanTripViewModel extends ViewModel {
   public void createTrip(String name, String startTripDate,
       String endTripDate, @Nullable byte[] mainPhoto, String moneyInUSD,
       Set<ShowPlace> interestingPlacesToVisit) {
-    if (!isNameValid(name)) {
+    if (isNameNotValid(name)) {
       planTripFormState.setValue(
           new PlanTripFormState(R.string.not_valid_name, null, null, null, null, null));
     } else if (isDateNotValid(startTripDate)) {
@@ -46,6 +46,9 @@ public class PlanTripViewModel extends ViewModel {
     } else if (isDateNotValid(endTripDate)) {
       planTripFormState.setValue(
           new PlanTripFormState(null, null, R.string.not_valid_date, null, null, null));
+    } else if (parseDate(startTripDate).isAfter(parseDate(endTripDate))) {
+      planTripFormState.setValue(
+          new PlanTripFormState(null, null, R.string.not_valid_date_order, null, null, null));
     } else if (isMoneyNotValid(moneyInUSD)) {
       planTripFormState.setValue(new PlanTripFormState(null, null, null, null, null, null));
     } else {
@@ -65,16 +68,16 @@ public class PlanTripViewModel extends ViewModel {
     try {
       parseDate(dateString);
     } catch (DateTimeException e) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   private boolean isMoneyNotValid(String moneyInUSD) {
     try {
-      return Integer.parseInt(moneyInUSD) >= 0;
+      return Integer.parseInt(moneyInUSD) < 0;
     } catch (NumberFormatException nfe) {
-      return false;
+      return true;
     }
   }
 
@@ -92,8 +95,8 @@ public class PlanTripViewModel extends ViewModel {
     return countries;
   }
 
-  private boolean isNameValid(String name) {
-    return name != null && name.trim().length() <= 32;
+  private boolean isNameNotValid(String name) {
+    return !(name != null && name.trim().length() <= 32);
   }
 
   public void addCountry(String countryName, List<String> citiesName) {
