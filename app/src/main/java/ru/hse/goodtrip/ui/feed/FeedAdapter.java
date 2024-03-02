@@ -57,7 +57,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   private void showPostView(FeedPostViewHolder viewHolder, int position) {
     PostTrip trip = items.get(position);
-    PostTripBinding binding = viewHolder.binding;
+    PostTripBinding binding = viewHolder.getBinding();
     viewHolder.itemView.setOnClickListener(this);
     viewHolder.itemView.setTag(trip);
     binding.profileNameText.setText(trip.user.name);
