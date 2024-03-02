@@ -1,19 +1,38 @@
 package ru.hse.goodtrip.ui.feed;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.ArrayList;
+import ru.hse.goodtrip.model.PostTrip;
+import ru.hse.goodtrip.model.User;
 
 public class FeedViewModel extends ViewModel {
 
-  private final MutableLiveData<String> text;
+  private ArrayList<PostTrip> posts = new ArrayList<>();
 
+  /**
+   * Initialize FeedViewModel.
+   */
   public FeedViewModel() {
-    text = new MutableLiveData<>();
-    text.setValue("There will be a feed!");
+    PostTrip testPost = new PostTrip();
+    User testUser = new User();
+    testUser.name = "Danya Neykov";
+    testPost.title = "Weekend in Heaven";
+    testPost.user = testUser;
+    testPost.dateArrival = "yesterday";
+    for (int i = 0; i < 10; i++) {
+      posts.add(testPost);
+    }
   }
 
-  public LiveData<String> getText() {
-    return text;
+  public ArrayList<PostTrip> getPosts() {
+    return posts;
+  }
+
+  public void setPosts(ArrayList<PostTrip> newPosts) {
+    posts = newPosts;
+  }
+
+  public void newPostPublished(PostTrip post) {
+    posts.add(post);
   }
 }

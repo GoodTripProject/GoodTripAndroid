@@ -2,63 +2,37 @@ package ru.hse.goodtrip;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
+import ru.hse.goodtrip.navigation.GtNavigationGraph;
 
 public class MainActivity extends AppCompatActivity {
 
-  Toolbar actionBar;
-  NavController navController;
   private ActivityMainBinding binding;
+  private GtNavigationGraph navigationGraph;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
-    setupNavigation();
+    navigationGraph = new GtNavigationGraph(this, binding);
 
     if (isUserLoggedIn()) { // TODO: move logic somewhere
-      navController.navigate(R.id.navigation_login);
+      navigationGraph.navigateToLogin();
     }
+  }
+
+  public GtNavigationGraph getNavigationGraph() {
+    return navigationGraph;
   }
 
   public boolean isUserLoggedIn() {
     return true;
   }
 
-  /**
-   * TODO: move to another class
-   * Setup navController.
-   */
-  public void setupNavigation() {
-    actionBar = findViewById(R.id.my_toolbar);
-    setSupportActionBar(actionBar);
-    getSupportActionBar().hide();
-
-    binding.planTripButton.setOnClickListener(v -> {
-      getSupportActionBar().show();
-      navController.navigate(R.id.navigation_plan_trip);
-    });
-
-    AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-        R.id.navigation_feed, R.id.navigation_map, R.id.navigation_places, R.id.navigation_profile)
-        .build();
-
-    navController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
-    NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
-    NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-  }
-
   @Override
   public boolean onSupportNavigateUp() {
-    getSupportActionBar().hide();
-    navController.popBackStack();
+    navigationGraph.navigateUp();
     return true;
   }
 

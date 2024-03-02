@@ -23,12 +23,12 @@ public class Trip {
   /**
    * creates trip.
    *
-   * @param name name of trip.
-   * @param countries countries in trip.
-   * @param startTripDate date of start.
-   * @param endTripDate date of end.
-   * @param mainPhoto photo of trip.
-   * @param moneyInUsd budget of trip.
+   * @param name                     name of trip.
+   * @param countries                countries in trip.
+   * @param startTripDate            date of start.
+   * @param endTripDate              date of end.
+   * @param mainPhoto                photo of trip.
+   * @param moneyInUsd               budget of trip.
    * @param interestingPlacesToVisit places in trip.
    */
   public Trip(String name, List<CountryVisit> countries, LocalDate startTripDate,
