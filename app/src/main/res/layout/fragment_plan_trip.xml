@@ -16,6 +16,7 @@
       android:layout_marginTop="20dp"
       android:layout_marginStart="252dp"
       android:text="@string/add_country"
+      android:textColor="#424242"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/budgetEditText" />
 
@@ -26,6 +27,7 @@
       android:layout_marginBottom="24dp"
       android:layout_marginStart="120dp"
       android:text="@string/create_new_trip"
+      android:textColor="#424242"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/route" />
@@ -88,19 +90,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/countries_text_title">
 
-      <include layout="@layout/item_country" />
-
-      <include layout="@layout/item_country" />
-
-      <include layout="@layout/item_country" />
-
-      <include layout="@layout/item_country" />
-
-      <include layout="@layout/item_country" />
-
-      <include layout="@layout/item_country" />
-
-      <include layout="@layout/item_country" />
 
     </LinearLayout>
 

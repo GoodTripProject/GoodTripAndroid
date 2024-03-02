@@ -2,8 +2,8 @@ package ru.hse.goodtrip.model;
 
 public abstract class AbstractPlace {
 
-  private String name;
-  private Coordinates coordinates;
+  private final String name;
+  private final Coordinates coordinates;
 
   public AbstractPlace(String name, Coordinates coordinates) {
     this.name = name;

@@ -142,6 +142,9 @@
   <string name="city">City</string>
   <string name="enter_city">Enter city</string>
   <string name="add_city">Add city</string>
+  <string name="country">Country</string>
+  <string name="enter_country">Enter country</string>
+  <string name="plus">+</string>
 
 
 </resources>
