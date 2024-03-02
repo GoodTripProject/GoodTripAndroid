@@ -3,7 +3,7 @@ package ru.hse.goodtrip.model;
 import java.util.List;
 
 /**
- * Users visit of country
+ * Users visit of country.
  */
 public class CountryVisit {
 

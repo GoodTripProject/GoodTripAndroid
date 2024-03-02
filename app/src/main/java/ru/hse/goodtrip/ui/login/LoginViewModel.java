@@ -28,9 +28,10 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * login user
-   * @param username
-   * @param password
+   * login user.
+   *
+   * @param username username
+   * @param password password
    */
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
@@ -45,12 +46,13 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * sign up user
-   * @param username
-   * @param password
-   * @param surname
-   * @param name
-   * @param handle
+   * sign up user.
+   *
+   * @param username username.
+   * @param password password.
+   * @param surname surname of user.
+   * @param name name of user.
+   * @param handle handle of user.
    */
   public void signUp(String username, String password,
       String surname, String name,
@@ -67,9 +69,10 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * calls if data changed, changes the state
-   * @param username
-   * @param password
+   * calls if data changed, changes the state.
+   *
+   * @param username username.
+   * @param password password.
    */
   public void loginDataChanged(String username, String password) {
     if (!isUserNameValid(username)) {
@@ -82,9 +85,10 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * cheks user name
-   * @param username
-   * @return
+   * checks user name.
+   *
+   * @param username username.
+   * @return true if name is valid, false otherwise.
    */
   // A placeholder username validation check
   private boolean isUserNameValid(String username) {
@@ -99,9 +103,10 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * Password validation check
-   * @param password
-   * @return
+   * Password validation check.
+   *
+   * @param password password.
+   * @return true if password is valid, false otherwise.
    */
   private boolean isPasswordValid(String password) {
     return password != null && password.trim().length() > 5;

@@ -1,7 +1,7 @@
 package ru.hse.goodtrip.model;
 
 /**
- * User
+ * User.
  */
 public class User {
 

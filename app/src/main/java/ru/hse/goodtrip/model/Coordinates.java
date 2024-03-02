@@ -3,7 +3,7 @@ package ru.hse.goodtrip.model;
 import java.math.BigDecimal;
 
 /**
- * Coordinates of place
+ * Coordinates of place.
  */
 public class Coordinates {
 

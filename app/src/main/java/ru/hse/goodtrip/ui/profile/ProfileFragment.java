@@ -12,7 +12,7 @@ import ru.hse.goodtrip.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
 
-  private ProfileViewModel mViewModel;
+  private ProfileViewModel profileViewModel;
 
 
   private FragmentProfileBinding binding;

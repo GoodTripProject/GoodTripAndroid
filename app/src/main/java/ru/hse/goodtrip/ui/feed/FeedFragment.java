@@ -12,7 +12,7 @@ import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
 public class FeedFragment extends Fragment {
 
-  private FeedViewModel mViewModel;
+  private FeedViewModel feedViewModel;
   private FragmentFeedBinding binding;
 
   public static FeedFragment newInstance() {

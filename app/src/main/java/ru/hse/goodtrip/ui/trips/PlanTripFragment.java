@@ -31,6 +31,10 @@ public class PlanTripFragment extends Fragment {
   private PlanTripViewModel mViewModel;
   private FragmentPlanTripBinding binding;
 
+  /**
+   * Creates new instance of plantripfragment.
+   * @return new instance of plan trip fragment.
+   */
   public static PlanTripFragment newInstance() {
     return new PlanTripFragment();
   }
@@ -75,9 +79,9 @@ public class PlanTripFragment extends Fragment {
     binding.getRoot().setAlpha((float) 0.2);
     final AutoCompleteTextView autoCompleteTextViewCountries = popupView.findViewById(
         R.id.enter_country_name);
-    ArrayAdapter<String> adapter = new ArrayAdapter<>
-        (requireContext(), android.R.layout.select_dialog_item,
-            mViewModel.getCountriesList().toArray(new String[0]));
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+        android.R.layout.select_dialog_item,
+        mViewModel.getCountriesList().toArray(new String[0]));
     autoCompleteTextViewCountries.setThreshold(0);
     autoCompleteTextViewCountries.setAdapter(adapter);
     final Button addCountry = popupView.findViewById(R.id.popup_add_country);
@@ -141,7 +145,7 @@ public class PlanTripFragment extends Fragment {
           departureDateEditText.getText().toString(), arrivalDateEditText.getText().toString(),
           new byte[5], moneyEditText.getText().toString(), new HashSet<>());
       if (Objects.requireNonNull(mViewModel.getPlanTripFormState().getValue()).isDataValid()) {
-        updateUI();
+        updateUi();
       } else {
         Toast toast = Toast.makeText(requireContext(),
             Objects.requireNonNull(mViewModel.getPlanTripFormState().getValue().getError()),
@@ -151,7 +155,7 @@ public class PlanTripFragment extends Fragment {
     });
   }
 
-  private void updateUI() {
+  private void updateUi() {
     Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_container)
         .popBackStack();
   }

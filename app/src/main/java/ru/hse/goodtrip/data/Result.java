@@ -27,8 +27,9 @@ public class Result<T> {
   // Success sub-class
 
   /**
-   * Success result
-   * @param <T>
+   * Success result.
+   *
+   * @param <T> Type of data.
    */
   public static final class Success<T> extends Result {
 
@@ -44,7 +45,7 @@ public class Result<T> {
   }
 
   /**
-   * Error result
+   * Error result.
    */
   // Error sub-class
   public static final class Error extends Result {

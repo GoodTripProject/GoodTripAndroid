@@ -1,7 +1,7 @@
 package ru.hse.goodtrip.data;
 
 /**
- * Repository of trips
+ * Repository of trips.
  */
 public class TripRepository {
 

@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData;
 
 public class MapsViewModel {
 
-  private final MutableLiveData<String> mText;
+  private final MutableLiveData<String> text;
 
   public MapsViewModel() {
-    mText = new MutableLiveData<>();
-    mText.setValue("There will be a map!");
+    text = new MutableLiveData<>();
+    text.setValue("There will be a map!");
   }
 
   public LiveData<String> getText() {
-    return mText;
+    return text;
   }
 
 }

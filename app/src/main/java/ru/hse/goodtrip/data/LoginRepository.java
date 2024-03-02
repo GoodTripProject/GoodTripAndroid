@@ -22,9 +22,10 @@ public class LoginRepository {
   }
 
   /**
-   * Get instance of Login Repository
-   * @param dataSource
-   * @return
+   * Get instance of Login Repository.
+   *
+   * @param dataSource login data source.
+   * @return login repository.
    */
   public static LoginRepository getInstance(LoginDataSource dataSource) {
     if (instance == null) {
@@ -43,8 +44,9 @@ public class LoginRepository {
   }
 
   /**
-   * set logged in user
-   * @param user
+   * set logged in user.
+   *
+   * @param user LoggedInUser user.
    */
   private void setLoggedInUser(LoggedInUser user) {
     this.user = user;
@@ -53,10 +55,11 @@ public class LoginRepository {
   }
 
   /**
-   * login user
-   * @param username
-   * @param password
-   * @return
+   * login user.
+   *
+   * @param username user name.
+   * @param password password.
+   * @return result value.
    */
   public Result<LoggedInUser> login(String username, String password) {
     // handle login
@@ -67,6 +70,14 @@ public class LoginRepository {
     return result;
   }
 
+  /**
+   * @param username username.
+   * @param password password.
+   * @param handle handle.
+   * @param name name of user.
+   * @param surname surname of user.
+   * @return result value.
+   */
   public Result<LoggedInUser> signUp(String username, String password, String handle, String name,
       String surname) {
     // handle signup

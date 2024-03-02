@@ -1,5 +1,8 @@
 package ru.hse.goodtrip.model;
 
+/**
+ * AbstractPlace.
+ */
 public abstract class AbstractPlace {
 
   private final String name;

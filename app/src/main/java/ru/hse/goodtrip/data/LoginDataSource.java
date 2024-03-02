@@ -9,10 +9,11 @@ import ru.hse.goodtrip.data.model.LoggedInUser;
 public class LoginDataSource {
 
   /**
-   * Login user
-   * @param username
-   * @param password
-   * @return
+   * Login user.
+   *
+   * @param username Username.
+   * @param password Users password.
+   * @return Result.
    */
   public Result<LoggedInUser> login(String username, String password) {
 
@@ -30,12 +31,13 @@ public class LoginDataSource {
 
   /**
    * Sign up user
-   * @param username
-   * @param password
-   * @param handle
-   * @param name
-   * @param surname
-   * @return
+   *
+   * @param username username.
+   * @param password password.
+   * @param handle   users handle.
+   * @param name     name of user.
+   * @param surname  surname of user.
+   * @return result value
    */
   public Result<LoggedInUser> signup(String username, String password, String handle, String name,
       String surname) {

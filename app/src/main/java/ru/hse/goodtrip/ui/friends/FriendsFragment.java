@@ -11,7 +11,7 @@ import ru.hse.goodtrip.R;
 
 public class FriendsFragment extends Fragment {
 
-  private FriendsViewModel mViewModel;
+  private FriendsViewModel friendsViewModel;
 
   public static FriendsFragment newInstance() {
     return new FriendsFragment();

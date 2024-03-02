@@ -1,7 +1,7 @@
 package ru.hse.goodtrip.model;
 
 /**
- * City
+ * City.
  */
 public class City extends AbstractPlace {
 
