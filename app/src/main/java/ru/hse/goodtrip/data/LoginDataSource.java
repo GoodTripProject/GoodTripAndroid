@@ -8,6 +8,12 @@ import ru.hse.goodtrip.data.model.LoggedInUser;
  */
 public class LoginDataSource {
 
+  /**
+   * Login user
+   * @param username
+   * @param password
+   * @return
+   */
   public Result<LoggedInUser> login(String username, String password) {
 
     try {
@@ -22,6 +28,15 @@ public class LoginDataSource {
     }
   }
 
+  /**
+   * Sign up user
+   * @param username
+   * @param password
+   * @param handle
+   * @param name
+   * @param surname
+   * @return
+   */
   public Result<LoggedInUser> signup(String username, String password, String handle, String name,
       String surname) {
 

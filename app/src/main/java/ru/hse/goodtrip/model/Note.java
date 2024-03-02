@@ -2,6 +2,9 @@ package ru.hse.goodtrip.model;
 
 import java.io.File;
 
+/**
+ * Users note about place
+ */
 public class Note {
 
   String headline;

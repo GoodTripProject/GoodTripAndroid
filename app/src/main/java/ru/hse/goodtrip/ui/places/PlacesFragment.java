@@ -12,7 +12,7 @@ import ru.hse.goodtrip.databinding.FragmentPlacesBinding;
 
 public class PlacesFragment extends Fragment {
 
-  private PlacesViewModel mViewModel;
+  private PlacesViewModel placesViewModel;
   private FragmentPlacesBinding binding;
 
   public static PlacesFragment newInstance() {

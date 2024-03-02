@@ -2,6 +2,9 @@ package ru.hse.goodtrip.model;
 
 import java.io.File;
 
+/**
+ * Place with image
+ */
 public class ShowPlace extends AbstractPlace {
 
   private File image;

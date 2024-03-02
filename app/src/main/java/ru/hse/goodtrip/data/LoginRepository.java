@@ -21,6 +21,11 @@ public class LoginRepository {
     this.dataSource = dataSource;
   }
 
+  /**
+   * Get instance of Login Repository
+   * @param dataSource
+   * @return
+   */
   public static LoginRepository getInstance(LoginDataSource dataSource) {
     if (instance == null) {
       instance = new LoginRepository(dataSource);
@@ -37,12 +42,22 @@ public class LoginRepository {
     dataSource.logout();
   }
 
+  /**
+   * set logged in user
+   * @param user
+   */
   private void setLoggedInUser(LoggedInUser user) {
     this.user = user;
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
   }
 
+  /**
+   * login user
+   * @param username
+   * @param password
+   * @return
+   */
   public Result<LoggedInUser> login(String username, String password) {
     // handle login
     Result<LoggedInUser> result = dataSource.login(username, password);
