@@ -13,15 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.TreeSet;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
 
@@ -55,6 +56,21 @@ public class PlanTripFragment extends Fragment {
     return binding.getRoot();
   }
 
+  private void addCountryView(String country, List<String> cities) {
+    View countryView = LayoutInflater.from(requireContext())
+        .inflate(R.layout.item_country, binding.getRoot());
+    TextView countryTitle = countryView.findViewById(R.id.titleCountry);
+    countryTitle.setText(country);
+    LinearLayout citiesLayout = countryView.findViewById(R.id.cities);
+    for (String city : cities) {
+      View cityView = LayoutInflater.from(requireContext())
+          .inflate(R.layout.item_city, binding.getRoot());
+      ((TextView) cityView.findViewById(R.id.cityelement)).setText(city);
+      citiesLayout.addView(cityView);
+    }
+    binding.route.addView(countryView);
+  }
+
   private void setupAddCountryPopup(View popupView, PopupWindow popupWindow) {
     binding.getRoot().setAlpha((float) 0.2);
     final AutoCompleteTextView autoCompleteTextViewCountries = popupView.findViewById(
@@ -65,18 +81,32 @@ public class PlanTripFragment extends Fragment {
     autoCompleteTextViewCountries.setThreshold(0);
     autoCompleteTextViewCountries.setAdapter(adapter);
     final Button addCountry = popupView.findViewById(R.id.popup_add_country);
+    final Button addCity = popupView.findViewById(R.id.popup_add_city);
+    LinearLayout citiesLayout = popupView.findViewById(R.id.add_cities);
     addCountry.setOnClickListener(v -> {
-
-      mViewModel.addCountry();
+      String country = autoCompleteTextViewCountries.getText().toString();
+      List<String> cities = new ArrayList<>();
+      for (int index = 0; index < citiesLayout.getChildCount(); ++index) {
+        cities.add(
+            ((TextView) (citiesLayout.getChildAt(index)).findViewById(
+                R.id.enter_city_name)).getText().toString());
+      }
+      mViewModel.addCountry(country, cities);
+      addCountryView(country, cities);
       popupWindow.dismiss();
       binding.getRoot().setAlpha((float) 1);
       setEditTexts(true);
     });
-    final Button addCity = popupView.findViewById(R.id.popup_add_city);
-    LinearLayout citiesLayout = popupView.findViewById(R.id.add_cities);
-    ConstraintLayout addCityLayout = citiesLayout.findViewById(R.id.add_city);
-    addCity.setOnClickListener(v -> {
 
+    addCity.setOnClickListener(v -> {
+      View view = LayoutInflater.from(requireContext())
+          .inflate(R.layout.item_add_city, binding.getRoot());
+      view.setLayoutParams(
+          new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+              LinearLayout.LayoutParams.WRAP_CONTENT));
+      citiesLayout.addView(view);
+      citiesLayout.refreshDrawableState();
+      popupView.refreshDrawableState();
     });
   }
 
@@ -97,7 +127,7 @@ public class PlanTripFragment extends Fragment {
     final EditText moneyEditText = binding.budgetEditText;
     LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
         LAYOUT_INFLATER_SERVICE);
-    View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, null);
+    View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, binding.getRoot());
     final PopupWindow popupWindow = new PopupWindow(popupView,
         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
     popupWindow.setOutsideTouchable(false);
@@ -107,9 +137,9 @@ public class PlanTripFragment extends Fragment {
       setEditTexts(false);
     });
     saveButton.setOnClickListener(v -> {
-      mViewModel.createTrip(travelNameEditText.getText().toString(), new ArrayList<>(),
+      mViewModel.createTrip(travelNameEditText.getText().toString(),
           departureDateEditText.getText().toString(), arrivalDateEditText.getText().toString(),
-          new byte[5], moneyEditText.getText().toString(), new TreeSet<>(), new ArrayList<>());
+          new byte[5], moneyEditText.getText().toString(), new HashSet<>());
       if (Objects.requireNonNull(mViewModel.getPlanTripFormState().getValue()).isDataValid()) {
         updateUI();
       } else {

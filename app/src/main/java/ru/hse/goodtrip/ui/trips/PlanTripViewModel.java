@@ -3,6 +3,7 @@ package ru.hse.goodtrip.ui.trips;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,14 +13,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.model.City;
+import ru.hse.goodtrip.model.Coordinates;
+import ru.hse.goodtrip.model.Country;
 import ru.hse.goodtrip.model.CountryVisit;
-import ru.hse.goodtrip.model.Note;
 import ru.hse.goodtrip.model.ShowPlace;
 import ru.hse.goodtrip.model.Trip;
 
 public class PlanTripViewModel extends ViewModel {
 
-  private MutableLiveData<PlanTripFormState> planTripFormState = new MutableLiveData<>();
+  private final MutableLiveData<PlanTripFormState> planTripFormState = new MutableLiveData<>();
+  List<CountryVisit> countries = new ArrayList<>();
 
   PlanTripViewModel() {
 
@@ -30,25 +34,23 @@ public class PlanTripViewModel extends ViewModel {
     return LocalDate.parse(dateString, formatter);
   }
 
-  public void createTrip(String name, List<CountryVisit> countries, String startTripDate,
+  public void createTrip(String name, String startTripDate,
       String endTripDate, @Nullable byte[] mainPhoto, String moneyInUSD,
-      Set<ShowPlace> interestingPlacesToVisit, List<Note> notes) {
+      Set<ShowPlace> interestingPlacesToVisit) {
     if (!isNameValid(name)) {
       planTripFormState.setValue(
           new PlanTripFormState(R.string.not_valid_name, null, null, null, null, null));
-    } else if (!isDateValid(startTripDate)) {
+    } else if (isDateNotValid(startTripDate)) {
       planTripFormState.setValue(
           new PlanTripFormState(null, R.string.not_valid_date, null, null, null, null));
-    } else if (!isDateValid(endTripDate)) {
+    } else if (isDateNotValid(endTripDate)) {
       planTripFormState.setValue(
           new PlanTripFormState(null, null, R.string.not_valid_date, null, null, null));
-    } else if (!isCountryValid(countries)) {
-      planTripFormState.setValue(
-          new PlanTripFormState(null, null, null, R.string.country_error, null, null));
-    } else if (!isMoneyValid(moneyInUSD)) {
+    } else if (isMoneyNotValid(moneyInUSD)) {
       planTripFormState.setValue(new PlanTripFormState(null, null, null, null, null, null));
     } else {
       planTripFormState.setValue(new PlanTripFormState(true));
+      // TODO make interaction with trip repository
       new Trip(name, countries, parseDate(startTripDate), parseDate(endTripDate), mainPhoto,
           Integer.parseInt(moneyInUSD), interestingPlacesToVisit);
     }
@@ -58,7 +60,7 @@ public class PlanTripViewModel extends ViewModel {
     return planTripFormState;
   }
 
-  private boolean isDateValid(String dateString) {
+  private boolean isDateNotValid(String dateString) {
     // check date format is dd.mm.yyyy
     try {
       parseDate(dateString);
@@ -68,11 +70,7 @@ public class PlanTripViewModel extends ViewModel {
     return true;
   }
 
-  private boolean isCountryValid(List<CountryVisit> countries) {
-    return true;
-  }
-
-  private boolean isMoneyValid(String moneyInUSD) {
+  private boolean isMoneyNotValid(String moneyInUSD) {
     try {
       return Integer.parseInt(moneyInUSD) >= 0;
     } catch (NumberFormatException nfe) {
@@ -83,7 +81,7 @@ public class PlanTripViewModel extends ViewModel {
   // code from https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os]
   public List<String> getCountriesList() {
     Locale[] locales = Locale.getAvailableLocales();
-    ArrayList<String> countries = new ArrayList<String>();
+    ArrayList<String> countries = new ArrayList<>();
     for (Locale locale : locales) {
       String country = locale.getDisplayCountry();
       if (country.trim().length() > 0 && !countries.contains(country)) {
@@ -98,7 +96,13 @@ public class PlanTripViewModel extends ViewModel {
     return name != null && name.trim().length() <= 32;
   }
 
-  public void addCountry() {
-    //TODO
+  public void addCountry(String countryName, List<String> citiesName) {
+    Country country = new Country(countryName, new Coordinates(BigDecimal.ZERO, BigDecimal.ZERO));
+    List<City> cities = new ArrayList<>();
+    for (String cityName : citiesName) {
+      cities.add(new City(cityName, new Coordinates(BigDecimal.ZERO, BigDecimal.ZERO), country));
+    }
+    CountryVisit countryVisit = new CountryVisit(country, cities);
+    countries.add(countryVisit);
   }
 }
