@@ -1,32 +1,32 @@
 <resources>
-    <string name="app_name">GoodTrip</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="signup_failed">"Sign up failed"</string>
-    <string name="surname">Surname</string>
-    <string name="name">Name</string>
-    <string name="you_are_already_registered">You are Already Registered?</string>
-    <string name="you_are_not_registered">You are not registered?</string>
-    <string name="handle">Handle</string>
-    <string name="sign_in">Sign in</string>
-    <string name="login">login</string>
-    <string name="register">Register</string>
-    <string name="sign_in_via_google">Sign in via Google</string>
-    <string name="title_map">Map</string>
-    <string name="title_feed">Feed</string>
-    <string name="title_places">Places</string>
-    <string name="title_profile">Profile</string>
-    <string name="large_text">
+  <string name="app_name">GoodTrip</string>
+  <string name="title_home">Home</string>
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_notifications">Notifications</string>
+  <!-- Strings related to login -->
+  <string name="prompt_email">Email</string>
+  <string name="prompt_password">Password</string>
+  <string name="action_sign_in">Sign in or register</string>
+  <string name="action_sign_in_short">Sign in</string>
+  <string name="welcome">"Welcome!"</string>
+  <string name="invalid_username">Not a valid username</string>
+  <string name="invalid_password">Password must be >5 characters</string>
+  <string name="login_failed">"Login failed"</string>
+  <string name="signup_failed">"Sign up failed"</string>
+  <string name="surname">Surname</string>
+  <string name="name">Name</string>
+  <string name="you_are_already_registered">You are Already Registered?</string>
+  <string name="you_are_not_registered">You are not registered?</string>
+  <string name="handle">Handle</string>
+  <string name="sign_in">Sign in</string>
+  <string name="login">login</string>
+  <string name="register">Register</string>
+  <string name="sign_in_via_google">Sign in via Google</string>
+  <string name="title_map">Map</string>
+  <string name="title_feed">Feed</string>
+  <string name="title_places">Places</string>
+  <string name="title_profile">Profile</string>
+  <string name="large_text">
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
@@ -115,5 +115,37 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="plantripbutton">planTripButton</string>
+  <string name="plantripbutton">planTripButton</string>
+  <string name="create_new_trip">Create new trip</string>
+  <string name="trip_name">Trip Name:</string>
+  <string name="add_trip">Add Trip</string>
+  <string name="select_dates">Select Dates</string>
+  <string name="trip">Trip</string>
+  <string name="select_arrival_date">Select Arrival Date</string>
+  <string name="arrival">Arrival</string>
+  <string name="select_departure_date">Select Departure Date</string>
+  <string name="departure">Departure</string>
+  <string name="enter_travel_name">Enter Travel Name</string>
+  <string name="travel_name">Travel Name</string>
+  <string name="add_country">Add country</string>
+  <string name="trip_word">Trip</string>
+  <string name="budget_usd">Budget (USD):</string>
+  <string name="enter_budget">Enter Budget</string>
+  <string name="not_valid_name">Trip name should have less than 32 characters</string>
+  <string name="not_valid_date">Date should write in dd.mm.yyyy format</string>
+  <string name="not_valid_date_order">End of trip date should be after then start of trip</string>
+  <string name="country_error">Country error</string>
+  <string name="money_error">Money should be positive number</string>
+  <string name="route">Route</string>
+  <string name="add_country_and_cities_there">Add country and cities there</string>
+  <string name="country_name">Country name</string>
+  <string name="enter_country_name">Enter country name</string>
+  <string name="city">City</string>
+  <string name="enter_city">Enter city</string>
+  <string name="add_city">Add city</string>
+  <string name="country">Country</string>
+  <string name="enter_country">Enter country</string>
+  <string name="plus">+</string>
+
+
 </resources>

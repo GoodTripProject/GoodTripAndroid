@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class FeedViewModel extends ViewModel {
-    private final MutableLiveData<String> mText;
 
-    public FeedViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("There will be a feed!");
-    }
+  private final MutableLiveData<String> text;
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+  public FeedViewModel() {
+    text = new MutableLiveData<>();
+    text.setValue("There will be a feed!");
+  }
+
+  public LiveData<String> getText() {
+    return text;
+  }
 }

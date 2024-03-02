@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="500dp"
+  android:layout_height="500dp"
+  android:background="@color/white">
+
+  <TextView
+    android:id="@+id/add_country_and_cities_title"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="76dp"
+    android:layout_centerInParent="true"
+    android:text="@string/add_country"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+  <TextView
+    android:id="@+id/country_name_label"
+    android:textStyle="bold"
+    android:layout_width="77dp"
+    android:layout_height="44dp"
+    android:padding="10dp"
+    android:text="@string/country"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/add_country_and_cities_title" />
+
+  <AutoCompleteTextView
+    android:id="@+id/enter_country_name"
+    android:layout_width="172dp"
+    android:layout_height="48dp"
+    android:autofillHints=""
+    android:hint="@string/enter_country"
+    android:inputType="text"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toEndOf="@id/country_name_label"
+    app:layout_constraintTop_toTopOf="@id/country_name_label" />
+
+  <Button
+    android:id="@+id/popup_add_city"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginTop="4dp"
+    android:text="@string/plus"
+    android:textColor="#424242"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.449"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/country_name_label" />
+  <LinearLayout
+    android:id="@+id/add_cities"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/popup_add_city">
+
+    <include
+      android:id="@+id/add_city"
+      layout="@layout/item_add_city" />
+
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/popup_add_country"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="28dp"
+    android:text="@string/add_country"
+    android:textColor="#424242"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.142"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/add_cities" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
