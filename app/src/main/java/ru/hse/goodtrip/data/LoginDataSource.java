@@ -30,7 +30,7 @@ public class LoginDataSource {
   }
 
   /**
-   * Sign up user
+   * Sign up user.
    *
    * @param username username.
    * @param password password.
