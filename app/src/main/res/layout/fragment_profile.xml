@@ -42,7 +42,7 @@
       android:layout_marginTop="16dp"
       android:layout_marginEnd="32dp"
       android:layout_marginBottom="16dp"
-      android:background="#9571F6"
+      android:background="@color/light_orange"
       android:text="@string/Friends"
       android:textColor="@color/white" />
 
@@ -54,7 +54,7 @@
       android:layout_marginTop="16dp"
       android:layout_marginEnd="32dp"
       android:layout_marginBottom="16dp"
-      android:background="#9571F6"
+      android:background="@color/light_orange"
       android:text="@string/Settings"
       android:textColor="@color/white" />
 
