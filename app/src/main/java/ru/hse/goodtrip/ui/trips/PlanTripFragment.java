@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,17 +29,8 @@ import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
 
 public class PlanTripFragment extends Fragment {
 
-  private PlanTripViewModel mViewModel;
+  private PlanTripViewModel planTripViewModel;
   private FragmentPlanTripBinding binding;
-
-  /**
-   * Creates new instance of plantripfragment.
-   *
-   * @return new instance of plan trip fragment.
-   */
-  public static PlanTripFragment newInstance() {
-    return new PlanTripFragment();
-  }
 
   @Override
   public void onResume() {
@@ -57,7 +49,7 @@ public class PlanTripFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     binding = FragmentPlanTripBinding.inflate(inflater, container, false);
-    mViewModel = new PlanTripViewModel();
+    planTripViewModel = new ViewModelProvider(this).get(PlanTripViewModel.class);
     return binding.getRoot();
   }
 
@@ -82,7 +74,7 @@ public class PlanTripFragment extends Fragment {
         R.id.enter_country_name);
     ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
         android.R.layout.select_dialog_item,
-        mViewModel.getCountriesList().toArray(new String[0]));
+        planTripViewModel.getCountriesList().toArray(new String[0]));
     autoCompleteTextViewCountries.setThreshold(0);
     autoCompleteTextViewCountries.setAdapter(adapter);
     final Button addCountry = popupView.findViewById(R.id.popup_add_country);
@@ -96,7 +88,7 @@ public class PlanTripFragment extends Fragment {
             ((TextView) (citiesLayout.getChildAt(index)).findViewById(
                 R.id.enter_city_name)).getText().toString());
       }
-      mViewModel.addCountry(country, cities);
+      planTripViewModel.addCountry(country, cities);
       addCountryView(country, cities);
       popupWindow.dismiss();
       binding.getRoot().setAlpha((float) 1);
@@ -142,14 +134,15 @@ public class PlanTripFragment extends Fragment {
       setEditTexts(false);
     });
     saveButton.setOnClickListener(v -> {
-      mViewModel.createTrip(travelNameEditText.getText().toString(),
+      planTripViewModel.createTrip(travelNameEditText.getText().toString(),
           departureDateEditText.getText().toString(), arrivalDateEditText.getText().toString(),
           new byte[5], moneyEditText.getText().toString(), new HashSet<>());
-      if (Objects.requireNonNull(mViewModel.getPlanTripFormState().getValue()).isDataValid()) {
+      if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
+          .isDataValid()) {
         updateUi();
       } else {
         Toast toast = Toast.makeText(requireContext(),
-            Objects.requireNonNull(mViewModel.getPlanTripFormState().getValue().getError()),
+            Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue().getError()),
             Toast.LENGTH_LONG);
         toast.show();
       }

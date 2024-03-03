@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
 public class FeedFragment extends Fragment {
@@ -18,6 +19,18 @@ public class FeedFragment extends Fragment {
   private FragmentFeedBinding binding;
 
   private FeedRecyclerViewHolder feedRecyclerViewHolder;
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    ((MainActivity) getActivity()).getSupportActionBar().hide();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    ((MainActivity) getActivity()).getSupportActionBar().show();
+  }
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
