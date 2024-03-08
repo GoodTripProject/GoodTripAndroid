@@ -3,7 +3,7 @@ package ru.hse.goodtrip.ui.feed;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.hse.goodtrip.databinding.FeedLoadingViewBinding;
-import ru.hse.goodtrip.databinding.PostTripBinding;
+import ru.hse.goodtrip.databinding.ItemPostTripBinding;
 
 /**
  * Main FeedViewHolders class used as namespace for ViewHolders definition.
@@ -33,14 +33,14 @@ public class FeedViewHolders {
    */
   public static class FeedPostViewHolder extends RecyclerView.ViewHolder {
 
-    private PostTripBinding binding;
+    private ItemPostTripBinding binding;
 
-    FeedPostViewHolder(PostTripBinding binding) {
+    FeedPostViewHolder(ItemPostTripBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
 
-    public PostTripBinding getBinding() {
+    public ItemPostTripBinding getBinding() {
       return binding;
     }
   }
