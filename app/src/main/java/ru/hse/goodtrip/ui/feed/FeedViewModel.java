@@ -1,37 +1,38 @@
 package ru.hse.goodtrip.ui.feed;
 
 import androidx.lifecycle.ViewModel;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import ru.hse.goodtrip.model.User;
+import java.util.HashSet;
+import ru.hse.goodtrip.data.LoginService;
+import ru.hse.goodtrip.data.model.trips.Trip;
 
 public class FeedViewModel extends ViewModel {
 
-  private ArrayList<PostTrip> posts = new ArrayList<>();
+  // Trip for testing UI
+  public static Trip testTrip = new Trip("Weekend in Heaven", new ArrayList<>(), LocalDate.now(),
+      LocalDate.now(), null,
+      1000, new HashSet<>(), LoginService.fakeUser);
+  private ArrayList<Trip> posts = new ArrayList<>();
 
   /**
    * Initialize FeedViewModel.
    */
   public FeedViewModel() {
-    PostTrip testPost = new PostTrip();
-    User testUser = new User();
-    testUser.name = "Danya Neykov";
-    testPost.title = "Weekend in Heaven";
-    testPost.user = testUser;
-    testPost.dateArrival = "yesterday";
     for (int i = 0; i < 10; i++) {
-      posts.add(testPost);
+      posts.add(testTrip);
     }
   }
 
-  public ArrayList<PostTrip> getPosts() {
+  public ArrayList<Trip> getPosts() {
     return posts;
   }
 
-  public void setPosts(ArrayList<PostTrip> newPosts) {
+  public void setPosts(ArrayList<Trip> newPosts) {
     posts = newPosts;
   }
 
-  public void newPostPublished(PostTrip post) {
-    posts.add(post);
+  public void newPostPublished(Trip post) {
+    posts.add(0, post);
   }
 }

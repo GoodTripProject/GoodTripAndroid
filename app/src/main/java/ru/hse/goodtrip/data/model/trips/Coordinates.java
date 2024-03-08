@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.model.trips;
+package ru.hse.goodtrip.data.model.trips;
 
 import java.math.BigDecimal;
 import lombok.Data;

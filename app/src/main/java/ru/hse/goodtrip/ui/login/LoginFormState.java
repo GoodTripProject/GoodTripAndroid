@@ -1,17 +1,19 @@
 package ru.hse.goodtrip.ui.login;
 
 import androidx.annotation.Nullable;
+import lombok.Getter;
 
 /**
  * Data validation state of the login form.
  */
+@Getter
 class LoginFormState {
 
   @Nullable
-  private Integer usernameError;
+  private final Integer usernameError;
   @Nullable
-  private Integer passwordError;
-  private boolean isDataValid;
+  private final Integer passwordError;
+  private final boolean isDataValid;
 
   LoginFormState(@Nullable Integer usernameError, @Nullable Integer passwordError) {
     this.usernameError = usernameError;
@@ -23,19 +25,5 @@ class LoginFormState {
     this.usernameError = null;
     this.passwordError = null;
     this.isDataValid = isDataValid;
-  }
-
-  @Nullable
-  Integer getUsernameError() {
-    return usernameError;
-  }
-
-  @Nullable
-  Integer getPasswordError() {
-    return passwordError;
-  }
-
-  boolean isDataValid() {
-    return isDataValid;
   }
 }

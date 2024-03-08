@@ -1,7 +1,7 @@
-package ru.hse.goodtrip.model;
+package ru.hse.goodtrip.data;
 
 import java.util.ArrayList;
-import ru.hse.goodtrip.model.trips.Trip;
+import ru.hse.goodtrip.data.model.trips.Trip;
 
 /**
  * Service which saves trips.

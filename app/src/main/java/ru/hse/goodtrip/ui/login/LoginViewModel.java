@@ -1,30 +1,23 @@
 package ru.hse.goodtrip.ui.login;
 
 import android.util.Patterns;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import lombok.Getter;
 import ru.hse.goodtrip.R;
-import ru.hse.goodtrip.data.LoginRepository;
-import ru.hse.goodtrip.data.Result;
-import ru.hse.goodtrip.data.model.LoggedInUser;
+import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.Result;
+import ru.hse.goodtrip.data.model.User;
 
+@Getter
 public class LoginViewModel extends ViewModel {
 
-  private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-  private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-  private LoginRepository loginRepository;
+  private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+  private final MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+  private final UsersRepository usersRepository;
 
-  LoginViewModel(LoginRepository loginRepository) {
-    this.loginRepository = loginRepository;
-  }
-
-  LiveData<LoginFormState> getLoginFormState() {
-    return loginFormState;
-  }
-
-  LiveData<LoginResult> getLoginResult() {
-    return loginResult;
+  LoginViewModel(UsersRepository usersRepository) {
+    this.usersRepository = usersRepository;
   }
 
   /**
@@ -35,10 +28,10 @@ public class LoginViewModel extends ViewModel {
    */
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
-    Result<LoggedInUser> result = loginRepository.login(username, password);
+    Result<User> result = usersRepository.login(username, password);
 
-    if (result instanceof Result.Success) {
-      LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+    if (result.isSuccess()) {
+      User data = ((Result.Success<User>) result).getData();
       loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
     } else {
       loginResult.setValue(new LoginResult(R.string.login_failed));
@@ -50,18 +43,16 @@ public class LoginViewModel extends ViewModel {
    *
    * @param username username.
    * @param password password.
-   * @param surname surname of user.
-   * @param name name of user.
-   * @param handle handle of user.
+   * @param name     name of user.
+   * @param handle   handle of user.
    */
-  public void signUp(String username, String password,
-      String surname, String name,
+  public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    Result<LoggedInUser> result = loginRepository.signUp(username, password, handle, name, surname);
+    Result<User> result = usersRepository.signUp(username, password, handle, surname, name);
 
-    if (result instanceof Result.Success) {
-      LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+    if (result.isSuccess()) {
+      User data = ((Result.Success<User>) result).getData();
       loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
     } else {
       loginResult.setValue(new LoginResult(R.string.signup_failed));
@@ -69,7 +60,7 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * calls if data changed, changes the state.
+   * Calls if data changed, changes the state.
    *
    * @param username username.
    * @param password password.
@@ -85,12 +76,11 @@ public class LoginViewModel extends ViewModel {
   }
 
   /**
-   * checks user name.
+   * A placeholder username validation check.
    *
    * @param username username.
    * @return true if name is valid, false otherwise.
    */
-  // A placeholder username validation check
   private boolean isUserNameValid(String username) {
     if (username == null) {
       return false;

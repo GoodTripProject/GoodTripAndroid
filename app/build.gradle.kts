@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.preference:preference:1.2.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     compileOnly("org.projectlombok:lombok:1.18.30")

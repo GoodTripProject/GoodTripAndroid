@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import ru.hse.goodtrip.R;
-import ru.hse.goodtrip.model.User;
-import ru.hse.goodtrip.model.trips.City;
-import ru.hse.goodtrip.model.trips.Coordinates;
-import ru.hse.goodtrip.model.trips.Country;
-import ru.hse.goodtrip.model.trips.CountryVisit;
-import ru.hse.goodtrip.model.trips.ShowPlace;
-import ru.hse.goodtrip.model.trips.Trip;
+import ru.hse.goodtrip.data.model.User;
+import ru.hse.goodtrip.data.model.trips.City;
+import ru.hse.goodtrip.data.model.trips.Coordinates;
+import ru.hse.goodtrip.data.model.trips.Country;
+import ru.hse.goodtrip.data.model.trips.CountryVisit;
+import ru.hse.goodtrip.data.model.trips.ShowPlace;
+import ru.hse.goodtrip.data.model.trips.Trip;
 
 public class PlanTripViewModel extends ViewModel {
 

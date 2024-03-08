@@ -1,11 +1,12 @@
-package ru.hse.goodtrip.model.trips;
+package ru.hse.goodtrip.data.model.trips;
 
 import androidx.annotation.Nullable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import lombok.Data;
-import ru.hse.goodtrip.model.User;
+import ru.hse.goodtrip.data.model.User;
 
 /**
  * Users trip.
@@ -24,11 +25,13 @@ public class Trip {
   private List<Note> notes;
   private User user;
   private LocalDate publicationTime;
+  private LocalDate timeOfPublication = LocalDate.now(); // TODO
+  private TripState tripState;
 
   /**
    * creates trip.
    *
-   * @param name                     name of trip.
+   * @param title                    name of trip.
    * @param countries                countries in trip.
    * @param startTripDate            date of start.
    * @param endTripDate              date of end.
@@ -37,10 +40,10 @@ public class Trip {
    * @param interestingPlacesToVisit places in trip.
    * @param user                     user trip associated with.
    */
-  public Trip(String name, List<CountryVisit> countries, LocalDate startTripDate,
+  public Trip(String title, List<CountryVisit> countries, LocalDate startTripDate,
       LocalDate endTripDate, @Nullable String mainPhotoUrl, int moneyInUsd,
       Set<ShowPlace> interestingPlacesToVisit, User user) {
-    this.title = name;
+    this.title = title;
     this.countries = countries;
     this.startTripDate = startTripDate;
     this.endTripDate = endTripDate;
@@ -48,5 +51,25 @@ public class Trip {
     this.moneyInUsd = moneyInUsd;
     this.interestingPlacesToVisit = interestingPlacesToVisit;
     this.user = user;
+    this.tripState = TripState.PLANNED;
+  }
+
+  /**
+   * @param date local date to format
+   * @return date in dd MM yyyy format
+   */
+  public static String getDateFormatted(LocalDate date, String format) {
+    return date.format(DateTimeFormatter.ofPattern(format));
+  }
+
+  /**
+   * @return trip duration in dd MM yyyy format
+   */
+  public String getDuration(String format) {
+    return getDateFormatted(startTripDate, format) + " - " + getDateFormatted(endTripDate, format);
+  }
+
+  private enum TripState {
+    PLANNED, IN_PROCESS, PUBLISHED
   }
 }
