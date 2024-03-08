@@ -2,7 +2,6 @@ package ru.hse.goodtrip.ui.feed;
 
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
-import ru.hse.goodtrip.model.PostTrip;
 import ru.hse.goodtrip.model.User;
 
 public class FeedViewModel extends ViewModel {

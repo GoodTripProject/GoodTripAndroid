@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.model;
+package ru.hse.goodtrip.model.trips;
 
 /**
  * Country.

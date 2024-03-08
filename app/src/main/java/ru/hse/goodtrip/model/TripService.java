@@ -1,6 +1,7 @@
 package ru.hse.goodtrip.model;
 
 import java.util.ArrayList;
+import ru.hse.goodtrip.model.trips.Trip;
 
 /**
  * Service which saves trips.

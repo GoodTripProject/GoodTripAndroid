@@ -1,11 +1,14 @@
 package ru.hse.goodtrip.model;
 
+import lombok.Data;
+
 /**
  * User.
  */
+@Data
 public class User {
 
-  public long id;
-  public String name;
-  public String photo;
+  private long id;
+  private String name;
+  private String photoUrl;
 }

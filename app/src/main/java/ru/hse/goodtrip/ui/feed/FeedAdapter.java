@@ -14,7 +14,6 @@ import java.util.List;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.FeedLoadingViewBinding;
 import ru.hse.goodtrip.databinding.PostTripBinding;
-import ru.hse.goodtrip.model.PostTrip;
 import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedLoadingViewHolder;
 import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedPostViewHolder;
 
