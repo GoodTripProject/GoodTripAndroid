@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * Data class that captures user information for logged in users retrieved from LoginRepository
+ * Data class that captures user information for logged in users retrieved from LoginRepository.
  */
 @Data
 @AllArgsConstructor

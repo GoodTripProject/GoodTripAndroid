@@ -39,7 +39,8 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     if (viewType == VIEW_TYPE_ITEM) {
-      ItemPostTripBinding binding = ItemPostTripBinding.inflate(LayoutInflater.from(parent.getContext()),
+      ItemPostTripBinding binding = ItemPostTripBinding.inflate(
+          LayoutInflater.from(parent.getContext()),
           parent, false);
       return new FeedPostViewHolder(binding);
     } else { // VIEW_TYPE_LOADING

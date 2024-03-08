@@ -9,6 +9,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 
+/**
+ * ViewModel that provides interactions with LoginService.
+ */
 @Getter
 public class LoginViewModel extends ViewModel {
 

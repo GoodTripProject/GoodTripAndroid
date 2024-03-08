@@ -86,11 +86,4 @@ public class UsersRepository {
     }
     return result;
   }
-
-  public User checkIfAlreadyLoggedIn() {
-//    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(get);
-//    boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-//    User.getInstance().setLoggedIn(isLoggedIn);
-    return null;
-  }
 }

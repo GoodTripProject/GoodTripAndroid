@@ -55,6 +55,8 @@ public class Trip {
   }
 
   /**
+   * Return LocalDate in provided format.
+   *
    * @param date local date to format
    * @return date in dd MM yyyy format
    */
@@ -63,6 +65,8 @@ public class Trip {
   }
 
   /**
+   * Return trip duration in "start - end" format.
+   *
    * @return trip duration in dd MM yyyy format
    */
   public String getDuration(String format) {
