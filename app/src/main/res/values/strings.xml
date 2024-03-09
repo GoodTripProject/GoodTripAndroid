@@ -152,4 +152,9 @@
   <string name="profileImg">ProfileImg</string>
   <string name="userHandle">Handle</string>
   <string name="fullName">Full Name</string>
+  <string name="title">Title</string>
+  <string name="countries">Countries</string>
+  <string name="name_surname">Name Surname</string>
+  <string name="date">Date</string>
+  <string name="date_of_publication">date of publication</string>
 </resources>

@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
 
 public class PlanTripFragment extends Fragment {
@@ -136,7 +137,8 @@ public class PlanTripFragment extends Fragment {
     saveButton.setOnClickListener(v -> {
       planTripViewModel.createTrip(travelNameEditText.getText().toString(),
           departureDateEditText.getText().toString(), arrivalDateEditText.getText().toString(),
-          new byte[5], moneyEditText.getText().toString(), new HashSet<>());
+          null, moneyEditText.getText().toString(), new HashSet<>(),
+          UsersRepository.getInstance().getLoggedUser()); // TODO
       if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
           .isDataValid()) {
         updateUi();

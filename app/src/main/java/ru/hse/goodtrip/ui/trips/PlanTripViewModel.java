@@ -13,12 +13,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import ru.hse.goodtrip.R;
-import ru.hse.goodtrip.model.City;
-import ru.hse.goodtrip.model.Coordinates;
-import ru.hse.goodtrip.model.Country;
-import ru.hse.goodtrip.model.CountryVisit;
-import ru.hse.goodtrip.model.ShowPlace;
-import ru.hse.goodtrip.model.Trip;
+import ru.hse.goodtrip.data.model.User;
+import ru.hse.goodtrip.data.model.trips.City;
+import ru.hse.goodtrip.data.model.trips.Coordinates;
+import ru.hse.goodtrip.data.model.trips.Country;
+import ru.hse.goodtrip.data.model.trips.CountryVisit;
+import ru.hse.goodtrip.data.model.trips.ShowPlace;
+import ru.hse.goodtrip.data.model.trips.Trip;
 
 public class PlanTripViewModel extends ViewModel {
 
@@ -40,13 +41,13 @@ public class PlanTripViewModel extends ViewModel {
    * @param name                     name of trip.
    * @param startTripDate            departure date in string.
    * @param endTripDate              departure date in string.
-   * @param mainPhoto                photo of trip - optional.
+   * @param mainPhotoUrl             photo of trip - optional.
    * @param moneyInUsd               budget of trip.
    * @param interestingPlacesToVisit places.
    */
   public void createTrip(String name, String startTripDate,
-      String endTripDate, @Nullable byte[] mainPhoto, String moneyInUsd,
-      Set<ShowPlace> interestingPlacesToVisit) {
+      String endTripDate, @Nullable String mainPhotoUrl, String moneyInUsd,
+      Set<ShowPlace> interestingPlacesToVisit, User user) {
     if (isNameNotValid(name)) {
       planTripFormState.setValue(
           new PlanTripFormState(R.string.not_valid_name, null, null, null, null, null));
@@ -64,8 +65,8 @@ public class PlanTripViewModel extends ViewModel {
     } else {
       planTripFormState.setValue(new PlanTripFormState(true));
       // TODO make interaction with trip repository
-      new Trip(name, countries, parseDate(startTripDate), parseDate(endTripDate), mainPhoto,
-          Integer.parseInt(moneyInUsd), interestingPlacesToVisit);
+      new Trip(name, countries, parseDate(startTripDate), parseDate(endTripDate), mainPhotoUrl,
+          Integer.parseInt(moneyInUsd), interestingPlacesToVisit, user);
     }
   }
 
@@ -101,8 +102,9 @@ public class PlanTripViewModel extends ViewModel {
    * Countries from whole world.
    *
    * @return list of countries
+   * @see <a
+   * href="https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os"/>
    */
-  // code from https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os]
   public List<String> getCountriesList() {
     Locale[] locales = Locale.getAvailableLocales();
     ArrayList<String> countries = new ArrayList<>();

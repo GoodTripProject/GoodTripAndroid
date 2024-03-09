@@ -1,10 +1,12 @@
 package ru.hse.goodtrip.ui.login;
 
 import androidx.annotation.Nullable;
+import lombok.Getter;
 
 /**
  * Authentication result : success (user details) or error message.
  */
+@Getter
 class LoginResult {
 
   @Nullable
@@ -18,15 +20,5 @@ class LoginResult {
 
   LoginResult(@Nullable LoggedInUserView success) {
     this.success = success;
-  }
-
-  @Nullable
-  LoggedInUserView getSuccess() {
-    return success;
-  }
-
-  @Nullable
-  Integer getError() {
-    return error;
   }
 }

@@ -5,16 +5,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.bumptech.glide.Glide;
 import java.util.Collections;
 import java.util.List;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.model.trips.CountryVisit;
+import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FeedLoadingViewBinding;
-import ru.hse.goodtrip.databinding.PostTripBinding;
-import ru.hse.goodtrip.model.PostTrip;
+import ru.hse.goodtrip.databinding.ItemPostTripBinding;
 import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedLoadingViewHolder;
 import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedPostViewHolder;
 
@@ -23,10 +26,11 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   private static final int VIEW_TYPE_ITEM = 0;
   private static final int VIEW_TYPE_LOADING = 1;
-  List<PostTrip> items = Collections.emptyList();
+  private static final String TAG = "FEED_ADAPTER";
+  List<Trip> items = Collections.emptyList();
 
   @SuppressLint("NotifyDataSetChanged")
-  public void setItems(List<PostTrip> newItems) {
+  public void setItems(List<Trip> newItems) {
     items = newItems;
     notifyDataSetChanged();
   }
@@ -35,7 +39,8 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     if (viewType == VIEW_TYPE_ITEM) {
-      PostTripBinding binding = PostTripBinding.inflate(LayoutInflater.from(parent.getContext()),
+      ItemPostTripBinding binding = ItemPostTripBinding.inflate(
+          LayoutInflater.from(parent.getContext()),
           parent, false);
       return new FeedPostViewHolder(binding);
     } else { // VIEW_TYPE_LOADING
@@ -50,43 +55,55 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     if (viewHolder instanceof FeedPostViewHolder) {
       showPostView((FeedPostViewHolder) viewHolder, position);
     } else if (viewHolder instanceof FeedLoadingViewHolder) {
-      String TAG = "FeedAdapter";
       Log.d(TAG, "LoadingView appeared");
     }
   }
 
   private void showPostView(FeedPostViewHolder viewHolder, int position) {
-    PostTrip trip = items.get(position);
-    PostTripBinding binding = viewHolder.getBinding();
+    Trip trip = items.get(position);
     viewHolder.itemView.setOnClickListener(this);
     viewHolder.itemView.setTag(trip);
-    binding.profileNameText.setText(trip.user.name);
-    binding.titleText.setText(trip.title);
-    binding.dateText.setText(trip.dateArrival);
+    ItemPostTripBinding binding = viewHolder.getBinding();
+    setPostInfoWithTrip(trip, binding);
+  }
 
-    if (trip.user.photo != null && !trip.user.photo.isEmpty()) { // TODO: isBlank instead
-      Glide.with(binding.profileImageView.getContext())
-          .load(trip.user.photo)
-          .circleCrop()
-          .placeholder(R.drawable.baseline_account_circle_24) // TODO: replace with real photo
-          .error(R.drawable.baseline_account_circle_24)
-          .into(binding.profileImageView);
-    } else {
-      Glide.with(binding.profileImageView.getContext()).clear(binding.profileImageView);
-      binding.profileImageView.setImageResource(R.drawable.baseline_account_circle_24);
+  private void setPostInfoWithTrip(Trip trip, ItemPostTripBinding binding) {
+    String dateFormat = "dd.MM.yyyy";
+    StringBuilder countries = new StringBuilder();
+    for (CountryVisit country : trip.getCountries()) {
+      countries.append(country.getCountry().getName());
     }
 
-    if (trip.photo != null && !trip.photo.isEmpty()) { // TODO: isBlank instead
-      Glide.with(binding.postImageView.getContext())
-          .load(trip.photo)
-          .placeholder(R.drawable.kazantip) // TODO: replace with real photo
-          .error(R.drawable.kazantip)
-          .into(binding.postImageView);
-    } else {
-      Glide.with(binding.postImageView.getContext()).clear(binding.postImageView);
-      binding.postImageView.setImageResource(R.drawable.kazantip);
-    }
+    binding.titleText.setText(trip.getTitle());
+    binding.profileNameText.setText(trip.getUser().getDisplayName());
+    binding.tripDuration.setText(trip.getDuration(dateFormat));
+    binding.dateOfPublication.setText(
+        Trip.getDateFormatted(trip.getTimeOfPublication(), dateFormat));
+    binding.countriesText.setText(countries);
 
+    setImageByUrl(binding.profileImageView, trip.getUser().getMainPhotoUrl(),
+        R.drawable.baseline_account_circle_24
+    );
+    setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
+  }
+
+  /**
+   * Load image into imageView by URL
+   *
+   * @param imageView      where photo should be displayed
+   * @param photoUrl       photo url
+   * @param defaultImageId image that displays if error occurred (or photoUrl is null)
+   */
+  private void setImageByUrl(ImageView imageView, @Nullable String photoUrl, int defaultImageId) {
+    if (photoUrl != null && !photoUrl.trim().isEmpty()) {
+      Glide.with(imageView.getContext())
+          .load(photoUrl)
+          .error(defaultImageId)
+          .into(imageView);
+    } else {
+      Glide.with(imageView.getContext()).clear(imageView);
+      imageView.setImageResource(defaultImageId);
+    }
   }
 
   public void showLoadingView() {
@@ -106,11 +123,11 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   @Override
   public void onClick(View v) {
-    PostTrip postClicked = (PostTrip) v.getTag();
+    Trip postClicked = (Trip) v.getTag();
     onPostInfo(postClicked);
   }
 
-  public void onPostInfo(PostTrip postTrip) {
+  public void onPostInfo(Trip postTrip) {
     // TODO: action with clicked post
   }
 

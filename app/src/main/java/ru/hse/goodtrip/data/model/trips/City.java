@@ -1,8 +1,13 @@
-package ru.hse.goodtrip.model;
+package ru.hse.goodtrip.data.model.trips;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * City.
  */
+@Getter
+@Setter
 public class City extends AbstractPlace {
 
   Country country;
