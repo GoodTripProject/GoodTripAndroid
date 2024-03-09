@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.login;
+package ru.hse.goodtrip.ui.authentication;
 
 import androidx.annotation.Nullable;
 import lombok.Getter;

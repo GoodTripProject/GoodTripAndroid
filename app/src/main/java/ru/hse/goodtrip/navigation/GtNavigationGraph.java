@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.navigation;
 
+import android.util.Log;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -54,6 +55,11 @@ public class GtNavigationGraph extends NavHostFragment {
 
   public void navigateToLogin() {
     navController.navigate(R.id.navigation_login);
+  }
+
+  public void navigateToSignUp() {
+    Log.d("asd", "clicked!");
+    navController.navigate(R.id.navigation_sign_up);
   }
 
   public void navigateUp() {

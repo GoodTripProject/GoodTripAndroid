@@ -1,6 +1,7 @@
-package ru.hse.goodtrip.ui.login;
+package ru.hse.goodtrip.ui.authentication;
 
 import android.util.Patterns;
+import androidx.credentials.CredentialManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import lombok.Getter;
@@ -13,15 +14,11 @@ import ru.hse.goodtrip.data.model.User;
  * ViewModel that provides interactions with LoginService.
  */
 @Getter
-public class LoginViewModel extends ViewModel {
+public class AuthViewModel extends ViewModel {
 
   private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
   private final MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-  private final UsersRepository usersRepository;
-
-  LoginViewModel(UsersRepository usersRepository) {
-    this.usersRepository = usersRepository;
-  }
+  private final UsersRepository usersRepository = UsersRepository.getInstance();
 
   /**
    * login user.

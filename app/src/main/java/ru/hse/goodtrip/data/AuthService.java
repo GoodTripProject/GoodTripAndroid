@@ -7,7 +7,7 @@ import ru.hse.goodtrip.data.model.User;
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
-public class LoginService {
+public class AuthService {
 
   public static final User fakeUser = new User(
       java.util.UUID.randomUUID().toString(),
@@ -22,7 +22,6 @@ public class LoginService {
    * @return Result.
    */
   public Result<User> login(String username, String password) {
-
     try {
       // TODO: handle loggedInUser authentication
       return new Result.Success<>(fakeUser);

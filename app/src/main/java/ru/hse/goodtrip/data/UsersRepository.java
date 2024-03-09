@@ -11,12 +11,12 @@ public class UsersRepository {
 
   private static volatile UsersRepository instance;
 
-  private final LoginService dataSource;
+  private final AuthService dataSource;
 
   private User user = null;
 
   private UsersRepository() {
-    this.dataSource = new LoginService();
+    this.dataSource = new AuthService();
   }
 
   /**

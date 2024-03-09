@@ -1,0 +1,9 @@
+<!-- res/drawable/edit_text_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+  android:shape="rectangle">
+  <solid android:color="@android:color/transparent" />
+  <stroke
+    android:width="2dp"
+    android:color="#000000" />
+  <corners android:radius="100dp" />
+</shape>

@@ -8,36 +8,35 @@
   <fragment
     android:id="@+id/navigation_map"
     android:name="ru.hse.goodtrip.ui.map.MapsFragment"
-    android:label="@string/title_map"
     tools:layout="@layout/fragment_maps" />
 
   <fragment
     android:id="@+id/navigation_profile"
     android:name="ru.hse.goodtrip.ui.profile.ProfileFragment"
-    android:label="Profile"
     tools:layout="@layout/fragment_profile" />
 
   <fragment
     android:id="@+id/navigation_feed"
     android:name="ru.hse.goodtrip.ui.feed.FeedFragment"
-    android:label="@string/title_feed"
     tools:layout="@layout/fragment_feed" />
 
   <fragment
     android:id="@+id/navigation_places"
     android:name="ru.hse.goodtrip.ui.places.PlacesFragment"
-    android:label="@string/title_places"
     tools:layout="@layout/fragment_places" />
 
   <fragment
     android:id="@+id/navigation_login"
-    android:name="ru.hse.goodtrip.ui.login.LoginFragment"
-    android:label="Login"
+    android:name="ru.hse.goodtrip.ui.authentication.LoginFragment"
     tools:layout="@layout/fragment_login" />
+
+  <fragment
+    android:id="@+id/navigation_sign_up"
+    android:name="ru.hse.goodtrip.ui.authentication.SignUpFragment"
+    tools:layout="@layout/fragment_sign_up" />
 
   <fragment
     android:id="@+id/navigation_plan_trip"
     android:name="ru.hse.goodtrip.ui.trips.PlanTripFragment"
-    android:label=""
     tools:layout="@layout/fragment_plan_trip" />
 </navigation>

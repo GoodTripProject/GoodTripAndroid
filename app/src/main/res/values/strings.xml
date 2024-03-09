@@ -157,4 +157,21 @@
   <string name="name_surname">Name Surname</string>
   <string name="date">Date</string>
   <string name="date_of_publication">date of publication</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="loginButton">Login</string>
+  <string name="signUpButton">Sign Up</string>
+  <string name="editTextName">Name</string>
+  <string name="log_in_text">Log In</string>
+  <string name="already_have_an_account">Already have an account?</string>
+  <string name="sign_in_via_google_text">Sign In via Google</string>
+  <string name="or">or</string>
+  <string name="handler">Handler</string>
+  <string name="surname_text">Surname</string>
+  <string name="sign_up_text">Sign Up</string>
+  <string name="password">Password</string>
+  <string name="email">Email</string>
+  <string name="don_t_have_an_account">Don\'t have an account?</string>
+  <string name="sign_up_button">Sign Up</string>
+  <string name="log_in">Log In</string>
 </resources>
