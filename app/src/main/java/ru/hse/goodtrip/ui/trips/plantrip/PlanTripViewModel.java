@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.trips;
+package ru.hse.goodtrip.ui.trips.plantrip;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.trips;
+package ru.hse.goodtrip.ui.trips.plantrip;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 

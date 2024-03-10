@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.feed;
+package ru.hse.goodtrip.ui.trips.feed;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

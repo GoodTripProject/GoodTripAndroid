@@ -17,7 +17,7 @@
 
   <fragment
     android:id="@+id/navigation_feed"
-    android:name="ru.hse.goodtrip.ui.feed.FeedFragment"
+    android:name="ru.hse.goodtrip.ui.trips.feed.FeedFragment"
     tools:layout="@layout/fragment_feed" />
 
   <fragment
@@ -37,6 +37,6 @@
 
   <fragment
     android:id="@+id/navigation_plan_trip"
-    android:name="ru.hse.goodtrip.ui.trips.PlanTripFragment"
+    android:name="ru.hse.goodtrip.ui.trips.plantrip.PlanTripFragment"
     tools:layout="@layout/fragment_plan_trip" />
 </navigation>

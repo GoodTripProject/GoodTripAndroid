@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.feed;
+package ru.hse.goodtrip.ui.trips.feed;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -18,8 +18,8 @@ import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FeedLoadingViewBinding;
 import ru.hse.goodtrip.databinding.ItemPostTripBinding;
-import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedLoadingViewHolder;
-import ru.hse.goodtrip.ui.feed.FeedViewHolders.FeedPostViewHolder;
+import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedLoadingViewHolder;
+import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedPostViewHolder;
 
 public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements View.OnClickListener {

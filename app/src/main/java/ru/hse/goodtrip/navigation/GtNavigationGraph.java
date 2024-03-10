@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 
 /**
@@ -38,6 +39,7 @@ public class GtNavigationGraph extends NavHostFragment {
     activity.setSupportActionBar(actionBar);
     activity.getSupportActionBar().hide();
 
+    // Set up top level destinations.
     AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
         R.id.navigation_feed, R.id.navigation_map, R.id.navigation_places, R.id.navigation_profile)
         .build();
@@ -58,12 +60,16 @@ public class GtNavigationGraph extends NavHostFragment {
   }
 
   public void navigateToSignUp() {
-    Log.d("asd", "clicked!");
+    Log.d("SignUpFragment", "clicked!");
     navController.navigate(R.id.navigation_sign_up);
   }
 
+  public void navigateToPostPage(Trip trip) {
+
+  }
+
   public void navigateUp() {
-    navController.popBackStack();
+    navController.navigateUp();
   }
 
   public void navigateToPlanTrip() {

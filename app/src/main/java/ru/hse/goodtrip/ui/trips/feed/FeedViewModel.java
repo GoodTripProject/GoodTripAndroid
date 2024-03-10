@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.feed;
+package ru.hse.goodtrip.ui.trips.feed;
 
 import androidx.lifecycle.ViewModel;
 import java.time.LocalDate;

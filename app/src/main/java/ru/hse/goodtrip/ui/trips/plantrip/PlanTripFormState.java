@@ -1,9 +1,11 @@
-package ru.hse.goodtrip.ui.trips;
+package ru.hse.goodtrip.ui.trips.plantrip;
 
 import androidx.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 class PlanTripFormState {
 
   @Nullable
@@ -37,36 +39,6 @@ class PlanTripFormState {
   }
 
   @Nullable
-  Integer getTripNameError() {
-    return tripNameError;
-  }
-
-  @Nullable
-  Integer getDepartureDateError() {
-    return departureDateError;
-  }
-
-  @Nullable
-  Integer getArrivalDateError() {
-    return arrivalDateError;
-  }
-
-  @Nullable
-  Integer getCountryError() {
-    return countryError;
-  }
-
-  @Nullable
-  Integer getCityError() {
-    return cityError;
-  }
-
-  @Nullable
-  Integer getMoneyError() {
-    return moneyError;
-  }
-
-  @Nullable
   Integer getError() {
     List<Integer> objects = Arrays.asList(
         getTripNameError(),
@@ -82,9 +54,5 @@ class PlanTripFormState {
       }
     }
     return null;
-  }
-
-  boolean isDataValid() {
-    return isDataValid;
   }
 }
