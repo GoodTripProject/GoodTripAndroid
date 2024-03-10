@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
-import ru.hse.goodtrip.data.LoginService;
+import ru.hse.goodtrip.data.AuthService;
 import ru.hse.goodtrip.data.model.trips.Trip;
 
 public class FeedViewModel extends ViewModel {
@@ -12,7 +12,7 @@ public class FeedViewModel extends ViewModel {
   // Trip for testing UI
   public static Trip testTrip = new Trip("Weekend in Heaven", new ArrayList<>(), LocalDate.now(),
       LocalDate.now(), null,
-      1000, new HashSet<>(), LoginService.fakeUser);
+      1000, new HashSet<>(), AuthService.fakeUser);
   private ArrayList<Trip> posts = new ArrayList<>();
 
   /**

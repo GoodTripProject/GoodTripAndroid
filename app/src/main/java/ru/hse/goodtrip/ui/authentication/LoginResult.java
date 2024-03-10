@@ -1,7 +1,8 @@
-package ru.hse.goodtrip.ui.login;
+package ru.hse.goodtrip.ui.authentication;
 
 import androidx.annotation.Nullable;
 import lombok.Getter;
+import ru.hse.goodtrip.data.model.User;
 
 /**
  * Authentication result : success (user details) or error message.
@@ -10,7 +11,7 @@ import lombok.Getter;
 class LoginResult {
 
   @Nullable
-  private LoggedInUserView success;
+  private User success;
   @Nullable
   private Integer error;
 
@@ -18,7 +19,7 @@ class LoginResult {
     this.error = error;
   }
 
-  LoginResult(@Nullable LoggedInUserView success) {
+  LoginResult(@Nullable User success) {
     this.success = success;
   }
 }
