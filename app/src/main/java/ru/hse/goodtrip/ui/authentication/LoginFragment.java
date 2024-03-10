@@ -25,6 +25,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentLoginBinding;
 
+/**
+ * LoginFragment.
+ */
 public class LoginFragment extends Fragment {
 
   CredentialManager credentialManager;
@@ -71,16 +74,23 @@ public class LoginFragment extends Fragment {
     signInViaGoogle = binding.googleSignInButton;
     loginButton.setEnabled(false);
 
-    authViewModel.getLoginFormState()
-        .observe(getViewLifecycleOwner(), this::updateUIWithLoginFormState);
-    authViewModel.getLoginResult().
-        observe(getViewLifecycleOwner(), this::updateUIWithLoginResult);
+    authViewModel
+        .getLoginFormState()
+        .observe(getViewLifecycleOwner(), this::updateUiWithLoginFormState);
+    authViewModel
+        .getLoginResult().
+        observe(getViewLifecycleOwner(), this::updateUiWithLoginResult);
 
     setEditTextListeners();
     setButtonListeners();
   }
 
-  private void updateUIWithLoginFormState(LoginFormState loginFormState) {
+  /**
+   * Show errors on fields.
+   *
+   * @param loginFormState login form state.
+   */
+  private void updateUiWithLoginFormState(LoginFormState loginFormState) {
     if (loginFormState == null) {
       return;
     }
@@ -92,7 +102,12 @@ public class LoginFragment extends Fragment {
     }
   }
 
-  private void updateUIWithLoginResult(LoginResult loginResult) {
+  /**
+   * Navigate to main screen if login is successful.
+   *
+   * @param loginResult result of login request.
+   */
+  private void updateUiWithLoginResult(LoginResult loginResult) {
     if (loginResult == null) {
       return;
     }
@@ -106,10 +121,18 @@ public class LoginFragment extends Fragment {
     }, 1000);
   }
 
+  /**
+   * Handling sign in via Google.
+   *
+   * @param v button clicked
+   */
   private void googleSignInClickListener(View v) {
     authViewModel.sendSignInViaGoogleRequest(credentialManager, (MainActivity) requireActivity());
   }
 
+  /**
+   * Set fields change listeners.
+   */
   public void setEditTextListeners() {
     final TextWatcher onDataChangedListener = new TextWatcher() {
       @Override
@@ -138,6 +161,9 @@ public class LoginFragment extends Fragment {
     });
   }
 
+  /**
+   * Set buttons listeners.
+   */
   public void setButtonListeners() {
     signInViaGoogle.setOnClickListener(this::googleSignInClickListener);
     loginButton.setOnClickListener(v -> {
@@ -147,6 +173,9 @@ public class LoginFragment extends Fragment {
     binding.goToSignUp.setOnClickListener(v -> navigateToSignUp());
   }
 
+  /**
+   * Navigate to main screen.
+   */
   private void loginSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
     Log.d("LoginFragment", loggedUser.getDisplayName());

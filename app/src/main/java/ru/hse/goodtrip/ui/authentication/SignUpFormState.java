@@ -3,6 +3,9 @@ package ru.hse.goodtrip.ui.authentication;
 import androidx.annotation.Nullable;
 import lombok.Getter;
 
+/**
+ * Data validation state of the sign up form.
+ */
 @Getter
 public class SignUpFormState {
 

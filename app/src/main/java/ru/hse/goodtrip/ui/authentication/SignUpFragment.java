@@ -25,6 +25,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentSignUpBinding;
 
+/**
+ * SignUpFragment.
+ */
 public class SignUpFragment extends Fragment {
 
 
@@ -89,6 +92,11 @@ public class SignUpFragment extends Fragment {
     setEditTextListeners();
   }
 
+  /**
+   * Show errors on fields.
+   *
+   * @param signUpFormState sign up form state.
+   */
   public void updateUIWithSignUpFormState(SignUpFormState signUpFormState) {
     if (signUpFormState == null) {
       return;
@@ -105,6 +113,11 @@ public class SignUpFragment extends Fragment {
     }
   }
 
+  /**
+   * Navigate to main screen if sign up is successful.
+   *
+   * @param loginResult result of login request.
+   */
   public void updateUIWithSignUpResult(LoginResult loginResult) {
     if (loginResult == null) {
       return;
@@ -119,7 +132,18 @@ public class SignUpFragment extends Fragment {
     }, 1000);
   }
 
+  /**
+   * Handling sign in via Google.
+   *
+   * @param v button clicked
+   */
+  private void googleSignInClickListener(View v) {
+    authViewModel.sendSignInViaGoogleRequest(credentialManager, (MainActivity) requireActivity());
+  }
 
+  /**
+   * Set fields change listeners.
+   */
   public void setEditTextListeners() {
     final TextWatcher onDataChangedListener = new TextWatcher() {
       @Override
@@ -151,6 +175,9 @@ public class SignUpFragment extends Fragment {
     });
   }
 
+  /**
+   * Set buttons listeners.
+   */
   private void setButtonListeners() {
     goToLoginButton.setOnClickListener(this::navigateToLogin);
 
@@ -162,10 +189,9 @@ public class SignUpFragment extends Fragment {
     signInViaGoogle.setOnClickListener(this::googleSignInClickListener);
   }
 
-  private void googleSignInClickListener(View v) {
-    authViewModel.sendSignInViaGoogleRequest(credentialManager, (MainActivity) requireActivity());
-  }
-
+  /**
+   * Navigate to main screen.
+   */
   private void signUpSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
     Log.d("SignUpFragment", loggedUser.getDisplayName());
@@ -173,13 +199,17 @@ public class SignUpFragment extends Fragment {
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }
 
-  private void navigateToLogin(View v) {
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
-  }
-
   private void showLoadingView() {
     signUpButton.setVisibility(View.GONE);
     loadingProgressBar.setVisibility(View.VISIBLE);
+  }
+
+  private void signUp() {
+    authViewModel.signUp(emailEditText.getText().toString(),
+        passwordEditText.getText().toString(),
+        surnameEditText.getText().toString(),
+        nameEditText.getText().toString(),
+        handlerEditText.getText().toString());
   }
 
   private void showSignUpFailed(@StringRes Integer errorString) {
@@ -191,12 +221,8 @@ public class SignUpFragment extends Fragment {
     }
   }
 
-  private void signUp() {
-    authViewModel.signUp(emailEditText.getText().toString(),
-        passwordEditText.getText().toString(),
-        surnameEditText.getText().toString(),
-        nameEditText.getText().toString(),
-        handlerEditText.getText().toString());
+  private void navigateToLogin(View v) {
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }
 
 
