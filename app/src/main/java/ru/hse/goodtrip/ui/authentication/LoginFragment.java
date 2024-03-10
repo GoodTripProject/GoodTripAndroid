@@ -1,6 +1,7 @@
 package ru.hse.goodtrip.ui.authentication;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,21 +16,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
-import androidx.credentials.CredentialManagerCallback;
-import androidx.credentials.CustomCredential;
-import androidx.credentials.GetCredentialRequest;
-import androidx.credentials.GetCredentialResponse;
-import androidx.credentials.GetPasswordOption;
-import androidx.credentials.PasswordCredential;
-import androidx.credentials.exceptions.GetCredentialException;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentLoginBinding;
 
 public class LoginFragment extends Fragment {
@@ -37,11 +30,16 @@ public class LoginFragment extends Fragment {
   CredentialManager credentialManager;
   private AuthViewModel authViewModel;
   private FragmentLoginBinding binding;
+  private EditText emailEditText;
+  private EditText passwordEditText;
+  private Button loginButton;
+  private ProgressBar loadingProgressBar;
+  private View signInViaGoogle;
 
   @Override
   public void onResume() {
     super.onResume();
-    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.INVISIBLE);
+    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
   }
 
   @Override
@@ -49,6 +47,7 @@ public class LoginFragment extends Fragment {
     super.onStop();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
   }
+
 
   @Nullable
   @Override
@@ -62,162 +61,106 @@ public class LoginFragment extends Fragment {
     return binding.getRoot();
   }
 
-  private void navigateToSignUp() {
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateToSignUp();
-  }
-
-  public void handleSignIn(GetCredentialResponse result) {
-    Credential credential = result.getCredential();
-
-    if (credential instanceof PasswordCredential) {
-      String username = ((PasswordCredential) credential).getId();
-      String password = ((PasswordCredential) credential).getPassword();
-      authViewModel.login(username, password);
-    } else if (credential instanceof CustomCredential) {
-      if (GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
-        GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(
-            (credential).getData());
-        authViewModel.signUp(googleIdTokenCredential.getId(),
-            googleIdTokenCredential.getIdToken(),
-            googleIdTokenCredential.getGivenName(),
-            googleIdTokenCredential.getFamilyName(),
-            googleIdTokenCredential.getId());
-      } else {
-        binding.googleSignInButton.setVisibility(View.INVISIBLE);
-      }
-    } else {
-      // Catch any unrecognized credential type here.
-      binding.googleSignInButton.setVisibility(View.INVISIBLE);
-
-    }
-  }
-
-  private void googleSignInClickListener(View v) {
-    String serverClientId = getString(R.string.OAUTH_API_KEY);
-    GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(false)
-        .setServerClientId(serverClientId)
-        .build();
-    GetPasswordOption getPasswordOption = new GetPasswordOption();
-
-    GetCredentialRequest request = new GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOption)
-        .addCredentialOption(getPasswordOption)
-        .build();
-
-    credentialManager.getCredentialAsync(
-        requireActivity(),
-        request,
-        null,
-        requireActivity().getMainExecutor(),
-        new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
-          @Override
-          public void onResult(GetCredentialResponse result) {
-            handleSignIn(result);
-          }
-
-          @Override
-          public void onError(@NonNull GetCredentialException e) {
-          }
-        }
-    );
-  }
-
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    EditText usernameEditText = binding.editTextEmail;
-    EditText passwordEditText = binding.editTextPassword;
-    Button loginButton = binding.logInButton;
-    ProgressBar loadingProgressBar = binding.loading;
-    View goToSignUpButton = binding.goToSignUp;
-    View signInViaGoogle = binding.googleSignInButton;
-
+    emailEditText = binding.editTextEmail;
+    passwordEditText = binding.editTextPassword;
+    loginButton = binding.logInButton;
+    loadingProgressBar = binding.loading;
+    signInViaGoogle = binding.googleSignInButton;
     loginButton.setEnabled(false);
-    signInViaGoogle.setOnClickListener(this::googleSignInClickListener);
 
-    authViewModel.getLoginFormState().
-        observe(getViewLifecycleOwner(), loginFormState -> {
-          if (loginFormState == null) {
-            return;
-          }
-          loginButton.setEnabled(loginFormState.isDataValid());
-          if (loginFormState.getUsernameError() != null) {
-            usernameEditText.setError(getString(loginFormState.getUsernameError()));
-          }
-          if (loginFormState.getPasswordError() != null) {
-            passwordEditText.setError(getString(loginFormState.getPasswordError()));
-          }
-        });
-
+    authViewModel.getLoginFormState()
+        .observe(getViewLifecycleOwner(), this::updateUIWithLoginFormState);
     authViewModel.getLoginResult().
-        observe(getViewLifecycleOwner(), loginResult -> {
-          if (loginResult == null) {
-            return;
-          }
-          loadingProgressBar.setVisibility(View.GONE);
-          if (loginResult.getError() != null) {
-            showLoginFailed(loginResult.getError());
-          }
-          if (loginResult.getSuccess() != null) {
-            updateUiWithUser(loginResult.getSuccess());
-          }
-        });
+        observe(getViewLifecycleOwner(), this::updateUIWithLoginResult);
 
-    TextWatcher afterTextChangedListener = new TextWatcher() {
+    setEditTextListeners();
+    setButtonListeners();
+  }
+
+  private void updateUIWithLoginFormState(LoginFormState loginFormState) {
+    if (loginFormState == null) {
+      return;
+    }
+    loginButton.setEnabled(loginFormState.isDataValid());
+    if (loginFormState.getUsernameError() != null) {
+      emailEditText.setError(getString(loginFormState.getUsernameError()));
+    } else if (loginFormState.getPasswordError() != null) {
+      passwordEditText.setError(getString(loginFormState.getPasswordError()));
+    }
+  }
+
+  private void updateUIWithLoginResult(LoginResult loginResult) {
+    if (loginResult == null) {
+      return;
+    }
+    Handler handler = new Handler();
+    handler.postDelayed(() -> {
+      if (loginResult.getError() != null) {
+        showLoginFailed(loginResult.getError());
+      } else if (loginResult.getSuccess() != null) {
+        loginSuccessful(loginResult.getSuccess());
+      }
+    }, 1000);
+  }
+
+  private void googleSignInClickListener(View v) {
+    authViewModel.sendSignInViaGoogleRequest(credentialManager, (MainActivity) requireActivity());
+  }
+
+  public void setEditTextListeners() {
+    final TextWatcher onDataChangedListener = new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // ignore
       }
 
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-        // ignore
       }
 
       @Override
       public void afterTextChanged(Editable s) {
-        authViewModel.loginDataChanged(usernameEditText.getText().toString(),
+        authViewModel.loginDataChanged(emailEditText.getText().toString(),
             passwordEditText.getText().toString());
       }
     };
-    usernameEditText.addTextChangedListener(afterTextChangedListener);
-    passwordEditText.addTextChangedListener(afterTextChangedListener);
+
+    emailEditText.addTextChangedListener(onDataChangedListener);
+    passwordEditText.addTextChangedListener(onDataChangedListener);
+
     passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
-        authViewModel.login(usernameEditText.getText().toString(),
-            passwordEditText.getText().toString());
+        loginButton.performClick();
       }
       return false;
     });
-
-    loginButton.setOnClickListener(v -> {
-      loadingProgressBar.setVisibility(View.VISIBLE);
-      authViewModel.login(usernameEditText.getText().toString(),
-          passwordEditText.getText().toString());
-    });
-
-    goToSignUpButton.setOnClickListener(
-        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToSignUp());
-
-//    goToLoginButton.setOnClickListener(v -> setRegisterFields(View.INVISIBLE));
-//    final Button signUp = binding.register;
-//    signUp.setOnClickListener(v -> {
-//      final EditText handleEditText = binding.handle;
-//      final EditText surnameEditText = binding.surname;
-//      final EditText nameEditText = binding.name;
-//      loadingProgressBar.setVisibility(View.VISIBLE);
-//      authViewModel.signUp(usernameEditText.getText().toString(),
-//          passwordEditText.getText().toString(),
-//          surnameEditText.getText().toString(),
-//          nameEditText.getText().toString(),
-//          handleEditText.getText().toString());
-//    });
   }
 
+  public void setButtonListeners() {
+    signInViaGoogle.setOnClickListener(this::googleSignInClickListener);
+    loginButton.setOnClickListener(v -> {
+      showLoadingView();
+      login();
+    });
+    binding.goToSignUp.setOnClickListener(v -> navigateToSignUp());
+  }
 
-  private void updateUiWithUser(LoggedInUserView model) {
+  private void loginSuccessful(User user) {
+    User loggedUser = UsersRepository.getInstance().getLoggedUser();
+    Log.d("LoginFragment", loggedUser.getDisplayName());
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+  }
+
+  public void showLoadingView() {
+    loginButton.setVisibility(View.GONE);
+    loadingProgressBar.setVisibility(View.VISIBLE);
+  }
+
+  private void login() {
+    authViewModel.login(emailEditText.getText().toString(),
+        passwordEditText.getText().toString());
   }
 
   private void showLoginFailed(@StringRes Integer errorString) {
@@ -227,6 +170,10 @@ public class LoginFragment extends Fragment {
           errorString,
           Toast.LENGTH_LONG).show();
     }
+  }
+
+  private void navigateToSignUp() {
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateToSignUp();
   }
 
   @Override

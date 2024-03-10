@@ -60,10 +60,10 @@ public class UsersRepository {
    * @param password password.
    * @return result value.
    */
-  public Result<User> login(String username, String password) {
-    Result<User> result = dataSource.login(username, password);
+  public Result login(String username, String password) {
+    Result result = dataSource.login(username, password);
     if (result.isSuccess()) {
-      setLoggedInUser(((Result.Success<User>) result).getData());
+      setLoggedInUser(((Result.Success) result).getData());
     }
     return result;
   }
@@ -78,11 +78,11 @@ public class UsersRepository {
    * @param surname  user surname.
    * @return result value.
    */
-  public Result<User> signUp(String username, String password, String handle, String name,
+  public Result signUp(String username, String password, String handle, String name,
       String surname) {
-    Result<User> result = dataSource.signUp(username, password, handle, name, surname);
+    Result result = dataSource.signUp(username, password, handle, name, surname);
     if (result.isSuccess()) {
-      setLoggedInUser(((Result.Success<User>) result).getData());
+      setLoggedInUser(((Result.Success) result).getData());
     }
     return result;
   }

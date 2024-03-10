@@ -8,7 +8,7 @@
   <LinearLayout
     android:gravity="center_vertical"
     android:layout_height="wrap_content"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="45dp"
     android:layout_width="match_parent"
     android:orientation="vertical"
     app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +73,16 @@
       android:layout_marginTop="10dp"
       android:background="@drawable/edit_text_background"
       android:hint="@string/password"
+      android:layout_gravity="center"
+      android:padding="12dp"
+      android:inputType="textPassword" />
+    <EditText
+      android:id="@+id/editTextRepeatedPassword"
+      android:layout_width="350dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/edit_text_background"
+      android:hint="@string/repeat_password"
       android:layout_gravity="center"
       android:padding="12dp"
       android:inputType="textPassword" />

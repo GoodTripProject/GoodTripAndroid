@@ -7,7 +7,7 @@ import lombok.ToString;
 /**
  * A generic class that holds a result success w/ data or an error exception.
  */
-public class Result<T> {
+public class Result {
 
   // hide the private constructor to limit subclass types (Success, Error)
   private Result() {
@@ -19,15 +19,13 @@ public class Result<T> {
 
   /**
    * Success result.
-   *
-   * @param <T> Type of data.
    */
   @ToString
   @Getter
   @AllArgsConstructor
-  public static final class Success<T> extends Result<T> {
+  public static final class Success extends Result {
 
-    private final T data;
+    private final User data;
   }
 
   /**
