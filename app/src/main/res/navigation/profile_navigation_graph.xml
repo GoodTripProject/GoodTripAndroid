@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/profile_navigation_graph"
+  xmlns:tools="http://schemas.android.com/tools"
+  app:startDestination="@id/navigation_profile">
+
+  <fragment
+    tools:layout="@layout/fragment_profile"
+    android:id="@+id/navigation_profile"
+    android:name="ru.hse.goodtrip.ui.profile.ProfileFragment">
+    <action
+      android:id="@+id/action_navigation_profile_to_friendsFragment"
+      app:destination="@id/fragment_my_trips" />
+    <action
+      android:id="@+id/action_navigation_profile_to_navigation_my_trips_fragment"
+      app:destination="@id/navigation_my_trips" />
+  </fragment>
+  <fragment
+    tools:layout="@layout/fragment_friends"
+    android:id="@+id/navigation_friends"
+    android:label="fragment_friends"
+    android:name="ru.hse.goodtrip.ui.profile.friends.FriendsFragment" />
+  <fragment
+    tools:layout="@layout/fragment_my_trips"
+    android:id="@+id/navigation_my_trips"
+    android:label="fragment_my_trips"
+    android:name="ru.hse.goodtrip.ui.profile.mytrips.MyTripsFragment" />
+
+</navigation>

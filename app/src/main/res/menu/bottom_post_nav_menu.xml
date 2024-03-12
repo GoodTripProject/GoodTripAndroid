@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+    android:icon="@drawable/ic_dashboard_black_24dp"
+    android:id="@+id/navigation_post_details"
+    android:title="@string/details" />
+
+  <item
+    android:icon="@drawable/ic_dashboard_black_24dp"
+    android:id="@+id/navigation_post_notes"
+    android:title="@string/notes" />
+</menu>

@@ -179,7 +179,7 @@ public class LoginFragment extends Fragment {
   private void loginSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
     Log.d("LoginFragment", loggedUser.getDisplayName());
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateToMainGraph();
   }
 
   public void showLoadingView() {
@@ -204,6 +204,7 @@ public class LoginFragment extends Fragment {
   private void navigateToSignUp() {
     ((MainActivity) requireActivity()).getNavigationGraph().navigateToSignUp();
   }
+
 
   @Override
   public void onDestroyView() {

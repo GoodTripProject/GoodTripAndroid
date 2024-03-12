@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.bumptech.glide.Glide;
 import java.util.Collections;
 import java.util.List;
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Trip;
@@ -124,7 +125,9 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
   @Override
   public void onClick(View v) {
     Trip postClicked = (Trip) v.getTag();
-    onPostInfo(postClicked);
+
+    MainActivity activity = (MainActivity) v.getContext();
+    activity.getNavigationGraph().navigateToPostPage(postClicked);
   }
 
   public void onPostInfo(Trip postTrip) {

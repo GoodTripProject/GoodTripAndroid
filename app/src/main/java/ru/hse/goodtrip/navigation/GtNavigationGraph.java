@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.navigation;
 
+import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
@@ -41,13 +42,13 @@ public class GtNavigationGraph extends NavHostFragment {
 
     // Set up top level destinations.
     AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-        R.id.navigation_feed, R.id.navigation_map, R.id.navigation_places, R.id.navigation_profile)
+        R.id.feed_navigation_graph, R.id.navigation_map, R.id.navigation_places,
+        R.id.profile_navigation_graph)
         .build();
 
     navController = Navigation.findNavController(activity, R.id.nav_host_fragment_container);
     NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
     NavigationUI.setupActionBarWithNavController(activity, navController, appBarConfiguration);
-
     setupButtonsClickListeners();
   }
 
@@ -56,7 +57,7 @@ public class GtNavigationGraph extends NavHostFragment {
   }
 
   public void navigateToLogin() {
-    navController.navigate(R.id.navigation_login);
+    navController.navigate(R.id.auth_navigation_graph);
   }
 
   public void navigateToSignUp() {
@@ -64,8 +65,15 @@ public class GtNavigationGraph extends NavHostFragment {
     navController.navigate(R.id.navigation_sign_up);
   }
 
-  public void navigateToPostPage(Trip trip) {
+  public void navigateToMainGraph() {
+    navController.navigate(R.id.main_navigation_graph);
+  }
 
+  public void navigateToPostPage(Trip trip) {
+    Bundle bundle = new Bundle();
+    bundle.putSerializable("post", trip);
+
+    navController.navigate(R.id.navigation_post_details, bundle);
   }
 
   public void navigateUp() {
@@ -73,7 +81,6 @@ public class GtNavigationGraph extends NavHostFragment {
   }
 
   public void navigateToPlanTrip() {
-    activity.getSupportActionBar().show();
     navController.navigate(R.id.navigation_plan_trip);
   }
 }

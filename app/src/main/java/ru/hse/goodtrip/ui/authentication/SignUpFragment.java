@@ -195,8 +195,7 @@ public class SignUpFragment extends Fragment {
   private void signUpSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
     Log.d("SignUpFragment", loggedUser.getDisplayName());
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateToMainGraph();
   }
 
   private void showLoadingView() {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/auth_navigation_graph"
+  app:startDestination="@id/navigation_login">
+
+  <fragment
+    tools:layout="@layout/fragment_sign_up"
+    android:id="@+id/navigation_sign_up"
+    android:name="ru.hse.goodtrip.ui.authentication.SignUpFragment">
+    <action
+      android:id="@+id/action_navigation_sign_up_to_navigation_feed"
+      app:destination="@id/main_navigation_graph" />
+  </fragment>
+  <fragment
+    tools:layout="@layout/fragment_login"
+    android:id="@+id/navigation_login"
+    android:name="ru.hse.goodtrip.ui.authentication.LoginFragment">
+    <action
+      android:id="@+id/action_navigation_login_to_navigation_sign_up"
+      app:destination="@id/navigation_sign_up" />
+    <action
+      android:id="@+id/action_navigation_login_to_navigation_feed"
+      app:destination="@id/main_navigation_graph" />
+  </fragment>
+
+
+</navigation>
