@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  app:cardBackgroundColor="@color/white"
+  app:cardCornerRadius="20dp"
+  android:layout_margin="2dp"
+  app:cardElevation="2dp"
+  app:cardUseCompatPadding="true"
+  android:layout_height="wrap_content">
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+      android:id="@+id/imageContainer"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent">
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+          android:id="@+id/noteImageView"
+          android:layout_width="fill_parent"
+          android:layout_height="250dp"
+          android:scaleType="centerCrop"
+          android:src="@drawable/kazantip" />
+        <View
+          android:layout_width="fill_parent"
+          android:layout_height="250dp"
+          android:scaleType="centerCrop"
+          android:background="@drawable/gradient" />
+      </FrameLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:orientation="vertical"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:layout_marginRight="10dp"
+      android:layout_marginLeft="10dp"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal">
+      <TextView
+        android:textSize="30sp"
+        android:id="@+id/noteHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textColor="@color/black" />
+
+      <TextView
+        android:id="@+id/placeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Country" />
+      <TextView
+        android:id="@+id/noteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="note text" />
+    </LinearLayout>
+  </LinearLayout>
+</androidx.cardview.widget.CardView>

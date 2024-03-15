@@ -5,109 +5,94 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.trips.feed.post.PostDetailsFragment">
-
-  <LinearLayout
-    app:layout_constraintTop_toTopOf="parent"
-    android:layout_height="wrap_content"
+  <ScrollView
     android:layout_width="match_parent"
-    android:orientation="vertical">
-
-    <ImageView
-      android:id="@+id/postImageView"
-      android:layout_width="fill_parent"
-      android:layout_height="250dp"
-      android:scaleType="centerCrop"
-      android:src="@drawable/kazantip" />
-
-    <TextView
-      android:layout_gravity="center"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Title"
-      android:textSize="50sp" />
-    <TextView
-      android:id="@+id/dateOfPublication"
-      android:layout_gravity="center"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/date_of_publication" />
+    android:layout_height="match_parent">
 
     <LinearLayout
-      android:layout_height="match_parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_height="wrap_content"
       android:layout_width="match_parent"
-      android:orientation="horizontal">
+      android:orientation="vertical">
+
       <ImageView
-        android:id="@+id/profileImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_account_circle_24" />
-      <LinearLayout
-        android:layout_gravity="center_vertical"
+        android:id="@+id/postImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/kazantip" />
+
+      <TextView
+        android:id="@+id/postTitle"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <TextView
-          android:id="@+id/profileNameText"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="50sp" />
+      <TextView
+        android:id="@+id/tripDuration"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="duration" />
+
+      <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+          android:id="@+id/profileImageView"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:src="@drawable/baseline_account_circle_24" />
+        <LinearLayout
+          android:layout_gravity="center_vertical"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="17sp"
-          android:textColor="@color/black"
-          android:text="@string/name_surname" />
+          android:orientation="vertical"
+          android:layout_height="wrap_content">
+          <TextView
+            android:id="@+id/profileNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="@string/name_surname" />
+        </LinearLayout>
+
       </LinearLayout>
+      <TextView
+        android:id="@+id/budgetLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="30dp"
+        android:text="two thousand nineteen rubles" />
+      <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="30dp"
+        android:text="Route:" />
+
+      <LinearLayout
+        android:id="@+id/route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent">
+
+      </LinearLayout>
+      <TextView
+        android:id="@+id/dateOfPublication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/date_of_publication" />
 
     </LinearLayout>
-    <TextView
-      android:id="@+id/budgetLabel"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="17sp"
-      android:textColor="@color/black"
-      android:layout_marginStart="30dp"
-      android:text="two thousand nineteen" />
-
-    <LinearLayout
-      android:layout_height="match_parent"
-      android:layout_width="match_parent"
-      android:orientation="horizontal">
-      <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <TextView
-          android:layout_marginTop="20dp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="20sp"
-          android:textColor="@color/black"
-          android:layout_marginStart="30dp"
-          android:text="Route:" />
-      </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-      android:layout_height="match_parent"
-      android:layout_width="match_parent"
-      android:orientation="horizontal">
-      <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_account_circle_24" />
-      <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="17sp"
-          android:textColor="@color/black"
-          android:text="@string/name_surname" />
-      </LinearLayout>
-    </LinearLayout>
-  </LinearLayout>
-
-  <include layout="@layout/fragment_post_layout" />
-
+  </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,48 +1,68 @@
 package ru.hse.goodtrip.ui.trips.feed.post;
 
+import static android.view.View.GONE;
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.model.trips.Note;
+import ru.hse.goodtrip.data.model.trips.Trip;
+import ru.hse.goodtrip.databinding.FragmentPostNotesBinding;
+import ru.hse.goodtrip.databinding.ItemNoteBinding;
 
 public class PostNotesFragment extends Fragment {
+
+  PostViewModel postViewModel;
+  FragmentPostNotesBinding binding;
+  Trip trip;
 
   @Override
   public void onResume() {
     super.onResume();
     ((MainActivity) requireActivity()).getSupportActionBar().show();
-    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
-    requireActivity().findViewById(R.id.bottom_post_nav_view).setVisibility(View.VISIBLE);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(GONE);
+    requireActivity().findViewById(R.id.bottomToolsBarPost).setVisibility(View.VISIBLE);
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
-    ((MainActivity) requireActivity()).getSupportActionBar().hide();
-    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
-    requireActivity().findViewById(R.id.bottom_post_nav_view).setVisibility(View.GONE);
-  }
-
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-
-
-    return inflater.inflate(R.layout.fragment_post_notes, container, false);
+    binding = FragmentPostNotesBinding.inflate(inflater, container, false);
+    postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
+    trip = postViewModel.getTrip().getValue();
+    return binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    // TODO
+    LinearLayout notes = binding.notes;
+    boolean flag = false; // TODO: first note with image for testing
+    for (Note note : trip.getNotes()) {
+      ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
+      noteBinding.noteHeadline.setText(note.getHeadline());
+      if (!flag) {
+        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl(), R.drawable.kazantip);
+        flag = true;
+      } else if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
+        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
+      } else {
+        noteBinding.imageContainer.setVisibility(GONE);
+      }
+      noteBinding.noteText.setText(note.getNote());
+      noteBinding.placeName.setText(note.getPlace().getName());
+
+      notes.addView(noteBinding.getRoot());
+    }
   }
 }

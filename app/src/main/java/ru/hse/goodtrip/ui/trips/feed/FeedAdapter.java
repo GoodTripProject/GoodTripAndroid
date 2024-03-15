@@ -1,16 +1,17 @@
 package ru.hse.goodtrip.ui.trips.feed;
 
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDateFormatted;
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
+
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-import com.bumptech.glide.Glide;
 import java.util.Collections;
 import java.util.List;
 import ru.hse.goodtrip.MainActivity;
@@ -25,6 +26,7 @@ import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedPostViewHolder;
 public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements View.OnClickListener {
 
+  public static final String POST_ARG = "post";
   private static final int VIEW_TYPE_ITEM = 0;
   private static final int VIEW_TYPE_LOADING = 1;
   private static final String TAG = "FEED_ADAPTER";
@@ -77,34 +79,16 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     binding.titleText.setText(trip.getTitle());
     binding.profileNameText.setText(trip.getUser().getDisplayName());
-    binding.tripDuration.setText(trip.getDuration(dateFormat));
+    binding.tripDuration.setText(
+        getDuration(trip.getStartTripDate(), trip.getEndTripDate(), dateFormat));
     binding.dateOfPublication.setText(
-        Trip.getDateFormatted(trip.getTimeOfPublication(), dateFormat));
+        getDateFormatted(trip.getTimeOfPublication(), dateFormat));
     binding.countriesText.setText(countries);
 
     setImageByUrl(binding.profileImageView, trip.getUser().getMainPhotoUrl(),
         R.drawable.baseline_account_circle_24
     );
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
-  }
-
-  /**
-   * Load image into imageView by URL
-   *
-   * @param imageView      where photo should be displayed
-   * @param photoUrl       photo url
-   * @param defaultImageId image that displays if error occurred (or photoUrl is null)
-   */
-  private void setImageByUrl(ImageView imageView, @Nullable String photoUrl, int defaultImageId) {
-    if (photoUrl != null && !photoUrl.trim().isEmpty()) {
-      Glide.with(imageView.getContext())
-          .load(photoUrl)
-          .error(defaultImageId)
-          .into(imageView);
-    } else {
-      Glide.with(imageView.getContext()).clear(imageView);
-      imageView.setImageResource(defaultImageId);
-    }
   }
 
   public void showLoadingView() {
@@ -124,14 +108,11 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   @Override
   public void onClick(View v) {
+    // TODO: what if `v` is not post?
     Trip postClicked = (Trip) v.getTag();
 
     MainActivity activity = (MainActivity) v.getContext();
     activity.getNavigationGraph().navigateToPostPage(postClicked);
-  }
-
-  public void onPostInfo(Trip postTrip) {
-    // TODO: action with clicked post
   }
 
   @Override

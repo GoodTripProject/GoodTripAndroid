@@ -12,11 +12,12 @@ import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
+import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
 
 /**
  * Main application navigation fragment.
  */
-public class GtNavigationGraph extends NavHostFragment {
+public class GtNavigationGraphMain extends NavHostFragment {
 
   private final MainActivity activity;
   private final ActivityMainBinding binding;
@@ -26,7 +27,7 @@ public class GtNavigationGraph extends NavHostFragment {
    * @param activity Activity context navigation associated with.
    * @param binding  Binding context navigation appeared in.
    */
-  public GtNavigationGraph(MainActivity activity, ActivityMainBinding binding) {
+  public GtNavigationGraphMain(MainActivity activity, ActivityMainBinding binding) {
     this.activity = activity;
     this.binding = binding;
     initializeNavigation();
@@ -71,9 +72,9 @@ public class GtNavigationGraph extends NavHostFragment {
 
   public void navigateToPostPage(Trip trip) {
     Bundle bundle = new Bundle();
-    bundle.putSerializable("post", trip);
+    bundle.putSerializable(FeedAdapter.POST_ARG, trip);
 
-    navController.navigate(R.id.navigation_post_details, bundle);
+    navController.navigate(R.id.navigation_post, bundle);
   }
 
   public void navigateUp() {

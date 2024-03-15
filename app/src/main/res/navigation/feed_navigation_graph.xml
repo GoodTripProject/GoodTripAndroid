@@ -14,13 +14,15 @@
       app:destination="@id/navigation_post_details" />
   </fragment>
   <fragment
+    tools:layout="@layout/fragment_post"
+    android:id="@+id/navigation_post"
+    android:name="ru.hse.goodtrip.ui.trips.feed.post.PostFragment" />
+  <fragment
     tools:layout="@layout/fragment_post_details"
     android:id="@+id/navigation_post_details"
-    android:label="fragment_post"
     android:name="ru.hse.goodtrip.ui.trips.feed.post.PostDetailsFragment" />
   <fragment
     tools:layout="@layout/fragment_post_notes"
     android:id="@+id/navigation_post_notes"
-    android:label="fragment_post_notes"
     android:name="ru.hse.goodtrip.ui.trips.feed.post.PostNotesFragment" />
 </navigation>

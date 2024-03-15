@@ -1,6 +1,5 @@
 package ru.hse.goodtrip.data.model.trips;
 
-import java.math.BigDecimal;
 import lombok.Data;
 
 /**
@@ -9,6 +8,6 @@ import lombok.Data;
 @Data
 public class Coordinates {
 
-  private final BigDecimal latitude;
-  private final BigDecimal longitude;
+  private final int latitude;
+  private final int longitude;
 }

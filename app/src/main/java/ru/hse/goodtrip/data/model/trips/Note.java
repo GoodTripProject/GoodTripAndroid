@@ -13,6 +13,6 @@ public class Note {
 
   private String headline;
   private String note;
-  private File photo;
+  private String photoUrl;
   private AbstractPlace place;
 }

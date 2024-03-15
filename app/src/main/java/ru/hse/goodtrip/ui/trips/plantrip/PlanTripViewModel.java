@@ -26,10 +26,6 @@ public class PlanTripViewModel extends ViewModel {
   private final MutableLiveData<PlanTripFormState> planTripFormState = new MutableLiveData<>();
   List<CountryVisit> countries = new ArrayList<>();
 
-  PlanTripViewModel() {
-
-  }
-
   private LocalDate parseDate(String dateString) throws DateTimeException {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     return LocalDate.parse(dateString, formatter);
@@ -135,10 +131,10 @@ public class PlanTripViewModel extends ViewModel {
    * @param citiesName  name of cities.
    */
   public void addCountry(String countryName, List<String> citiesName) {
-    Country country = new Country(countryName, new Coordinates(BigDecimal.ZERO, BigDecimal.ZERO));
+    Country country = new Country(countryName, new Coordinates(0, 0));
     List<City> cities = new ArrayList<>();
     for (String cityName : citiesName) {
-      cities.add(new City(cityName, new Coordinates(BigDecimal.ZERO, BigDecimal.ZERO), country));
+      cities.add(new City(cityName, new Coordinates(0, 0), country));
     }
     CountryVisit countryVisit = new CountryVisit(country, cities);
     countries.add(countryVisit);

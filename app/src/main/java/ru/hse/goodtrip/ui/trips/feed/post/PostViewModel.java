@@ -1,14 +1,18 @@
 package ru.hse.goodtrip.ui.trips.feed.post;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import lombok.Getter;
+import lombok.Setter;
 import ru.hse.goodtrip.data.model.trips.Trip;
 
+@Getter
+@Setter
 public class PostViewModel extends ViewModel {
 
-  private final Trip trip;
+  private MutableLiveData<Trip> trip = new MutableLiveData<>();
 
-  public PostViewModel(Trip trip) {
-    this.trip = trip;
+  public void setTrip(Trip trip) {
+    this.trip = new MutableLiveData<>(trip);
   }
-
 }

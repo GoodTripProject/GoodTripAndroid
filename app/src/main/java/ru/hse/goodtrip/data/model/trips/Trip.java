@@ -54,25 +54,6 @@ public class Trip implements Serializable {
     this.tripState = TripState.IN_PLANNING;
   }
 
-  /**
-   * Return LocalDate in provided format.
-   *
-   * @param date local date to format
-   * @return date in dd MM yyyy format
-   */
-  public static String getDateFormatted(LocalDate date, String format) {
-    return date.format(DateTimeFormatter.ofPattern(format));
-  }
-
-  /**
-   * Return trip duration in "start - end" format.
-   *
-   * @return trip duration in dd MM yyyy format
-   */
-  public String getDuration(String format) {
-    return getDateFormatted(startTripDate, format) + " - " + getDateFormatted(endTripDate, format);
-  }
-
   private enum TripState {
     IN_PLANNING, IN_PROGRESS, PUBLISHED
   }

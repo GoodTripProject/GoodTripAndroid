@@ -36,7 +36,7 @@ public class PlanTripFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.INVISIBLE);
+    requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
   }
 
   @Override
