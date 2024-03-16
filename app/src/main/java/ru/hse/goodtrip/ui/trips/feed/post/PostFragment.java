@@ -19,6 +19,11 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentPostBinding;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
 
+/**
+ * Shared layout for PostDetailsFragment and PostNotesFragment. Provide transferred Trip to
+ * ViewModel that shared between Details and Notes. Has his own NavHostContainer to navigate between
+ * both of them.
+ */
 public class PostFragment extends Fragment {
 
   PostViewModel postViewModel;

@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.databinding.FragmentMyTripsBinding;
 
+/**
+ * MyTripsFragment.
+ */
 public class MyTripsFragment extends Fragment {
 
   private MyTripsViewModel myTripsViewModel;

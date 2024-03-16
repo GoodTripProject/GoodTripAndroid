@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.hse.goodtrip.data.model.trips.Trip;
 
+/**
+ * ViewModel that provides trip to PostDetails and PostNotes fragments.
+ */
 @Getter
 @Setter
 public class PostViewModel extends ViewModel {

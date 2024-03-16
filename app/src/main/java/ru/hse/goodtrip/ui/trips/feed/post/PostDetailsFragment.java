@@ -24,8 +24,8 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentPostDetailsBinding;
 
 /**
- * Post screen.
- */
+ * PostDetailsFragment.
+ **/
 public class PostDetailsFragment extends Fragment {
 
   private PostViewModel postViewModel;

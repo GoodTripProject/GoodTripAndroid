@@ -19,6 +19,9 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentPostNotesBinding;
 import ru.hse.goodtrip.databinding.ItemNoteBinding;
 
+/**
+ * PostNotesFragment.
+ */
 public class PostNotesFragment extends Fragment {
 
   PostViewModel postViewModel;
