@@ -1,6 +1,7 @@
 package ru.hse.goodtrip.data.model.trips;
 
 import androidx.annotation.Nullable;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,7 +13,7 @@ import ru.hse.goodtrip.data.model.User;
  * Users trip.
  */
 @Data
-public class Trip {
+public class Trip implements Serializable {
 
   private String title;
   private List<CountryVisit> countries;
@@ -24,7 +25,6 @@ public class Trip {
   private Set<ShowPlace> interestingPlacesToVisit;
   private List<Note> notes;
   private User user;
-  private LocalDate publicationTime;
   private LocalDate timeOfPublication = LocalDate.now(); // TODO
   private TripState tripState;
 
@@ -51,29 +51,10 @@ public class Trip {
     this.moneyInUsd = moneyInUsd;
     this.interestingPlacesToVisit = interestingPlacesToVisit;
     this.user = user;
-    this.tripState = TripState.PLANNED;
-  }
-
-  /**
-   * Return LocalDate in provided format.
-   *
-   * @param date local date to format
-   * @return date in dd MM yyyy format
-   */
-  public static String getDateFormatted(LocalDate date, String format) {
-    return date.format(DateTimeFormatter.ofPattern(format));
-  }
-
-  /**
-   * Return trip duration in "start - end" format.
-   *
-   * @return trip duration in dd MM yyyy format
-   */
-  public String getDuration(String format) {
-    return getDateFormatted(startTripDate, format) + " - " + getDateFormatted(endTripDate, format);
+    this.tripState = TripState.IN_PLANNING;
   }
 
   private enum TripState {
-    PLANNED, IN_PROCESS, PUBLISHED
+    IN_PLANNING, IN_PROGRESS, PUBLISHED
   }
 }

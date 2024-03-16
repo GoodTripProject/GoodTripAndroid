@@ -157,9 +157,9 @@
   <string name="title">Title</string>
   <string name="countries">Countries</string>
   <string name="name_surname">Name Surname</string>
+  <string name="berserk">Что вершит судьбу человечества в этом мире? Некое незримое существо или закон, подобно Длани Господней парящей над миром? По крайне мере истинно то, что человек не властен даже над своей волей.</string>
   <string name="date">Date</string>
   <string name="date_of_publication">date of publication</string>
-  <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="loginButton">Login</string>
   <string name="signUpButton">Sign Up</string>
@@ -177,4 +177,6 @@
   <string name="sign_up_button">Sign Up</string>
   <string name="log_in">Log In</string>
   <string name="repeat_password">Repeat password</string>
+  <string name="details">Details</string>
+  <string name="notes">Notes</string>
 </resources>

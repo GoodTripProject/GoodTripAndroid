@@ -3,12 +3,12 @@
 
   <item
     android:icon="@drawable/ic_dashboard_black_24dp"
-    android:id="@+id/navigation_feed"
+    android:id="@id/feed_navigation_graph"
     android:title="@string/title_feed" />
 
   <item
     android:icon="@drawable/ic_map"
-    android:id="@+id/navigation_map"
+    android:id="@id/navigation_map"
     android:title="@string/title_map" />
 
   <item
@@ -18,12 +18,12 @@
 
   <item
     android:icon="@drawable/ic_notifications_black_24dp"
-    android:id="@+id/navigation_places"
+    android:id="@id/navigation_places"
     android:title="@string/title_places" />
 
   <item
     android:icon="@drawable/baseline_account_circle_24"
-    android:id="@+id/navigation_profile"
+    android:id="@id/profile_navigation_graph"
     android:title="@string/title_profile" />
 
 </menu>

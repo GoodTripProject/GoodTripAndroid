@@ -18,7 +18,27 @@
       android:layout_width="match_parent"
       android:layout_height="810dp"
       app:defaultNavHost="true"
-      app:navGraph="@navigation/mobile_navigation" />
+      app:navGraph="@navigation/main_navigation_graph" />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:id="@+id/bottomToolsBarPost"
+      android:layout_width="match_parent"
+      android:visibility="gone"
+      android:layout_height="match_parent">
+
+      <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBarPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+          android:id="@+id/bottom_navigation_view_post"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:labelVisibilityMode="labeled"
+          app:menu="@menu/bottom_post_nav_menu" />
+      </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:id="@+id/bottomToolsBar"

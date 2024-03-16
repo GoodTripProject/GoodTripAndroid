@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.friends;
+package ru.hse.goodtrip.ui.profile.friends;
 
 import androidx.lifecycle.ViewModel;
 

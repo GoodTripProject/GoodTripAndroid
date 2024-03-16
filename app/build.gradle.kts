@@ -1,9 +1,11 @@
 import java.util.Properties
 
+
 plugins {
     id("com.android.application")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
+
 
 android {
     namespace = "ru.hse.goodtrip"

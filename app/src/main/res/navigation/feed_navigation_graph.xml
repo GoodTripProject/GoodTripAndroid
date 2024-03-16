@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/feed_navigation_graph"
+  app:startDestination="@id/navigation_feed">
+
+  <fragment
+    tools:layout="@layout/fragment_feed"
+    android:id="@+id/navigation_feed"
+    android:name="ru.hse.goodtrip.ui.trips.feed.FeedFragment">
+    <action
+      android:id="@+id/action_navigation_feed_to_postFragment"
+      app:destination="@id/navigation_post_details" />
+  </fragment>
+  <fragment
+    tools:layout="@layout/fragment_post"
+    android:id="@+id/navigation_post"
+    android:name="ru.hse.goodtrip.ui.trips.feed.post.PostFragment" />
+  <fragment
+    tools:layout="@layout/fragment_post_details"
+    android:id="@+id/navigation_post_details"
+    android:name="ru.hse.goodtrip.ui.trips.feed.post.PostDetailsFragment" />
+  <fragment
+    tools:layout="@layout/fragment_post_notes"
+    android:id="@+id/navigation_post_notes"
+    android:name="ru.hse.goodtrip.ui.trips.feed.post.PostNotesFragment" />
+</navigation>
