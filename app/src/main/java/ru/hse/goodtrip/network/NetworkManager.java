@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.network;
 
+import lombok.Setter;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -7,11 +8,14 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Singleton class which saves basic settings about interaction with server API.
  */
 public class NetworkManager {
+  private static volatile  NetworkManager instance;
+  private final Retrofit retrofit;
+  @Setter
+  private String baseUrl;
 
-  private Retrofit retrofit;
-  public void setBaseUrl(String baseUrl){
+  private NetworkManager(){
     retrofit = new Retrofit.Builder()
-        .baseUrl(baseUrl) // TODO: add getting url from properties
+        .baseUrl(baseUrl)
         .addConverterFactory(JacksonConverterFactory.create())
         .build();
   }
@@ -25,18 +29,14 @@ public class NetworkManager {
   public <T> T getInstanceOfService(Class<T> tClass) {
     return retrofit.create(tClass);
   }
-    /**
-   * Holder of network manager.
-   */
-  private static class NetworkManagerHolder {
-
-    public static final NetworkManager HOLDER_INSTANCE = new NetworkManager();
-  }
 
   /**
    * @return instance of Network manager.
    */
   NetworkManager getInstance() {
-    return NetworkManagerHolder.HOLDER_INSTANCE;
+    if (instance == null){
+      instance = new NetworkManager();
+    }
+    return instance;
   }
 }
