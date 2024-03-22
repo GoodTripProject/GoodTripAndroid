@@ -25,6 +25,8 @@ android {
         resValue("string", "OAUTH_API_KEY", apiKey)
         val mapApiKey = properties.getProperty("MAPS_API_KEY")
         resValue("string", "MAPS_API_KEY", mapApiKey)
+        val urlApi = properties.getProperty("URL_API")
+        resValue("string", "URL_API", urlApi)
     }
 
     buildTypes {
@@ -43,7 +45,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.preference:preference:1.2.0")
+    implementation("androidx.preference:preference:1.2.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     compileOnly("org.projectlombok:lombok:1.18.30")
@@ -53,9 +55,9 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("com.google.android.gms:play-services-places:17.0.0")
-    implementation("com.google.android.libraries.places:places:3.3.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
@@ -68,11 +70,14 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.compose.ui:ui-text-android:1.6.2")
+    implementation("androidx.compose.ui:ui-text-android:1.6.4")
     implementation("com.github.dhaval2404:imagepicker:2.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
     compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    implementation ("com.squareup.retrofit2:retrofit:2.10.0")
+    implementation("com.squareup.retrofit2:converter-jackson:2.1.0")
+
 }
