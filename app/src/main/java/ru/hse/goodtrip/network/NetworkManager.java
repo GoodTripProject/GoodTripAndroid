@@ -8,23 +8,24 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class NetworkManager {
 
-  private final Retrofit retrofit = new Retrofit.Builder()
-      .baseUrl("") // TODO: add getting url from properties
-      .addConverterFactory(JacksonConverterFactory.create())
-      .build();
-
+  private Retrofit retrofit;
+  public void setBaseUrl(String baseUrl){
+    retrofit = new Retrofit.Builder()
+        .baseUrl(baseUrl) // TODO: add getting url from properties
+        .addConverterFactory(JacksonConverterFactory.create())
+        .build();
+  }
   /**
    * Creates instance of service.
    *
    * @param tClass interface of retrofit service to create.
-   * @param <T> type of interface.
+   * @param <T>    type of interface.
    * @return instance of interface.
    */
   public <T> T getInstanceOfService(Class<T> tClass) {
     return retrofit.create(tClass);
   }
-
-  /**
+    /**
    * Holder of network manager.
    */
   private static class NetworkManagerHolder {
