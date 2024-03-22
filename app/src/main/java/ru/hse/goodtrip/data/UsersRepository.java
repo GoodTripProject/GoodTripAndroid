@@ -11,12 +11,12 @@ public class UsersRepository {
 
   private static volatile UsersRepository instance;
 
-  private final AuthService dataSource;
+  private final AuthService authService;
 
   private User user = null;
 
   private UsersRepository() {
-    this.dataSource = new AuthService();
+    this.authService = new AuthService();
   }
 
   /**
@@ -41,7 +41,7 @@ public class UsersRepository {
 
   public void logout() {
     user = null;
-    dataSource.logout();
+    authService.logout();
   }
 
   /**
@@ -61,7 +61,7 @@ public class UsersRepository {
    * @return result value.
    */
   public Result login(String username, String password) {
-    Result result = dataSource.login(username, password);
+    Result result = authService.login(username, password);
     if (result.isSuccess()) {
       setLoggedInUser(((Result.Success) result).getData());
     }
@@ -80,7 +80,7 @@ public class UsersRepository {
    */
   public Result signUp(String username, String password, String handle, String name,
       String surname) {
-    Result result = dataSource.signUp(username, password, handle, name, surname);
+    Result result = authService.signUp(username, password, handle, name, surname);
     if (result.isSuccess()) {
       setLoggedInUser(((Result.Success) result).getData());
     }
