@@ -11,7 +11,7 @@ public class NetworkManager {
   private static volatile  NetworkManager instance;
   private final Retrofit retrofit;
   @Setter
-  private String baseUrl;
+  static private String baseUrl;
 
   private NetworkManager(){
     retrofit = new Retrofit.Builder()
@@ -33,7 +33,7 @@ public class NetworkManager {
   /**
    * @return instance of Network manager.
    */
-  NetworkManager getInstance() {
+  public static NetworkManager getInstance() {
     if (instance == null){
       instance = new NetworkManager();
     }
