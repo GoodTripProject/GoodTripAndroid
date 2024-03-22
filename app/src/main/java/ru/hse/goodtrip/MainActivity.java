@@ -4,7 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.navigation.GtNavigationGraphMain;
-
+import ru.hse.goodtrip.network.NetworkManager;
 public class MainActivity extends AppCompatActivity {
 
   private ActivityMainBinding binding;
@@ -12,6 +12,8 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    String urlApi = getResources().getString(R.string.URL_API);
+    NetworkManager.setBaseUrl(urlApi);
     super.onCreate(savedInstanceState);
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
