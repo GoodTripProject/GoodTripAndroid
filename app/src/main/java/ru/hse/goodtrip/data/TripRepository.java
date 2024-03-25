@@ -13,7 +13,6 @@ import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.tripRequests.model.AddCountryRequest;
 import ru.hse.goodtrip.data.model.tripRequests.model.AddNoteRequest;
 import ru.hse.goodtrip.data.model.tripRequests.model.AddTripRequest;
-import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.network.trips.TripService;
