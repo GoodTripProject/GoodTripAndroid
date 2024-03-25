@@ -48,10 +48,16 @@ public class AuthViewModel extends ViewModel {
    */
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
+    ResultHolder result = usersRepository.login(username, password);
+    runExecutorToWaitResult(result);
+
+
+  }
+
+  private void runExecutorToWaitResult(ResultHolder result) {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     Handler handler = new Handler(Looper.getMainLooper());
     executor.execute(() -> {
-      ResultHolder result = usersRepository.login(username, password);
       synchronized (result) {
         try {
           result.wait();
@@ -68,8 +74,6 @@ public class AuthViewModel extends ViewModel {
         }
       });
     });
-
-
   }
 
   /**
@@ -83,14 +87,8 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    Result result = usersRepository.signUp(username, password, handle, surname, name);
-
-    if (result.isSuccess()) {
-      User data = ((Result.Success) result).getData();
-      loginResult.setValue(new LoginResult(data));
-    } else {
-      loginResult.setValue(new LoginResult(R.string.signup_failed));
-    }
+    ResultHolder result = usersRepository.signUp(username, password, handle, surname, name);
+    runExecutorToWaitResult(result);
   }
 
   /**
