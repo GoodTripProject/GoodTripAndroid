@@ -30,17 +30,11 @@ public class TripRepository {
   private static volatile TripRepository instance;
 
   private final TripService tripService;
+  private String authToken;
+  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
 
   private TripRepository() {
     this.tripService = NetworkManager.getInstance().getInstanceOfService(TripService.class);
-  }
-
-  private String authToken;
-
-  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
-
-  public void setAuthToken(String authToken) {
-    this.authToken = "Bearer " + authToken;
   }
 
   public static TripRepository getInstance() {
@@ -48,6 +42,10 @@ public class TripRepository {
       instance = new TripRepository();
     }
     return instance;
+  }
+
+  public void setAuthToken(String authToken) {
+    this.authToken = "Bearer " + authToken;
   }
 
   private ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {

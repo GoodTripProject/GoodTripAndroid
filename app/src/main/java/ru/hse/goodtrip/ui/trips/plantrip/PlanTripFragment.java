@@ -19,11 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
@@ -152,8 +152,7 @@ public class PlanTripFragment extends Fragment {
   }
 
   private void updateUi() {
-    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_container)
-        .popBackStack();
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }
 
 }
