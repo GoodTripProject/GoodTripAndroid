@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.navigation.GtNavigationGraphMain;
 import ru.hse.goodtrip.network.NetworkManager;
+
 public class MainActivity extends AppCompatActivity {
 
   private ActivityMainBinding binding;
