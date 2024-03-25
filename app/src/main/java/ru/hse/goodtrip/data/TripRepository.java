@@ -17,6 +17,8 @@ import ru.hse.goodtrip.data.model.trips.Trip;
  */
 public class TripRepository {
 
+  ArrayList<Trip> tripsToAppear;
+
   private static ArrayList<Trip> getFakeTrips() {
     Trip testTrip = new Trip("Weekend in Heaven", new ArrayList<>(), LocalDate.now(),
         LocalDate.now(), null,
@@ -50,6 +52,7 @@ public class TripRepository {
     testTrip.setNotes(notes);
     ArrayList<Trip> fakeTrips = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
+      testTrip.setTripId(i);
       fakeTrips.add(testTrip);
     }
     return fakeTrips;
@@ -63,5 +66,13 @@ public class TripRepository {
   public static void postTrip(Trip trip) {
     User user = UsersRepository.getInstance().getLoggedUser();
     // TODO: interaction with db
+  }
+
+  public static void setNotesToTrip(Trip trip, ArrayList<Note> notes) {
+    // TODO
+  }
+
+  public static void setCountriesToTrip(Trip trip, ArrayList<CountryVisit> countries) {
+    // TODO
   }
 }
