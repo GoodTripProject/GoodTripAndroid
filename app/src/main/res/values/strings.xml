@@ -179,4 +179,6 @@
   <string name="repeat_password">Repeat password</string>
   <string name="details">Details</string>
   <string name="notes">Notes</string>
+  <string name="my_trips">My trips</string>
+  <string name="duration">duration</string>
 </resources>

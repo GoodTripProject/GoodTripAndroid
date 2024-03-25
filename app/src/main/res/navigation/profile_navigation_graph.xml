@@ -10,21 +10,20 @@
     android:id="@+id/navigation_profile"
     android:name="ru.hse.goodtrip.ui.profile.ProfileFragment">
     <action
-      android:id="@+id/action_navigation_profile_to_friendsFragment"
-      app:destination="@id/fragment_my_trips" />
-    <action
       android:id="@+id/action_navigation_profile_to_navigation_my_trips_fragment"
       app:destination="@id/navigation_my_trips" />
   </fragment>
   <fragment
     tools:layout="@layout/fragment_friends"
     android:id="@+id/navigation_friends"
-    android:label="fragment_friends"
     android:name="ru.hse.goodtrip.ui.profile.friends.FriendsFragment" />
   <fragment
     tools:layout="@layout/fragment_my_trips"
     android:id="@+id/navigation_my_trips"
-    android:label="fragment_my_trips"
     android:name="ru.hse.goodtrip.ui.profile.mytrips.MyTripsFragment" />
+  <fragment
+    tools:layout="@layout/fragment_post_editor"
+    android:id="@+id/navigation_post_editor"
+    android:name="ru.hse.goodtrip.ui.profile.mytrips.PostEditorFragment" />
 
 </navigation>

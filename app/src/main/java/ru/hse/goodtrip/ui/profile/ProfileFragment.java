@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileBinding;
@@ -61,6 +62,9 @@ public class ProfileFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     setUserInfo();
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
+
+    binding.myTripsButton.setOnClickListener(v ->
+        ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());
   }
 
   public void setUserInfo() {
