@@ -3,7 +3,6 @@ package ru.hse.goodtrip.data.model.trips;
 import androidx.annotation.Nullable;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import lombok.Data;
@@ -27,6 +26,7 @@ public class Trip implements Serializable {
   private User user;
   private LocalDate timeOfPublication = LocalDate.now(); // TODO
   private TripState tripState;
+  private long tripId;
 
   /**
    * creates trip.

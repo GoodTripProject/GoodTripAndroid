@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="500dp"
-  android:layout_height="500dp"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
   android:background="@color/white">
 
   <TextView
@@ -40,17 +40,29 @@
     app:layout_constraintStart_toEndOf="@id/country_name_label"
     app:layout_constraintTop_toTopOf="@id/country_name_label" />
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+  </LinearLayout>
   <Button
     android:id="@+id/popup_add_city"
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_marginTop="4dp"
     android:text="@string/plus"
-    android:textColor="#424242"
+    android:textSize="20sp"
+    android:background="@drawable/button"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.449"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/country_name_label" />
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  </LinearLayout>
   <LinearLayout
     android:id="@+id/add_cities"
     android:layout_width="wrap_content"
@@ -66,12 +78,12 @@
   </LinearLayout>
 
   <Button
+    android:background="@drawable/button"
     android:id="@+id/popup_add_country"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="28dp"
     android:text="@string/add_country"
-    android:textColor="#424242"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.142"
     app:layout_constraintStart_toStartOf="parent"
