@@ -1,49 +1,33 @@
 package ru.hse.goodtrip.ui.trips.plantrip;
 
-import android.os.Handler;
-import android.os.Looper;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import java.sql.Date;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import lombok.Getter;
 import ru.hse.goodtrip.R;
-import ru.hse.goodtrip.data.TripRepository;
-import ru.hse.goodtrip.data.UsersRepository;
-import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.ShowPlace;
-import ru.hse.goodtrip.network.trips.model.AddTripRequest;
-import ru.hse.goodtrip.network.trips.model.TripState;
+import ru.hse.goodtrip.data.model.trips.Trip;
 
 public class PlanTripViewModel extends ViewModel {
 
-  private final TripRepository tripRepository = TripRepository.getInstance();
-  @Getter
   private final MutableLiveData<PlanTripFormState> planTripFormState = new MutableLiveData<>();
   List<CountryVisit> countries = new ArrayList<>();
 
-  private Date parseDate(String dateString) throws DateTimeException {
+  private LocalDate parseDate(String dateString) throws DateTimeException {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    return new Date(
-        LocalDate.parse(dateString, formatter).atStartOfDay().atZone(ZoneId.systemDefault())
-            .toInstant().toEpochMilli());
+    return LocalDate.parse(dateString, formatter);
   }
 
   /**
@@ -68,40 +52,21 @@ public class PlanTripViewModel extends ViewModel {
     } else if (isDateNotValid(endTripDate)) {
       planTripFormState.setValue(
           new PlanTripFormState(null, null, R.string.not_valid_date, null, null, null));
-    } else if (parseDate(startTripDate).after(parseDate(endTripDate))) {
+    } else if (parseDate(startTripDate).isAfter(parseDate(endTripDate))) {
       planTripFormState.setValue(
           new PlanTripFormState(null, null, R.string.not_valid_date_order, null, null, null));
     } else if (isMoneyNotValid(moneyInUsd)) {
       planTripFormState.setValue(new PlanTripFormState(null, null, null, null, null, null));
     } else {
       planTripFormState.setValue(new PlanTripFormState(true));
-
-      ResultHolder<String> result = tripRepository.addTrip(
-          UsersRepository.getInstance().user.getId(), UsersRepository.getInstance().user.getToken(),
-          new AddTripRequest(name, Integer.parseInt(moneyInUsd), mainPhotoUrl,
-              parseDate(startTripDate), parseDate(endTripDate),
-              TripState.PLANNED, Collections.emptyList(),
-              countries.stream().map(TripRepository::getAddCountryRequestFromCountryVisit).collect(
-                  Collectors.toList())));
-      runExecutorToWaitResult(result, () -> {
-      });
+      // TODO make interaction with trip repository
+      new Trip(name, countries, parseDate(startTripDate), parseDate(endTripDate), mainPhotoUrl,
+          Integer.parseInt(moneyInUsd), interestingPlacesToVisit, user);
     }
   }
 
-  private <T> void runExecutorToWaitResult(ResultHolder<T> result, Runnable func) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    Handler handler = new Handler(Looper.getMainLooper());
-    executor.execute(() -> {
-      synchronized (result) {
-        try {
-          result.wait();
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
-      handler.post(func);
-    });
-
+  public MutableLiveData<PlanTripFormState> getPlanTripFormState() {
+    return planTripFormState;
   }
 
   private boolean isDateNotValid(String dateString) {
@@ -140,7 +105,7 @@ public class PlanTripViewModel extends ViewModel {
     ArrayList<String> countries = new ArrayList<>();
     for (Locale locale : locales) {
       String country = locale.getDisplayCountry();
-      if (!country.trim().isEmpty() && !countries.contains(country)) {
+      if (country.trim().length() > 0 && !countries.contains(country)) {
         countries.add(country);
       }
     }
