@@ -13,4 +13,5 @@ public class User {
   private final String userId;
   private final String displayName;
   private final String mainPhotoUrl;
+  private final String handle;
 }

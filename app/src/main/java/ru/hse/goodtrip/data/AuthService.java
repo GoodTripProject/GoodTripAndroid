@@ -11,7 +11,7 @@ public class AuthService {
 
   public static final User fakeUser = new User(
       java.util.UUID.randomUUID().toString(),
-      "Jane Doe", null);
+      "Jane Doe", null, "aboba");
 
 
   /**
