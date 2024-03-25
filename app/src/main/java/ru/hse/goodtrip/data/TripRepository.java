@@ -2,7 +2,6 @@ package ru.hse.goodtrip.data;
 
 import androidx.annotation.NonNull;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,18 +40,6 @@ public class TripRepository {
         return instance;
     }
 
-    private <T> T sendRequest(Call<T> call) {
-        try {
-            call.wait();
-            Response<T> response = call.execute();
-            if (!response.isSuccessful()) {
-                return null; //TODO заменить на Result
-            }
-            return response.body();
-        } catch (InterruptedException | IOException e) {
-            return null;
-        }
-    }
 
     private <T> Callback<T> getCallback(ResultHolder<T> resultHolder, String errorMessage) {
         return new Callback<T>() {
