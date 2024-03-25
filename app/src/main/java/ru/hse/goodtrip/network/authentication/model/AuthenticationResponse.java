@@ -7,11 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Authentication response.
+ */
 @AllArgsConstructor
 @Data
 @Builder
 @NoArgsConstructor
 public class AuthenticationResponse implements Serializable {
+
   public String handle;
   public String name;
   public String surname;

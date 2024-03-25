@@ -8,17 +8,19 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Singleton class which saves basic settings about interaction with server API.
  */
 public class NetworkManager {
-  private static volatile  NetworkManager instance;
+
+  private static volatile NetworkManager instance;
   private final Retrofit retrofit;
   @Setter
   static private String baseUrl;
 
-  private NetworkManager(){
+  private NetworkManager() {
     retrofit = new Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(JacksonConverterFactory.create())
         .build();
   }
+
   /**
    * Creates instance of service.
    *
@@ -34,7 +36,7 @@ public class NetworkManager {
    * @return instance of Network manager.
    */
   public static NetworkManager getInstance() {
-    if (instance == null){
+    if (instance == null) {
       instance = new NetworkManager();
     }
     return instance;

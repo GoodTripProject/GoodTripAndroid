@@ -13,4 +13,9 @@ public class User {
 
   private final String displayName;
   private final URL mainPhotoUrl;
+  public String handle;
+  public String name;
+  public String surname;
+  public String token;
+  public URL url;
 }

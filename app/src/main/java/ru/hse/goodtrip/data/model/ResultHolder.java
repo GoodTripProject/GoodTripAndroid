@@ -10,5 +10,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class ResultHolder<T> {
+
   Result<T> result;
 }
