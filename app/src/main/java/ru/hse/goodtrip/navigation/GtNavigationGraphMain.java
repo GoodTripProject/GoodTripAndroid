@@ -70,6 +70,9 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.main_navigation_graph);
   }
 
+  public void navigateToMyTrips() {
+    navController.navigate(R.id.navigation_my_trips);
+  }
 
   /**
    * Opens PostFragment with provided trip and owns PostDetails and PostNotes Fragments.
@@ -81,6 +84,18 @@ public class GtNavigationGraphMain extends NavHostFragment {
     bundle.putSerializable(FeedAdapter.POST_ARG, trip);
 
     navController.navigate(R.id.navigation_post, bundle);
+  }
+
+  /**
+   * Opens PostEditorFragment with provided trip.
+   *
+   * @param trip trip to open.
+   */
+  public void navigateToPostEditorPage(Trip trip) {
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(FeedAdapter.POST_ARG, trip);
+
+    navController.navigate(R.id.navigation_post_editor, bundle);
   }
 
   public void navigateUp() {

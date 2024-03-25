@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.data;
 
+import android.net.Uri;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 
@@ -85,5 +86,9 @@ public class UsersRepository {
       setLoggedInUser(((Result.Success) result).getData());
     }
     return result;
+  }
+
+  public static void changeUserMainPhoto(Uri newPhoto) {
+    //TODO
   }
 }

@@ -3,7 +3,6 @@ package ru.hse.goodtrip.ui.trips.plantrip;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +24,26 @@ public class PlanTripViewModel extends ViewModel {
 
   private final MutableLiveData<PlanTripFormState> planTripFormState = new MutableLiveData<>();
   List<CountryVisit> countries = new ArrayList<>();
+
+  /**
+   * Countries from whole world.
+   *
+   * @return list of countries
+   * @see <a
+   * href="https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os"/>
+   */
+  public static List<String> getCountriesList() {
+    Locale[] locales = Locale.getAvailableLocales();
+    ArrayList<String> countries = new ArrayList<>();
+    for (Locale locale : locales) {
+      String country = locale.getDisplayCountry();
+      if (country.trim().length() > 0 && !countries.contains(country)) {
+        countries.add(country);
+      }
+    }
+    Collections.sort(countries);
+    return countries;
+  }
 
   private LocalDate parseDate(String dateString) throws DateTimeException {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -92,26 +111,6 @@ public class PlanTripViewModel extends ViewModel {
     } catch (NumberFormatException nfe) {
       return true;
     }
-  }
-
-  /**
-   * Countries from whole world.
-   *
-   * @return list of countries
-   * @see <a
-   * href="https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os"/>
-   */
-  public List<String> getCountriesList() {
-    Locale[] locales = Locale.getAvailableLocales();
-    ArrayList<String> countries = new ArrayList<>();
-    for (Locale locale : locales) {
-      String country = locale.getDisplayCountry();
-      if (country.trim().length() > 0 && !countries.contains(country)) {
-        countries.add(country);
-      }
-    }
-    Collections.sort(countries);
-    return countries;
   }
 
   /**
