@@ -94,44 +94,60 @@ public class TripRepository {
     }
 
 
-    public Trip getTripById(Integer tripId) {
+    public ResultHolder<Object> getTripById(Integer tripId) {//TODO возвращаемый тип
+        ResultHolder<Object> resultHolder = new ResultHolder<>();
         Call<Object> getTripCall = tripService.getTripById(tripId, authToken);
-        return (Trip) sendRequest(getTripCall);
+        getTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
+        return resultHolder;
     }
 
-    public String addTrip(Integer userId, AddTripRequest addTripRequest) {
+    public ResultHolder<String> addTrip(Integer userId, AddTripRequest addTripRequest) {
+        ResultHolder<String> resultHolder = new ResultHolder<>();
         Call<String> addTripCall = tripService.addTrip(userId, addTripRequest, authToken);
-        return sendRequest(addTripCall);
+        addTripCall.enqueue(getCallback(resultHolder, "User with this id not exists"));
+        return resultHolder;
     }
 
-    public String deleteTrip(Integer tripId) {
+    public ResultHolder<String> deleteTrip(Integer tripId) {
+        ResultHolder<String> resultHolder = new ResultHolder<>();
         Call<String> deleteTripCall = tripService.deleteTripById(tripId, authToken);
-        return sendRequest(deleteTripCall);
+        deleteTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
+        return resultHolder;
     }
 
-    public Note getNoteById(Integer noteId) {
+    public ResultHolder<Object> getNoteById(Integer noteId) {
+        ResultHolder<Object> resultHolder = new ResultHolder<>();
         Call<Object> getTripCall = tripService.getNoteById(noteId, authToken);
-        return (Note) sendRequest(getTripCall);
+        getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
+        return resultHolder;
     }
 
-    public String deleteNoteById(Integer noteId) {
+    public ResultHolder<String> deleteNoteById(Integer noteId) {
+        ResultHolder<String> resultHolder = new ResultHolder<>();
         Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, authToken);
-        return sendRequest(deleteNoteCall);
+        deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
+        return resultHolder;
     }
 
-    public String addNote(Integer userId, AddNoteRequest addNoteRequest) {
+    public ResultHolder<String> addNote(Integer userId, AddNoteRequest addNoteRequest) {
+        ResultHolder<String> resultHolder = new ResultHolder<>();
         Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, authToken);
-        return sendRequest(addNoteCall);
+        addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist"));
+        return resultHolder;
     }
 
-    public String addCountryVisit(Integer tripId, AddCountryRequest addCountryRequest) {
+    public ResultHolder<String> addCountryVisit(Integer tripId, AddCountryRequest addCountryRequest) {
+        ResultHolder<String> resultHolder = new ResultHolder<>();
         Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest, authToken);
-        return sendRequest(addCountryCall);
+        addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist"));
+        return resultHolder;
     }
 
-    public String deleteCountryVisit(Integer countryVisitId) {
+    public ResultHolder<String> deleteCountryVisit(Integer countryVisitId) {
+        ResultHolder<String> resultHolder = new ResultHolder<>();
         Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId, authToken);
-        return sendRequest(deleteCountryCall);
+        deleteCountryCall.enqueue(getCallback(resultHolder, "Country with this id not exist"));
+        return resultHolder;
     }
 
 }
