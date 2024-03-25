@@ -1,6 +1,5 @@
 package ru.hse.goodtrip.data.model.trips;
 
-import java.io.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
