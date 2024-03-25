@@ -1,5 +1,7 @@
 package ru.hse.goodtrip.ui.authentication;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Patterns;
 import androidx.annotation.NonNull;
@@ -16,11 +18,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import lombok.Getter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
+import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.User;
 
 /**
@@ -43,14 +48,32 @@ public class AuthViewModel extends ViewModel {
    */
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
-    Result result = usersRepository.login(username, password);
+    ResultHolder<User> result = usersRepository.login(username, password);
+    runExecutorToWaitResult(result);
 
-    if (result.isSuccess()) {
-      User data = ((Result.Success) result).getData();
-      loginResult.setValue(new LoginResult(data));
-    } else {
-      loginResult.setValue(new LoginResult(R.string.login_failed));
-    }
+
+  }
+
+  private void runExecutorToWaitResult(ResultHolder<User> result) {
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    Handler handler = new Handler(Looper.getMainLooper());
+    executor.execute(() -> {
+      synchronized (result) {
+        try {
+          result.wait();
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      }
+      handler.post(() -> {
+        if (result.getResult().isSuccess()) {
+          User data = ((Result.Success<User>) result.getResult()).getData();
+          loginResult.setValue(new LoginResult(data));
+        } else {
+          loginResult.setValue(new LoginResult(R.string.login_failed));
+        }
+      });
+    });
   }
 
   /**
@@ -64,14 +87,8 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    Result result = usersRepository.signUp(username, password, handle, surname, name);
-
-    if (result.isSuccess()) {
-      User data = ((Result.Success) result).getData();
-      loginResult.setValue(new LoginResult(data));
-    } else {
-      loginResult.setValue(new LoginResult(R.string.signup_failed));
-    }
+    ResultHolder<User> result = usersRepository.signUp(username, password, handle, surname, name);
+    runExecutorToWaitResult(result);
   }
 
   /**
