@@ -26,6 +26,7 @@ public class Trip implements Serializable {
   private User user;
   private LocalDate timeOfPublication = LocalDate.now(); // TODO
   private TripState tripState;
+  private long tripId;
 
   /**
    * creates trip.
