@@ -181,4 +181,5 @@
   <string name="notes">Notes</string>
   <string name="my_trips">My trips</string>
   <string name="duration">duration</string>
+  <string name="add_new_note">Add new note</string>
 </resources>
