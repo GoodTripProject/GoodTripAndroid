@@ -80,7 +80,7 @@ public class FeedViewModel extends ViewModel {
         return fakeTrips;
     }
 
-    private void runExecutorToWaitResult(ResultHolder<List<Trip>> result) {
+    private void runExecutorToWaitResult(ResultHolder<List<Trip>> result, Runnable func) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
@@ -91,21 +91,21 @@ public class FeedViewModel extends ViewModel {
                     throw new RuntimeException(e);
                 }
             }
-            handler.post(() -> {
-                if (result.getResult().isSuccess()) {
-                    List<Trip> data = ((Result.Success<List<Trip>>) result.getResult()).getData();
-                    setPosts(new ArrayList<>(data));
-                } /*else {
-                    //TODO
-//                    loginResult.setValue(new LoginResult(R.string.login_failed));
-                }*/
-            });
+            handler.post(func);
         });
     }
 
     public void getUserTrips(Integer userId) {
         ResultHolder<List<Trip>> result = tripRepository.getUserTrips(userId);
-        runExecutorToWaitResult(result);
+        runExecutorToWaitResult(result, () -> {
+            if (result.getResult().isSuccess()) {
+                List<Trip> data = ((Result.Success<List<Trip>>) result.getResult()).getData();
+                setPosts(new ArrayList<>(data));
+            } /*else {
+                //TODO
+//                    loginResult.setValue(new LoginResult(R.string.login_failed));
+            }*/
+        });
     }
 
     public void newPostPublished(Trip post) {
