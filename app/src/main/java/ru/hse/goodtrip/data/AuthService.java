@@ -10,7 +10,6 @@ import ru.hse.goodtrip.data.model.User;
 public class AuthService {
 
   public static final User fakeUser = new User(
-      java.util.UUID.randomUUID().toString(),
       "Jane Doe", null);
 
 

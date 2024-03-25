@@ -9,9 +9,9 @@ import ru.hse.goodtrip.network.authentication.model.RegisterRequest;
 
 public interface LoginService {
 
-  @POST("/login")
+  @POST("/auth/login")
   Call<AuthenticationResponse> login(@Body AuthorizationRequest request);
 
-  @POST("/register")
+  @POST("/auth/register")
   Call<AuthenticationResponse> register(@Body RegisterRequest request);
 }

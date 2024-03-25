@@ -56,7 +56,7 @@ public class PostDetailsFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     String dateFormat = "dd.MM.yyyy";
 
-    setImageByUrl(binding.profileImageView, trip.getUser().getMainPhotoUrl(),
+    setImageByUrl(binding.profileImageView, String.valueOf(trip.getUser().getMainPhotoUrl()),
         R.drawable.baseline_account_circle_24
     );
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);

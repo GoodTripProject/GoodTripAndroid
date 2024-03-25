@@ -1,5 +1,7 @@
 package ru.hse.goodtrip.ui.authentication;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Patterns;
 import androidx.annotation.NonNull;
@@ -16,11 +18,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import lombok.Getter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
+import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.User;
 
 /**
@@ -43,14 +48,28 @@ public class AuthViewModel extends ViewModel {
    */
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
-    Result result = usersRepository.login(username, password);
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    Handler handler = new Handler(Looper.getMainLooper());
+    executor.execute(() -> {
+      ResultHolder result = usersRepository.login(username, password);
+      synchronized (result) {
+        try {
+          result.wait();
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      }
+      handler.post(() -> {
+        if (result.getResult().isSuccess()) {
+          User data = ((Result.Success) result.getResult()).getData();
+          loginResult.setValue(new LoginResult(data));
+        } else {
+          loginResult.setValue(new LoginResult(R.string.login_failed));
+        }
+      });
+    });
 
-    if (result.isSuccess()) {
-      User data = ((Result.Success) result).getData();
-      loginResult.setValue(new LoginResult(data));
-    } else {
-      loginResult.setValue(new LoginResult(R.string.login_failed));
-    }
+
   }
 
   /**

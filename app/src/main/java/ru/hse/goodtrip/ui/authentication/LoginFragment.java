@@ -192,12 +192,18 @@ public class LoginFragment extends Fragment {
         passwordEditText.getText().toString());
   }
 
+  public void hideLoadingView() {
+    loginButton.setVisibility(View.VISIBLE);
+    loadingProgressBar.setVisibility(View.GONE);
+  }
+
   private void showLoginFailed(@StringRes Integer errorString) {
     if (getContext() != null && getContext().getApplicationContext() != null) {
       Toast.makeText(
           getContext().getApplicationContext(),
           errorString,
           Toast.LENGTH_LONG).show();
+      hideLoadingView();
     }
   }
 

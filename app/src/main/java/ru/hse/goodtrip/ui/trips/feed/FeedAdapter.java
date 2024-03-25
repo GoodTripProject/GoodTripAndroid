@@ -85,7 +85,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         getDateFormatted(trip.getTimeOfPublication(), dateFormat));
     binding.countriesText.setText(countries);
 
-    setImageByUrl(binding.profileImageView, trip.getUser().getMainPhotoUrl(),
+    setImageByUrl(binding.profileImageView, String.valueOf(trip.getUser().getMainPhotoUrl()),
         R.drawable.baseline_account_circle_24
     );
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
