@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.ui.trips.feed.utils;
 
+import android.net.Uri;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
@@ -22,7 +23,7 @@ public class Utils {
       int defaultImageId) {
     if (photoUrl != null && !photoUrl.trim().isEmpty()) {
       Glide.with(imageView.getContext())
-          .load(photoUrl)
+          .load(Uri.parse(photoUrl))
           .error(defaultImageId)
           .into(imageView);
     } else {
@@ -30,6 +31,7 @@ public class Utils {
       imageView.setImageResource(defaultImageId);
     }
   }
+
 
   /**
    * Load image into imageView by URL and nothing if error occurred
@@ -40,7 +42,7 @@ public class Utils {
   public static void setImageByUrl(ImageView imageView, @Nullable String photoUrl) {
     if (photoUrl != null && !photoUrl.trim().isEmpty()) {
       Glide.with(imageView.getContext())
-          .load(photoUrl)
+          .load(Uri.parse(photoUrl))
           .into(imageView);
     } else {
       Glide.with(imageView.getContext()).clear(imageView);
