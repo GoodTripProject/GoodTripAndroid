@@ -24,15 +24,17 @@ public class NetworkManager {
   /**
    * Creates instance of service.
    *
-   * @param tClass interface of retrofit service to create.
+   * @param type interface of retrofit service to create.
    * @param <T>    type of interface.
    * @return instance of interface.
    */
-  public <T> T getInstanceOfService(Class<T> tClass) {
-    return retrofit.create(tClass);
+  public <T> T getInstanceOfService(Class<T> type) {
+    return retrofit.create(type);
   }
 
   /**
+   * Return instance of Network Manager.
+   *
    * @return instance of Network manager.
    */
   public static NetworkManager getInstance() {
