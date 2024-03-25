@@ -10,7 +10,6 @@ import ru.hse.goodtrip.data.model.User;
 public class AuthService {
 
   public static final User fakeUser = new User(
-      java.util.UUID.randomUUID().toString(),
       "Jane Doe", null);
 
 
@@ -21,12 +20,12 @@ public class AuthService {
    * @param password Users password.
    * @return Result.
    */
-  public Result login(String username, String password) {
+  public Result<User> login(String username, String password) {
     try {
       // TODO: handle loggedInUser authentication
-      return new Result.Success(fakeUser);
+      return new Result.Success<>(fakeUser);
     } catch (Exception e) {
-      return new Result.Error(new IOException("Error logging in", e));
+      return new Result.Error<>(new IOException("Error logging in", e));
     }
   }
 
@@ -40,14 +39,14 @@ public class AuthService {
    * @param surname  user surname.
    * @return result value
    */
-  public Result signUp(String username, String password, String handle, String name,
+  public Result<User> signUp(String username, String password, String handle, String name,
       String surname) {
 
     try {
       // TODO: handle loggedInUser authentication
-      return new Result.Success(fakeUser);
+      return new Result.Success<>(fakeUser);
     } catch (Exception e) {
-      return new Result.Error(new IOException("Error logging in", e));
+      return new Result.Error<>(new IOException("Error logging in", e));
     }
   }
 
