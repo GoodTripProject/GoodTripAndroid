@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileBinding;
 
@@ -29,7 +30,7 @@ public class ProfileFragment extends Fragment {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
             setImageByUrl(binding.profileImage, data.getData().toString());
-//            UsersRepository.changeUserMainPhoto(data.getData());
+            UsersRepository.changeUserMainPhoto(data.getData());
           }
         }
       });
@@ -67,7 +68,7 @@ public class ProfileFragment extends Fragment {
   }
 
   public void setUserInfo() {
-    setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
+    setImageByUrl(binding.profileImage, user.getMainPhotoUrl());
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
   }
