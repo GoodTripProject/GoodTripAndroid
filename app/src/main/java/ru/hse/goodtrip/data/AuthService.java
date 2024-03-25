@@ -10,8 +10,7 @@ import ru.hse.goodtrip.data.model.User;
 public class AuthService {
 
   public static final User fakeUser = new User(
-      "Jane Doe", null);
-
+      "Jane Doe", null, "aboba");
 
   /**
    * Login user.

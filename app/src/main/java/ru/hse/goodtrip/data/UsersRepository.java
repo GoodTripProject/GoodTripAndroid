@@ -8,6 +8,8 @@ import retrofit2.Response;
 import ru.hse.goodtrip.data.model.Result.Error;
 import ru.hse.goodtrip.data.model.Result.Success;
 import ru.hse.goodtrip.data.model.ResultHolder;
+import android.net.Uri;
+import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.network.authentication.LoginService;
@@ -100,7 +102,7 @@ public class UsersRepository {
             userToken = authenticationResponse.getToken();
             setLoggedInUser(new User(
                 authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
-                authenticationResponse.getUrl()));
+                authenticationResponse.getUrl().toString(), "aboba"));
             resultOfAuthorization.setResult(new Success<>(user));
           }
           resultOfAuthorization.notify();
@@ -138,5 +140,9 @@ public class UsersRepository {
         getCallback(resultOfAuthorization, "Username is not correct or is already taken",
             "Some connection issues happened"));
     return resultOfAuthorization;
+  }
+
+  public static void changeUserMainPhoto(Uri newPhoto) {
+    //TODO
   }
 }
