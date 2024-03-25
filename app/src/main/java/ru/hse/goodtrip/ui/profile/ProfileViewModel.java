@@ -1,19 +1,12 @@
 package ru.hse.goodtrip.ui.profile;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import lombok.Getter;
+import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.User;
 
+@Getter
 public class ProfileViewModel extends ViewModel {
 
-  private final MutableLiveData<String> text;
-
-  public ProfileViewModel() {
-    text = new MutableLiveData<>();
-    text.setValue("There will be a profile!");
-  }
-
-  public LiveData<String> getText() {
-    return text;
-  }
+  private final User user = UsersRepository.getInstance().getLoggedUser();
 }
