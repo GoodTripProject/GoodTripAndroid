@@ -74,8 +74,8 @@ public class UsersRepository {
    * @param password password.
    * @return result value.
    */
-  public ResultHolder login(String username, String password) {
-    final ResultHolder resultOfAuthorization = new ResultHolder();
+  public ResultHolder<User> login(String username, String password) {
+    final ResultHolder<User> resultOfAuthorization = new ResultHolder<>();
     Call<AuthenticationResponse> loginServiceCall = loginService.login(
         new AuthorizationRequest(username, password));
     loginServiceCall.enqueue(
@@ -85,7 +85,7 @@ public class UsersRepository {
   }
 
   @NonNull
-  private Callback<AuthenticationResponse> getCallback(ResultHolder resultOfAuthorization,
+  private Callback<AuthenticationResponse> getCallback(ResultHolder<User> resultOfAuthorization,
       String failureAuthenticationString, String failureConnectionString) {
     return new Callback<AuthenticationResponse>() {
       @Override
@@ -95,13 +95,13 @@ public class UsersRepository {
           AuthenticationResponse authenticationResponse = response.body();
           if (authenticationResponse == null) {
             resultOfAuthorization.setResult(
-                new Error(new InterruptedException(failureAuthenticationString)));
+                new Error<>(new InterruptedException(failureAuthenticationString)));
           } else {
             userToken = authenticationResponse.getToken();
             setLoggedInUser(new User(
                 authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
                 authenticationResponse.getUrl()));
-            resultOfAuthorization.setResult(new Success(user));
+            resultOfAuthorization.setResult(new Success<>(user));
           }
           resultOfAuthorization.notify();
         }
@@ -112,7 +112,7 @@ public class UsersRepository {
           @NonNull Throwable throwable) {
         synchronized (resultOfAuthorization) {
           resultOfAuthorization.setResult(
-              new Error(new InterruptedException(failureConnectionString)));
+              new Error<>(new InterruptedException(failureConnectionString)));
           resultOfAuthorization.notify();
         }
       }
@@ -129,9 +129,9 @@ public class UsersRepository {
    * @param surname  user surname.
    * @return result value.
    */
-  public ResultHolder signUp(String username, String password, String handle, String name,
+  public ResultHolder<User> signUp(String username, String password, String handle, String name,
       String surname) {
-    final ResultHolder resultOfAuthorization = new ResultHolder();
+    final ResultHolder<User> resultOfAuthorization = new ResultHolder<>();
     Call<AuthenticationResponse> loginServiceCall = loginService.register(
         new RegisterRequest(username, handle, password, name, surname));
     loginServiceCall.enqueue(
