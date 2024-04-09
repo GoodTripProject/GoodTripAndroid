@@ -50,8 +50,6 @@ public class AuthViewModel extends ViewModel {
     // can be launched in a separate asynchronous job
     ResultHolder<User> result = usersRepository.login(username, password);
     runExecutorToWaitResult(result);
-
-
   }
 
   private void runExecutorToWaitResult(ResultHolder<User> result) {
