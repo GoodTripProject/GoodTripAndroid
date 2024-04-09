@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.navigation.GtNavigationGraphMain;
 import ru.hse.goodtrip.network.NetworkManager;
+import ru.hse.goodtrip.room.RoomImplementation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,15 +24,18 @@ public class MainActivity extends AppCompatActivity {
 
     if (!RoomImplementation.getInstance().isUserLoggedIn()) {
       navigationGraph.navigateToLogin();
+    } else {
+      UserEntity user = RoomImplementation.getInstance().getLoggedUser();
+      if (user != null) {
+        UsersRepository.getInstance().login(user.name, user.password);
+      } else {
+        navigationGraph.navigateToLogin();
+      }
     }
   }
 
   public GtNavigationGraphMain getNavigationGraph() {
     return navigationGraph;
-  }
-
-  public boolean isUserLoggedIn() {
-    return true;
   }
 
   @Override

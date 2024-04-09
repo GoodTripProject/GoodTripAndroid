@@ -179,7 +179,8 @@ public class LoginFragment extends Fragment {
    */
   private void loginSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
-    RoomImplementation.getInstance().setLoggedUser(loggedUser);
+    RoomImplementation.getInstance()
+        .setLoggedUser(loggedUser.getDisplayName(), passwordEditText.getText().toString());
     Log.d("LoginFragment", loggedUser.getDisplayName());
     ((MainActivity) requireActivity()).getNavigationGraph().navigateToMainGraph();
   }

@@ -17,9 +17,6 @@ public class UserEntity {
   @ColumnInfo(name = "name")
   public String name;
 
-  @ColumnInfo(name = "handle")
-  public String handle;
-
-  @ColumnInfo(name = "mainPhotoUrl")
-  public String mainPhotoUrl;
+  @ColumnInfo(name = "password")
+  public String password;
 }
