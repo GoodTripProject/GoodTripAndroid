@@ -8,8 +8,6 @@ import retrofit2.Response;
 import ru.hse.goodtrip.data.model.Result.Error;
 import ru.hse.goodtrip.data.model.Result.Success;
 import ru.hse.goodtrip.data.model.ResultHolder;
-import android.net.Uri;
-import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.network.authentication.LoginService;
@@ -22,6 +20,9 @@ import ru.hse.goodtrip.network.authentication.model.RegisterRequest;
  * an in-memory cache of login status and user credentials information.
  */
 public class UsersRepository {
+
+  public static final User fakeUser = new User(
+      "Jane Doe", null, "aboba");
 
   private static volatile UsersRepository instance;
 
@@ -140,9 +141,5 @@ public class UsersRepository {
         getCallback(resultOfAuthorization, "Username is not correct or is already taken",
             "Some connection issues happened"));
     return resultOfAuthorization;
-  }
-
-  public static void changeUserMainPhoto(Uri newPhoto) {
-    //TODO
   }
 }

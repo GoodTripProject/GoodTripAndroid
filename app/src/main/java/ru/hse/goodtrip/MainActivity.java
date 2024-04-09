@@ -13,14 +13,15 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
     String urlApi = getResources().getString(R.string.URL_API);
     NetworkManager.setBaseUrl(urlApi);
-    super.onCreate(savedInstanceState);
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     navigationGraph = new GtNavigationGraphMain(this, binding);
 
-    if (isUserLoggedIn()) { // TODO: move logic somewhere
+    if (!isUserLoggedIn()) {
       navigationGraph.navigateToLogin();
     }
   }

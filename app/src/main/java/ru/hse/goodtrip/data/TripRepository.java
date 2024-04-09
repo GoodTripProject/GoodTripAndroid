@@ -22,7 +22,7 @@ public class TripRepository {
   private static ArrayList<Trip> getFakeTrips() {
     Trip testTrip = new Trip("Weekend in Heaven", new ArrayList<>(), LocalDate.now(),
         LocalDate.now(), null,
-        1000, new HashSet<>(), AuthService.fakeUser);
+        1000, new HashSet<>(), UsersRepository.fakeUser);
     Coordinates fakeCords = new Coordinates(-34, 131);
     Country fakeCountry = new Country("Russia", fakeCords);
     City fakeCity1 = new City("Moscow", fakeCords, fakeCountry);
