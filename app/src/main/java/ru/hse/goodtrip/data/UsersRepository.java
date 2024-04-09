@@ -21,6 +21,9 @@ import ru.hse.goodtrip.network.authentication.model.RegisterRequest;
  */
 public class UsersRepository {
 
+  public static final User fakeUser = new User(
+      "Jane Doe", null, "aboba");
+
   private static volatile UsersRepository instance;
 
   private final LoginService loginService;
