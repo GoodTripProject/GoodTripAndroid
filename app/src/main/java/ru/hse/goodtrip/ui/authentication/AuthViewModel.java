@@ -1,5 +1,7 @@
 package ru.hse.goodtrip.ui.authentication;
 
+import static ru.hse.goodtrip.data.UsersRepository.fakeUser;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -49,6 +51,8 @@ public class AuthViewModel extends ViewModel {
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
     ResultHolder<User> result = usersRepository.login(username, password);
+    loginResult.setValue(new LoginResult(fakeUser));
+    //TODO
     runExecutorToWaitResult(result);
   }
 
