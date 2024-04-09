@@ -42,14 +42,14 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
-    implementation ("com.squareup.retrofit2:retrofit:2.10.0")
     implementation("androidx.preference:preference:1.2.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
@@ -79,8 +79,5 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("com.squareup.retrofit2:retrofit:2.10.0")
     implementation("com.squareup.retrofit2:converter-jackson:2.1.0")
-    implementation("org.locationtech.jts:jts-core:1.19.0")
-    implementation("org.postgis:postgis-jdbc:1.3.3") {
-        exclude(group = "org.postgis", module = "postgis-stubs")
-    }
+
 }
