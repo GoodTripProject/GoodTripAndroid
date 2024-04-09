@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     navigationGraph = new GtNavigationGraphMain(this, binding);
 
-    if (!isUserLoggedIn()) {
+    if (!RoomImplementation.getInstance().isUserLoggedIn()) {
       navigationGraph.navigateToLogin();
     }
   }
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public boolean isUserLoggedIn() {
-    return false;
+    return true;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.data;
 
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import lombok.Setter;
 import retrofit2.Call;
@@ -45,6 +46,10 @@ public class UsersRepository {
       instance = new UsersRepository();
     }
     return instance;
+  }
+
+  public static void changeUserMainPhoto(Uri newPhoto) {
+
   }
 
   public User getLoggedUser() {

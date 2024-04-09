@@ -2,6 +2,7 @@ package ru.hse.goodtrip.room;
 
 import android.app.Application;
 import androidx.room.Room;
+import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.room.entities.UserEntity;
 
 public class RoomImplementation extends Application {
@@ -15,8 +16,9 @@ public class RoomImplementation extends Application {
     return instance;
   }
 
-  public void setLoggedUser(String name, String handler, String mainPhotoUrl) {
-    localStorage.userDao().insert(new UserEntity(USER_KEY, name, handler, mainPhotoUrl));
+  public void setLoggedUser(User user) {
+    localStorage.userDao().insert(
+        new UserEntity(USER_KEY, user.getDisplayName(), user.getHandle(), user.getMainPhotoUrl()));
     AppPreferences.setUserLoggedIn(this, true);
   }
 
