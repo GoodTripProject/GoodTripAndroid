@@ -2,16 +2,13 @@ package ru.hse.goodtrip.ui.trips.feed;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import androidx.lifecycle.ViewModel;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import lombok.Getter;
 import ru.hse.goodtrip.data.AuthService;
 import ru.hse.goodtrip.data.TripRepository;

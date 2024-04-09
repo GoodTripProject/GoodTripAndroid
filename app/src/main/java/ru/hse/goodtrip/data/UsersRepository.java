@@ -26,8 +26,6 @@ public class UsersRepository {
   private final LoginService loginService;
 
   public User user = null;
-  @Setter
-  private String userToken;
 
 
   private UsersRepository() {
@@ -97,10 +95,9 @@ public class UsersRepository {
             resultOfAuthorization.setResult(
                 new Error<>(new InterruptedException(failureAuthenticationString)));
           } else {
-            userToken = authenticationResponse.getToken();
-            setLoggedInUser(new User(
+            setLoggedInUser(new User(authenticationResponse.getId(),authenticationResponse.getHandle(),
                 authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
-                authenticationResponse.getUrl()));
+                authenticationResponse.getUrl(),authenticationResponse.getToken()));
             resultOfAuthorization.setResult(new Success<>(user));
           }
           resultOfAuthorization.notify();
