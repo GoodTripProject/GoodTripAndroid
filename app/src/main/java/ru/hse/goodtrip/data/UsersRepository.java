@@ -30,6 +30,8 @@ public class UsersRepository {
   private final LoginService loginService;
 
   public User user = null;
+  @Setter
+  private String userToken;
 
 
   private UsersRepository() {
