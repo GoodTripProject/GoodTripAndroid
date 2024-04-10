@@ -1,7 +1,5 @@
 package ru.hse.goodtrip.ui.authentication;
 
-import static ru.hse.goodtrip.data.UsersRepository.fakeUser;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;

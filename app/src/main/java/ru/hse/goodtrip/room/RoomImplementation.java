@@ -32,7 +32,7 @@ public class RoomImplementation extends Application {
   public void setLoggedUser(String name, String password) {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     executor.execute(() -> {
-      localStorage.userDao().insert(
+      localStorage.userDao().update(
           new UserEntity(USER_KEY, name, password));
       AppPreferences.setUserLoggedIn(this, true);
     });

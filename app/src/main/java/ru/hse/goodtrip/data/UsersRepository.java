@@ -22,9 +22,6 @@ import ru.hse.goodtrip.network.authentication.model.RegisterRequest;
  */
 public class UsersRepository {
 
-  public static final User fakeUser = new User(
-      "Jane Doe", null, "aboba");
-
   private static volatile UsersRepository instance;
 
   private final LoginService loginService;
@@ -105,9 +102,10 @@ public class UsersRepository {
             resultOfAuthorization.setResult(
                 new Error<>(new InterruptedException(failureAuthenticationString)));
           } else {
-            setLoggedInUser(new User(authenticationResponse.getId(),authenticationResponse.getHandle(),
-                authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
-                authenticationResponse.getUrl(),authenticationResponse.getToken()));
+            setLoggedInUser(
+                new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
+                    authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
+                    authenticationResponse.getUrl(), authenticationResponse.getToken()));
             resultOfAuthorization.setResult(new Success<>(user));
           }
           resultOfAuthorization.notify();
