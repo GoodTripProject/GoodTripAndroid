@@ -1,7 +1,6 @@
-package ru.hse.goodtrip.data.model.tripRequests.model;
+package ru.hse.goodtrip.network.trips.model;
 
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddCountryRequest {
 
-    String country;
+  String country;
 
-    List<City> cities;
+  List<CityVisit> cities;
 }
