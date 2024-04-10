@@ -10,6 +10,6 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 public class MyTripsViewModel extends ViewModel {
 
   public void postTrip(Trip trip) {
-    TripRepository.postTrip(trip);
+//    TripRepository.postTrip(trip);
   }
 }

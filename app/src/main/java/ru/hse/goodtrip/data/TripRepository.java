@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,17 +31,13 @@ public class TripRepository {
   private static volatile TripRepository instance;
 
   private final TripService tripService;
+  private String authToken;
+
+  @Getter
+  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
 
   private TripRepository() {
     this.tripService = NetworkManager.getInstance().getInstanceOfService(TripService.class);
-  }
-
-  private String authToken;
-
-  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
-
-  public void setAuthToken(String authToken) {
-    this.authToken = "Bearer " + authToken;
   }
 
   public static TripRepository getInstance() {
@@ -48,6 +45,10 @@ public class TripRepository {
       instance = new TripRepository();
     }
     return instance;
+  }
+
+  public void setAuthToken(String authToken) {
+    this.authToken = "Bearer " + authToken;
   }
 
   private ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {

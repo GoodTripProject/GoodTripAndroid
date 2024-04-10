@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public boolean isUserLoggedIn() {
-    return true;
+    return false;
   }
 
   @Override

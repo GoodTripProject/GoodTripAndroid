@@ -14,6 +14,7 @@ import lombok.Getter;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
+import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
@@ -24,6 +25,7 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 @Getter
 public class FeedViewModel extends ViewModel {
 
+  public static User fakeUser = new User(0, "aboba", "Jane Doe", null, null);
   private final TripRepository tripRepository = TripRepository.getInstance();
   @Getter
   private List<Trip> posts = Collections.emptyList();
@@ -38,7 +40,7 @@ public class FeedViewModel extends ViewModel {
   private ArrayList<Trip> getFakeTrips() {
     Trip testTrip = new Trip("Weekend in Heaven", new ArrayList<>(), LocalDate.now(),
         LocalDate.now(), null,
-        1000, new HashSet<>(), AuthService.fakeUser);
+        1000, new HashSet<>(), fakeUser);
     Coordinates fakeCords = new Coordinates(-34, 131);
     Country fakeCountry = new Country("Russia", fakeCords);
     City fakeCity1 = new City("Moscow", fakeCords, fakeCountry);
