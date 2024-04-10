@@ -23,8 +23,8 @@ import ru.hse.goodtrip.databinding.ItemPostTripBinding;
 import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedLoadingViewHolder;
 import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedPostViewHolder;
 
-public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-    implements View.OnClickListener {
+public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+    View.OnClickListener {
 
   public static final String POST_ARG = "post";
   private static final int VIEW_TYPE_ITEM = 0;
@@ -43,8 +43,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
   public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     if (viewType == VIEW_TYPE_ITEM) {
       ItemPostTripBinding binding = ItemPostTripBinding.inflate(
-          LayoutInflater.from(parent.getContext()),
-          parent, false);
+          LayoutInflater.from(parent.getContext()), parent, false);
       return new FeedPostViewHolder(binding);
     } else { // VIEW_TYPE_LOADING
       FeedLoadingViewBinding binding = FeedLoadingViewBinding.inflate(
@@ -78,16 +77,14 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     binding.titleText.setText(trip.getTitle());
-    binding.profileNameText.setText(trip.getUser().getDisplayName());
+    binding.profileNameText.setText("User"); // TODO
     binding.tripDuration.setText(
         getDuration(trip.getStartTripDate(), trip.getEndTripDate(), dateFormat));
-    binding.dateOfPublication.setText(
-        getDateFormatted(trip.getTimeOfPublication(), dateFormat));
+    binding.dateOfPublication.setText(getDateFormatted(trip.getTimeOfPublication(), dateFormat));
     binding.countriesText.setText(countries);
 
     setImageByUrl(binding.profileImageView, String.valueOf(trip.getUser().getMainPhotoUrl()),
-        R.drawable.baseline_account_circle_24
-    );
+        R.drawable.baseline_account_circle_24);
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
   }
 

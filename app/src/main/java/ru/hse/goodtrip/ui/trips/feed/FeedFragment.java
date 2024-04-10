@@ -1,6 +1,7 @@
 package ru.hse.goodtrip.ui.trips.feed;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
 public class FeedFragment extends Fragment {
@@ -109,16 +113,30 @@ public class FeedFragment extends Fragment {
      * Refresh feed with FeedViewModel.
      */
     private void refreshFeed() {
-      feedRecyclerView.post(() -> {
-            feedAdapter.showLoadingView();
-            feedRecyclerView.postDelayed(() -> {
-              loadData();
-
-              feedAdapter.hideLoadingView();
-              isLoading = false;
-            }, 2000);
+      Log.println(Log.WARN, "hey", "troubles");
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      executor.execute(() -> {
+        synchronized (FeedViewModel.class) {
+          feedViewModel.getUserTrips(UsersRepository.getInstance().user.getId(),
+              UsersRepository.getInstance().user.getToken());
+          try {
+            FeedViewModel.class.wait();
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
           }
-      );
+        }
+        feedRecyclerView.post(() -> {
+              feedAdapter.showLoadingView();
+              feedRecyclerView.postDelayed(() -> {
+                loadData();
+
+                feedAdapter.hideLoadingView();
+                isLoading = false;
+              }, 2000);
+            }
+        );
+      });
+
     }
 
     /**
