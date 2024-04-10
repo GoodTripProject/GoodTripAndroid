@@ -28,7 +28,7 @@ public class PostEditorViewModel extends ViewModel {
   String photo;
 
   public void postTrip(Trip trip) {
-    TripRepository.postTrip(trip);
+//    TripRepository.postTrip(trip);
   }
 
   public void saveTrip() {
