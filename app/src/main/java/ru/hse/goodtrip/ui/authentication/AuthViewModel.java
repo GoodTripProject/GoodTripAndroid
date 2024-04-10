@@ -51,8 +51,6 @@ public class AuthViewModel extends ViewModel {
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
     ResultHolder<User> result = usersRepository.login(username, password);
-    loginResult.setValue(new LoginResult(fakeUser));
-    //TODO
     runExecutorToWaitResult(result);
   }
 
