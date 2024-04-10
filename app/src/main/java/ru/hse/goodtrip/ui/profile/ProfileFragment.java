@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
             setImageByUrl(binding.profileImage, data.getData().toString());
-//            UsersRepository.changeUserMainPhoto(data.getData());
+            UsersRepository.changeUserMainPhoto(data.getData());
           }
         }
       });

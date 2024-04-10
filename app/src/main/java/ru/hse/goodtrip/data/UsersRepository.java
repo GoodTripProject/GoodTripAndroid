@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.data;
 
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import lombok.Setter;
 import retrofit2.Call;
@@ -26,6 +27,8 @@ public class UsersRepository {
   private final LoginService loginService;
 
   public User user = null;
+  @Setter
+  private String userToken;
 
 
   private UsersRepository() {
@@ -42,6 +45,10 @@ public class UsersRepository {
       instance = new UsersRepository();
     }
     return instance;
+  }
+
+  public static void changeUserMainPhoto(Uri newPhoto) {
+
   }
 
   public User getLoggedUser() {
@@ -95,9 +102,10 @@ public class UsersRepository {
             resultOfAuthorization.setResult(
                 new Error<>(new InterruptedException(failureAuthenticationString)));
           } else {
-            setLoggedInUser(new User(authenticationResponse.getId(),authenticationResponse.getHandle(),
-                authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
-                authenticationResponse.getUrl(),authenticationResponse.getToken()));
+            setLoggedInUser(
+                new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
+                    authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
+                    authenticationResponse.getUrl(), authenticationResponse.getToken()));
             resultOfAuthorization.setResult(new Success<>(user));
           }
           resultOfAuthorization.notify();

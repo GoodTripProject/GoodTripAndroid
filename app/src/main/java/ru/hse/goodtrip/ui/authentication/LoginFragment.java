@@ -24,6 +24,7 @@ import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentLoginBinding;
+import ru.hse.goodtrip.room.RoomImplementation;
 
 /**
  * LoginFragment.
@@ -178,6 +179,8 @@ public class LoginFragment extends Fragment {
    */
   private void loginSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
+    RoomImplementation.getInstance()
+        .setLoggedUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
     Log.d("LoginFragment", loggedUser.getDisplayName());
     ((MainActivity) requireActivity()).getNavigationGraph().navigateToMainGraph();
   }
@@ -187,14 +190,14 @@ public class LoginFragment extends Fragment {
     loadingProgressBar.setVisibility(View.VISIBLE);
   }
 
-  public void hideLoadingView() {
-    loginButton.setVisibility(View.VISIBLE);
-    loadingProgressBar.setVisibility(View.GONE);
-  }
-
   private void login() {
     authViewModel.login(emailEditText.getText().toString(),
         passwordEditText.getText().toString());
+  }
+
+  public void hideLoadingView() {
+    loginButton.setVisibility(View.VISIBLE);
+    loadingProgressBar.setVisibility(View.GONE);
   }
 
   private void showLoginFailed(@StringRes Integer errorString) {
@@ -205,7 +208,6 @@ public class LoginFragment extends Fragment {
           Toast.LENGTH_LONG).show();
       hideLoadingView();
     }
-    hideLoadingView();
   }
 
   private void navigateToSignUp() {
