@@ -7,10 +7,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import ru.hse.goodtrip.room.entities.UserEntity;
 
+/**
+ * RoomImplementation that provides access to LocalStorage and AppPreferences.
+ */
 public class RoomImplementation extends Application {
 
-  private final static String DATABASE_NAME = "GTLocalStorage";
-  private final static int USER_KEY = 0;
+  private static final String DATABASE_NAME = "GTLocalStorage";
+  private static final int USER_KEY = 0;
   private static RoomImplementation instance;
   private LocalStorage localStorage;
 

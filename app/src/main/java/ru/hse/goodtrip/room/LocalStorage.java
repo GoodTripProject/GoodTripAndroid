@@ -5,6 +5,9 @@ import androidx.room.RoomDatabase;
 import ru.hse.goodtrip.room.dao.UserDao;
 import ru.hse.goodtrip.room.entities.UserEntity;
 
+/**
+ * Local Storage to store info about logged user.
+ */
 @Database(entities = {UserEntity.class}, version = 2)
 public abstract class LocalStorage extends RoomDatabase {
 
