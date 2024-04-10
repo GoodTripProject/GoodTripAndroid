@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
     profileViewModel =
         new ViewModelProvider(this).get(ProfileViewModel.class);
     binding = FragmentProfileBinding.inflate(inflater, container, false);
-    user = profileViewModel.getUser();
     return binding.getRoot();
   }
 
@@ -60,6 +59,8 @@ public class ProfileFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    user = profileViewModel.getUser();
+
     setUserInfo();
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
 
@@ -68,7 +69,9 @@ public class ProfileFragment extends Fragment {
   }
 
   public void setUserInfo() {
-    setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
+    if (user.getMainPhotoUrl() != null) {
+      setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
+    }
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
   }
