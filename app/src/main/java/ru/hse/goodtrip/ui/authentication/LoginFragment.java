@@ -25,6 +25,7 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentLoginBinding;
 import ru.hse.goodtrip.room.RoomImplementation;
+import ru.hse.goodtrip.room.entities.UserEntity;
 
 /**
  * LoginFragment.
@@ -84,6 +85,14 @@ public class LoginFragment extends Fragment {
 
     setEditTextListeners();
     setButtonListeners();
+
+    if (RoomImplementation.getInstance().isUserLoggedIn()) {
+      UserEntity user = RoomImplementation.getInstance().getLoggedUser();
+      if (user != null && !user.name.isEmpty()) {
+        showLoadingView();
+        authViewModel.login(user.name, user.password);
+      }
+    }
   }
 
   /**
