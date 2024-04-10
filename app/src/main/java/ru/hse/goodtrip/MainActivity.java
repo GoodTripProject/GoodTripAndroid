@@ -1,11 +1,14 @@
 package ru.hse.goodtrip;
 
 import android.os.Bundle;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.navigation.GtNavigationGraphMain;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.room.RoomImplementation;
+import ru.hse.goodtrip.room.entities.UserEntity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,10 +26,13 @@ public class MainActivity extends AppCompatActivity {
     navigationGraph = new GtNavigationGraphMain(this, binding);
 
     if (!RoomImplementation.getInstance().isUserLoggedIn()) {
+      Log.d("main", "does not logged in(");
       navigationGraph.navigateToLogin();
     } else {
+      Log.d("main", "i'm here");
       UserEntity user = RoomImplementation.getInstance().getLoggedUser();
       if (user != null) {
+        Log.d("main", "found logged user");
         UsersRepository.getInstance().login(user.name, user.password);
       } else {
         navigationGraph.navigateToLogin();

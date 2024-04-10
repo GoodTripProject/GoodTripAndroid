@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 import java.util.List;
 import ru.hse.goodtrip.room.entities.UserEntity;
 
@@ -18,4 +19,7 @@ public interface UserDao {
 
   @Delete
   void delete(UserEntity user);
+
+  @Update
+  void update(UserEntity user);
 }

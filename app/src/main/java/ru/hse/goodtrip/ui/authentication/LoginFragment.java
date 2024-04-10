@@ -180,7 +180,7 @@ public class LoginFragment extends Fragment {
   private void loginSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
     RoomImplementation.getInstance()
-        .setLoggedUser(loggedUser.getDisplayName(), passwordEditText.getText().toString());
+        .setLoggedUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
     Log.d("LoginFragment", loggedUser.getDisplayName());
     ((MainActivity) requireActivity()).getNavigationGraph().navigateToMainGraph();
   }
@@ -193,6 +193,11 @@ public class LoginFragment extends Fragment {
   private void login() {
     authViewModel.login(emailEditText.getText().toString(),
         passwordEditText.getText().toString());
+  }
+
+  public void hideLoadingView() {
+    loginButton.setVisibility(View.VISIBLE);
+    loadingProgressBar.setVisibility(View.GONE);
   }
 
   private void showLoginFailed(@StringRes Integer errorString) {
