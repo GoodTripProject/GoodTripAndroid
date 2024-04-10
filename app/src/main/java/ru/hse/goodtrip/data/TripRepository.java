@@ -92,9 +92,9 @@ public class TripRepository {
   }
 
   private List<ru.hse.goodtrip.data.model.trips.Trip> getTripsFromTripResponses(
-      List<Trip> tripRespons) {
+      List<Trip> tripResponse) {
     List<ru.hse.goodtrip.data.model.trips.Trip> result = new ArrayList<>();
-    for (Trip response : tripRespons) {
+    for (Trip response : tripResponse) {
       result.add(getTripFromTripResponse(response));
     }
     return result;
@@ -103,7 +103,7 @@ public class TripRepository {
   private Callback<List<Trip>> getTripCallback(
       ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder, String errorMessage) {
     return new Callback<List<Trip>>() {
-      /** @noinspection unchecked*/
+      /** */
       @Override
       public void onResponse(@NonNull Call<List<Trip>> call,
           @NonNull Response<List<Trip>> response) {
@@ -135,7 +135,6 @@ public class TripRepository {
 
   private <T> Callback<T> getCallback(ResultHolder<T> resultHolder, String errorMessage) {
     return new Callback<T>() {
-      /** @noinspection unchecked*/
       @Override
       public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
         synchronized (resultHolder) {
@@ -145,9 +144,6 @@ public class TripRepository {
                 new Result.Error<>(new InterruptedException(errorMessage))
             );
           } else {
-            if (responseBody instanceof List) {
-              trips = (List<ru.hse.goodtrip.data.model.trips.Trip>) responseBody;//TODO глянуть нет ли ошибки
-            }
             resultHolder.setResult(new Result.Success<>(responseBody));
           }
           resultHolder.notify();
@@ -185,9 +181,11 @@ public class TripRepository {
     return resultHolder;
   }
 
-  public ResultHolder<String> addTrip(Integer userId, AddTripRequest addTripRequest) {
+  public ResultHolder<String> addTrip(Integer userId, String token,
+      AddTripRequest addTripRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> addTripCall = tripService.addTrip(userId, addTripRequest, authToken);
+    Call<String> addTripCall = tripService.addTrip(userId, addTripRequest,
+        getWrappedToken(token));
     addTripCall.enqueue(getCallback(resultHolder, "User with this id not exists"));
     return resultHolder;
   }
