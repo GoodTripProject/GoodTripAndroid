@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentMyTripsBinding;
@@ -24,6 +25,15 @@ public class MyTripsFragment extends Fragment {
 
   private MyTripsViewModel myTripsViewModel;
   private FragmentMyTripsBinding binding;
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    ((MainActivity) requireActivity()).getSupportActionBar().show();
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+  }
+
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

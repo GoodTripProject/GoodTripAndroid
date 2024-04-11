@@ -5,8 +5,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.profile.mytrips.PostEditorFragment">
-  <ScrollView
-    android:layout_marginTop="50dp"
+  <androidx.core.widget.NestedScrollView
+    android:layout_marginTop="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,46 +24,88 @@
         android:src="@drawable/kazantip" />
 
       <TextView
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:id="@+id/postTitle"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
         android:textSize="50sp" />
-
-      <TextView
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:layout_marginStart="30dp"
-        android:text="Budget:" />
-      <TextView
-        android:id="@+id/budgetLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:textColor="@color/black"
-        android:layout_marginStart="30dp"
-        android:text="two thousand nineteen rubles" />
-      <LinearLayout
+      <!--      <TextView-->
+      <!--        android:id="@+id/tripDuration"-->
+      <!--        android:layout_gravity="center"-->
+      <!--        android:layout_width="wrap_content"-->
+      <!--        android:layout_height="wrap_content"-->
+      <!--        android:text="duration" />-->
+      <View
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
+
+      <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+          android:padding="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="30sp"
+          android:textColor="@color/black"
+          android:layout_marginStart="15dp"
+          android:text="Budget:" />
+        <TextView
+          android:id="@+id/budgetLabel"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:textSize="20sp"
           android:textColor="@color/black"
-          android:layout_marginStart="30dp"
-          android:text="Route:" />
-        <ImageView
-          android:id="@+id/add_new_country"
+          android:textStyle="italic"
+          android:text="two thousand nineteen rubles" />
+
+      </LinearLayout>
+
+      <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+          android:padding="10dp"
+          android:layout_marginStart="15dp"
+          android:id="@+id/countries_text_title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:text="Route:"
+          android:textColor="@color/black"
+          android:textSize="30sp"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/add_country" />
+        <ImageButton
+          android:layout_gravity="center"
+          android:id="@+id/add_new_country"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:layout_marginStart="80dp"
           android:src="@drawable/baseline_add_24"
-          android:layout_gravity="center_vertical" />
+          android:background="@drawable/profile_button_shape"
+          app:tint="@color/white" />
+        <TextView
+          android:padding="10dp"
+          android:layout_gravity="center"
+          android:textSize="15sp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Add new destination" />
       </LinearLayout>
 
       <LinearLayout
@@ -75,26 +117,48 @@
         app:layout_constraintStart_toStartOf="parent">
 
       </LinearLayout>
-      <LinearLayout
+      <View
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
+
+      <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:layout_marginStart="30dp"
-        android:text="Notes:" />
-      <ImageView
-        android:id="@+id/add_new_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_add_24"
-        android:layout_gravity="center_vertical" />
-    </LinearLayout>
+        <TextView
+          android:padding="10dp"
+          android:layout_marginStart="15dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Notes:"
+          android:textColor="@color/black"
+          android:textSize="30sp"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/add_country" />
+        <ImageButton
+          android:layout_gravity="center"
+          android:id="@+id/add_new_note"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:layout_marginStart="80dp"
+          android:src="@drawable/baseline_add_24"
+          android:background="@drawable/profile_button_shape"
+          app:tint="@color/white" />
+        <TextView
+          android:padding="10dp"
+          android:layout_gravity="center"
+          android:textSize="15sp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Add new note" />
+      </LinearLayout>
 
-    <LinearLayout
+
+      <LinearLayout
         android:id="@+id/notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,16 +167,23 @@
         app:layout_constraintStart_toStartOf="parent">
 
       </LinearLayout>
+      <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
 
       <Button
         android:layout_gravity="center"
         android:background="@drawable/button"
         android:id="@+id/logInButton"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_height="60dp"
         android:layout_width="300dp"
         android:text="Post"
         android:textSize="20sp" />
     </LinearLayout>
-  </ScrollView>
+  </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context=".ui.profile.mytrips.MyTripsFragment">
   <ScrollView
-    android:layout_marginTop="50dp"
+    android:layout_marginTop="?attr/actionBarSize"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     android:layout_width="match_parent"
