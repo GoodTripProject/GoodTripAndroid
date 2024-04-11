@@ -67,6 +67,7 @@ public class GtNavigationGraphMain extends NavHostFragment {
   }
 
   public void navigateToMainGraph() {
+    activity.getSupportActionBar().hide();
     navController.navigate(R.id.main_navigation_graph);
   }
 

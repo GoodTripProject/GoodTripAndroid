@@ -2,6 +2,7 @@ package ru.hse.goodtrip.ui.trips.plantrip;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -36,15 +38,18 @@ public class PlanTripFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
+    ((MainActivity) requireActivity()).getSupportActionBar().show();
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
   }
 
   @Override
   public void onStop() {
     super.onStop();
+    ((MainActivity) requireActivity()).getSupportActionBar().hide();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
   }
-
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -110,9 +115,27 @@ public class PlanTripFragment extends Fragment {
 
   private void setEditTexts(boolean enabled) {
     binding.travelNameEditText.setEnabled(enabled);
-    binding.arrivalDateEditText.setEnabled(enabled);
-    binding.departureDateEditText.setEnabled(enabled);
     binding.budgetEditText.setEnabled(enabled);
+  }
+
+  private void selectDepartureDate(View view) {
+    DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
+        (datePicker, year, month, day) -> {
+          String date = day + "." + month + "." + year;
+          binding.departureDateEditText.setText(date);
+        }, 2024, 4, 11);
+
+    datePickerDialog.show();
+  }
+
+  private void selectArrivalDate(View view) {
+    DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
+        (datePicker, year, month, day) -> {
+          String date = day + "." + month + "." + year;
+          binding.arrivalDateEditText.setText(date);
+        }, 2024, 4, 11);
+
+    datePickerDialog.show();
   }
 
   @Override
@@ -121,7 +144,7 @@ public class PlanTripFragment extends Fragment {
     final EditText arrivalDateEditText = binding.arrivalDateEditText;
     final EditText departureDateEditText = binding.departureDateEditText;
     final Button saveButton = binding.saveButton;
-    final Button addCountry = binding.addCountry;
+    final ImageButton addCountry = binding.addCountry;
     final EditText moneyEditText = binding.budgetEditText;
     LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
         LAYOUT_INFLATER_SERVICE);
@@ -149,6 +172,9 @@ public class PlanTripFragment extends Fragment {
         toast.show();
       }
     });
+
+    departureDateEditText.setOnClickListener(this::selectDepartureDate);
+    arrivalDateEditText.setOnClickListener(this::selectArrivalDate);
   }
 
   private void updateUi() {

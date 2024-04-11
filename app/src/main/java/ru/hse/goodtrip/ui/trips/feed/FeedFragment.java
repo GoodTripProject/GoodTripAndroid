@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
@@ -23,18 +22,6 @@ public class FeedFragment extends Fragment {
   private FragmentFeedBinding binding;
 
   private FeedRecyclerViewHolder feedRecyclerViewHolder;
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    ((MainActivity) getActivity()).getSupportActionBar().hide();
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    ((MainActivity) getActivity()).getSupportActionBar().show();
-  }
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -115,6 +102,7 @@ public class FeedFragment extends Fragment {
     private void refreshFeed() {
       Log.println(Log.WARN, "hey", "troubles");
       ExecutorService executor = Executors.newSingleThreadExecutor();
+      feedAdapter.showLoadingView();
       executor.execute(() -> {
         synchronized (FeedViewModel.class) {
           feedViewModel.getUserTrips(UsersRepository.getInstance().user.getId(),
@@ -126,13 +114,10 @@ public class FeedFragment extends Fragment {
           }
         }
         feedRecyclerView.post(() -> {
-              feedAdapter.showLoadingView();
-              feedRecyclerView.postDelayed(() -> {
-                loadData();
+              loadData();
 
-                feedAdapter.hideLoadingView();
-                isLoading = false;
-              }, 2000);
+              feedAdapter.hideLoadingView();
+              isLoading = false;
             }
         );
       });
