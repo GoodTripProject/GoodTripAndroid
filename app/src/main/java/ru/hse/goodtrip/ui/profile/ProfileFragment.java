@@ -67,6 +67,8 @@ public class ProfileFragment extends Fragment {
   }
 
   public void setUserInfo() {
+    setImageByUrl(binding.profileImage,
+        "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg");
     if (user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
     }

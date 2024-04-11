@@ -50,22 +50,22 @@ public class PostNotesFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     LinearLayout notes = binding.notes;
-    boolean flag = false; // TODO: first note with image for testing
-    for (Note note : trip.getNotes()) {
-      ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
-      noteBinding.noteHeadline.setText(note.getHeadline());
-      if (!flag) {
-        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl(), R.drawable.kazantip);
-        flag = true;
-      } else if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
-        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
-      } else {
-        noteBinding.imageContainer.setVisibility(GONE);
-      }
-      noteBinding.noteText.setText(note.getNote());
-      noteBinding.placeName.setText(note.getPlace().getName());
+    if (trip.getNotes().isEmpty()) {
+      binding.noNotes.setVisibility(View.VISIBLE);
+    } else {
+      for (Note note : trip.getNotes()) {
+        ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
+        noteBinding.noteHeadline.setText(note.getHeadline());
+        if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
+          setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
+        } else {
+          noteBinding.imageContainer.setVisibility(GONE);
+        }
+        noteBinding.noteText.setText(note.getNote());
+        noteBinding.placeName.setText(note.getPlace().getName());
 
-      notes.addView(noteBinding.getRoot());
+        notes.addView(noteBinding.getRoot());
+      }
     }
   }
 }

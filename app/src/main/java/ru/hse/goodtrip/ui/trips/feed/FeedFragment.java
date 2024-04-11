@@ -11,9 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
 public class FeedFragment extends Fragment {
@@ -22,6 +26,24 @@ public class FeedFragment extends Fragment {
   private FragmentFeedBinding binding;
 
   private FeedRecyclerViewHolder feedRecyclerViewHolder;
+
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    if (UsersRepository.getInstance().getLoggedUser() != null) {
+      feedRecyclerViewHolder.refreshFeed();
+    }
+
+    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+  }
+
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -52,6 +74,12 @@ public class FeedFragment extends Fragment {
       initializeLayoutManager();
       initializeAdapter();
       initializeScrollListener();
+
+      if (feedAdapter.getItemCount() == 0) {
+        binding.emptyList.setVisibility(View.VISIBLE);
+      } else {
+        binding.emptyList.setVisibility(View.GONE);
+      }
     }
 
 
@@ -113,22 +141,29 @@ public class FeedFragment extends Fragment {
             throw new RuntimeException(e);
           }
         }
-        feedRecyclerView.post(() -> {
+        feedRecyclerView.postDelayed(() -> {
               loadData();
 
               feedAdapter.hideLoadingView();
+
               isLoading = false;
-            }
+            }, 1000
         );
       });
-
+      if (feedAdapter.getItemCount() == 0) {
+        binding.emptyList.setVisibility(View.VISIBLE);
+      } else {
+        binding.emptyList.setVisibility(View.GONE);
+      }
     }
 
     /**
      * Update data with TripsRepository.
      */
     public void loadData() {
-      // TODO: Repository access in future
+      feedViewModel.getPosts().sort(Comparator.comparing(
+          Trip::getTimeOfPublication));
+      Collections.reverse(feedViewModel.getPosts());
       feedAdapter.setItems(feedViewModel.getPosts());
     }
   }

@@ -199,14 +199,14 @@ public class LoginFragment extends Fragment {
     loadingProgressBar.setVisibility(View.VISIBLE);
   }
 
-  private void login() {
-    authViewModel.login(emailEditText.getText().toString(),
-        passwordEditText.getText().toString());
-  }
-
   public void hideLoadingView() {
     loginButton.setVisibility(View.VISIBLE);
     loadingProgressBar.setVisibility(View.GONE);
+  }
+
+  private void login() {
+    authViewModel.login(emailEditText.getText().toString(),
+        passwordEditText.getText().toString());
   }
 
   private void showLoginFailed(@StringRes Integer errorString) {
@@ -217,6 +217,7 @@ public class LoginFragment extends Fragment {
           Toast.LENGTH_LONG).show();
       hideLoadingView();
     }
+    hideLoadingView();
   }
 
   private void navigateToSignUp() {

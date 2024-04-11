@@ -32,6 +32,27 @@ public class Utils {
     }
   }
 
+  /**
+   * Load cropped image into imageView by URL and load defaultImageId if errors occurred
+   *
+   * @param imageView      where photo should be displayed
+   * @param photoUrl       photo url
+   * @param defaultImageId image that displays if error occurred (or photoUrl is null)
+   */
+  public static void setImageByUrlCropped(ImageView imageView, @Nullable String photoUrl,
+      int defaultImageId) {
+    if (photoUrl != null && !photoUrl.trim().isEmpty()) {
+      Glide.with(imageView.getContext())
+          .load(Uri.parse(photoUrl))
+          .circleCrop()
+          .error(defaultImageId)
+          .into(imageView);
+    } else {
+      Glide.with(imageView.getContext()).clear(imageView);
+      imageView.setImageResource(defaultImageId);
+    }
+  }
+
 
   /**
    * Load image into imageView by URL and nothing if error occurred

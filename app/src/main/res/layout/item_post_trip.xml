@@ -38,24 +38,25 @@
         android:text="@string/date"
         android:textColor="@color/white"
         android:textSize="15sp"
-        android:layout_marginTop="220dp"
-        android:layout_marginStart="300dp" />
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="260dp" />
 
       <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="150dp"
         android:layout_marginStart="20dp"
         android:orientation="vertical">
         <TextView
-          android:gravity="bottom"
+          android:textStyle="bold"
           android:id="@+id/titleText"
           android:layout_height="wrap_content"
           android:layout_width="wrap_content"
-          android:textSize="30sp"
+          android:textSize="40sp"
           android:text="@string/title"
           android:textColor="@color/white" />
         <TextView
+          android:textStyle="italic"
           android:id="@+id/countriesText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -97,11 +98,12 @@
             android:text="@string/name_surname" />
         </LinearLayout>
         <TextView
+          android:gravity="end"
           android:id="@+id/dateOfPublication"
           android:layout_gravity="center_vertical"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="100dp"
+          android:layout_marginStart="50dp"
           android:text="@string/date_of_publication" />
       </LinearLayout>
     </LinearLayout>

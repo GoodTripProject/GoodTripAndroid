@@ -77,7 +77,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     binding.titleText.setText(trip.getTitle());
-    binding.profileNameText.setText("User"); // TODO
+    binding.profileNameText.setText(trip.getUser().getDisplayName());
     binding.tripDuration.setText(
         getDuration(trip.getStartTripDate(), trip.getEndTripDate(), dateFormat));
     binding.dateOfPublication.setText(getDateFormatted(trip.getTimeOfPublication(), dateFormat));
