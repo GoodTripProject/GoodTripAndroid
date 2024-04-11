@@ -59,6 +59,6 @@ public class PostEditorViewModel extends ViewModel {
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
     tripRepository.addNote(UsersRepository.getInstance().user.getId(),
         UsersRepository.getInstance().user.getToken(),
-        new AddNoteRequest(noteHeadline, noteText, place, trip.getTripId()));
+        new AddNoteRequest(noteHeadline, photo, noteText, place, trip.getTripId()));
   }
 }
