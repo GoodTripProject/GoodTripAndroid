@@ -134,7 +134,7 @@ public class TripRepository {
       @Override
       public void onResponse(@NonNull Call<List<Trip>> call,
           @NonNull Response<List<Trip>> response) {
-        Log.println(Log.WARN, "Response", "Trip response happened: " + response.body());
+        Log.println(Log.DEBUG, "Response", "Trip response happened: " + response.body());
         synchronized (resultHolder) {
           List<Trip> responseBody = response.body();
           if (responseBody == null) {
@@ -151,7 +151,7 @@ public class TripRepository {
 
       @Override
       public void onFailure(@NonNull Call<List<Trip>> call, @NonNull Throwable throwable) {
-        Log.println(Log.WARN, "Response", "Trip response happened and failed: " + throwable);
+        Log.println(Log.DEBUG, "Response", "Trip response happened and failed: " + throwable);
         synchronized (resultHolder) {
           resultHolder.setResult(new Result.Error<>(new InterruptedException("No trips")));
           resultHolder.notify();
