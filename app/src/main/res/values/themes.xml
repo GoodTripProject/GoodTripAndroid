@@ -20,4 +20,8 @@
     <item name="colorPrimary">@android:color/transparent</item>
   </style>
 
+  <style name="DialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+    <item name="colorAccent">@color/light_orange</item>
+  </style>
+
 </resources>

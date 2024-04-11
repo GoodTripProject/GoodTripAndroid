@@ -2,6 +2,7 @@ package ru.hse.goodtrip.ui.trips.plantrip;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -114,9 +115,27 @@ public class PlanTripFragment extends Fragment {
 
   private void setEditTexts(boolean enabled) {
     binding.travelNameEditText.setEnabled(enabled);
-    binding.arrivalDateEditText.setEnabled(enabled);
-    binding.departureDateEditText.setEnabled(enabled);
     binding.budgetEditText.setEnabled(enabled);
+  }
+
+  private void selectDepartureDate(View view) {
+    DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
+        (datePicker, year, month, day) -> {
+          String date = day + "." + month + "." + year;
+          binding.departureDateEditText.setText(date);
+        }, 2024, 4, 11);
+
+    datePickerDialog.show();
+  }
+
+  private void selectArrivalDate(View view) {
+    DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
+        (datePicker, year, month, day) -> {
+          String date = day + "." + month + "." + year;
+          binding.arrivalDateEditText.setText(date);
+        }, 2024, 4, 11);
+
+    datePickerDialog.show();
   }
 
   @Override
@@ -153,6 +172,9 @@ public class PlanTripFragment extends Fragment {
         toast.show();
       }
     });
+
+    departureDateEditText.setOnClickListener(this::selectDepartureDate);
+    arrivalDateEditText.setOnClickListener(this::selectArrivalDate);
   }
 
   private void updateUi() {
