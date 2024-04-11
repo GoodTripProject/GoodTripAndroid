@@ -1,17 +1,19 @@
 package ru.hse.goodtrip.network.trips.model;
 
-import java.io.Serializable;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class AddCountryRequest implements Serializable {
+public class City {
 
-  String country;
 
-  List<City> cities;
+  private String city;
+
+
+  private Double longitude;
+
+  private Double latitude;
 }
