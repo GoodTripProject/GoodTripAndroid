@@ -40,7 +40,7 @@ public class FeedViewModel extends ViewModel {
   private ArrayList<Trip> getFakeTrips() {
     Trip testTrip = new Trip("Weekend in Heaven", new ArrayList<>(), LocalDate.now(),
         LocalDate.now(), null,
-        1000, new HashSet<>(), fakeUser);
+        1000, new HashSet<>(), fakeUser,0);
     Coordinates fakeCords = new Coordinates(-34, 131);
     Country fakeCountry = new Country("Russia", fakeCords);
     City fakeCity1 = new City("Moscow", fakeCords, fakeCountry);

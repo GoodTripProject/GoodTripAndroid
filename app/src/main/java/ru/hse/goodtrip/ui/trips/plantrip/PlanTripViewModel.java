@@ -83,8 +83,7 @@ public class PlanTripViewModel extends ViewModel {
               TripState.PLANNED, Collections.emptyList(),
               countries.stream().map(TripRepository::getAddCountryRequestFromCountryVisit).collect(
                   Collectors.toList())));
-      runExecutorToWaitResult(result, () -> {
-      });
+      runExecutorToWaitResult(result, () -> {});
     }
   }
 
@@ -135,7 +134,7 @@ public class PlanTripViewModel extends ViewModel {
    * @see <a
    * href="https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os"/>
    */
-  public List<String> getCountriesList() {
+  public static List<String> getCountriesList() {
     Locale[] locales = Locale.getAvailableLocales();
     ArrayList<String> countries = new ArrayList<>();
     for (Locale locale : locales) {

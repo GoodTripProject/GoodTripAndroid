@@ -1,18 +1,19 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
-import android.net.Uri;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import ru.hse.goodtrip.data.TripRepository;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
+import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
 
 /**
  * PostEditorViewModel.
@@ -21,9 +22,10 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 @Setter
 public class PostEditorViewModel extends ViewModel {
 
-  Trip trip;
-  List<CountryVisit> countries = new ArrayList<>();
-  List<Note> notes = new ArrayList<>();
+  private TripRepository tripRepository = TripRepository.getInstance();
+  private Trip trip;
+  private List<CountryVisit> countries = new ArrayList<>();
+  private List<Note> notes = new ArrayList<>();
 
   String photo;
 
@@ -52,6 +54,8 @@ public class PostEditorViewModel extends ViewModel {
   }
 
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
-
+    tripRepository.addNote(UsersRepository.getInstance().user.getId(),
+        UsersRepository.getInstance().user.getToken(),
+        new AddNoteRequest(noteHeadline, noteText, place, trip.getTripId()));
   }
 }

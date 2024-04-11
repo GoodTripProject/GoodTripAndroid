@@ -93,8 +93,10 @@ public class PostEditorFragment extends Fragment {
     Bundle args = getArguments();
     if (args != null) {
       this.trip = (Trip) args.get(FeedAdapter.POST_ARG);
+      postEditorViewModel.setTrip(trip);
     }
     if (trip != null) {
+      postEditorViewModel.setTrip(trip);
       setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
       binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
       binding.postTitle.setText(trip.getTitle());

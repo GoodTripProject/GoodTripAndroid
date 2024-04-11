@@ -68,7 +68,9 @@ public class ProfileFragment extends Fragment {
   }
 
   public void setUserInfo() {
-    setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
+    if (user.getMainPhotoUrl()!=null) {
+      setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
+    }
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
   }
