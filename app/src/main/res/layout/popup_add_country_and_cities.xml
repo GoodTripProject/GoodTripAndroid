@@ -11,11 +11,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:layout_marginStart="76dp"
+    android:layout_marginStart="35dp"
     android:layout_centerInParent="true"
-    android:text="@string/add_country"
+    android:text="Add new destination"
     android:textColor="@color/black"
-    android:textSize="18sp"
+    android:textSize="20sp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
   <TextView
@@ -46,6 +46,15 @@
     android:orientation="horizontal">
 
   </LinearLayout>
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Add new city"
+    app:layout_constraintEnd_toStartOf="@id/popup_add_city"
+    app:layout_constraintTop_toBottomOf="@id/enter_country_name"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="20dp"
+    android:textSize="18sp"/>
   <Button
     android:id="@+id/popup_add_city"
     android:layout_width="48dp"
@@ -60,7 +69,8 @@
     app:layout_constraintTop_toBottomOf="@+id/country_name_label" />
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
   </LinearLayout>
   <LinearLayout
@@ -83,7 +93,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="28dp"
-    android:text="@string/add_country"
+    android:text="Add destination"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.142"
     app:layout_constraintStart_toStartOf="parent"
