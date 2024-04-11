@@ -83,24 +83,7 @@ public class PlanTripViewModel extends ViewModel {
               TripState.PLANNED, Collections.emptyList(),
               countries.stream().map(TripRepository::getAddCountryRequestFromCountryVisit).collect(
                   Collectors.toList())));
-      runExecutorToWaitResult(result, () -> {});
     }
-  }
-
-  private <T> void runExecutorToWaitResult(ResultHolder<T> result, Runnable func) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    Handler handler = new Handler(Looper.getMainLooper());
-    executor.execute(() -> {
-      synchronized (result) {
-        try {
-          result.wait();
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
-      handler.post(func);
-    });
-
   }
 
   private boolean isDateNotValid(String dateString) {
