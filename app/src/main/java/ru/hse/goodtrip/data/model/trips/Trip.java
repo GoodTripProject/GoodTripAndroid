@@ -3,6 +3,7 @@ package ru.hse.goodtrip.data.model.trips;
 import androidx.annotation.Nullable;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class Trip implements Serializable {
   private Set<ShowPlace> interestingPlacesToVisit;
   private List<Note> notes;
   private User user;
-  private LocalDate timeOfPublication = LocalDate.now(); // TODO
+  private LocalDate timeOfPublication;
   private TripState tripState;
   private Integer tripId;
 
@@ -41,13 +42,14 @@ public class Trip implements Serializable {
    * @param user                     user trip associated with.
    */
   public Trip(String title, List<CountryVisit> countries, LocalDate startTripDate,
-      LocalDate endTripDate, @Nullable String mainPhotoUrl, int moneyInUsd,
+      LocalDate endTripDate, LocalDate timeOfPublication, @Nullable String mainPhotoUrl, int moneyInUsd,
       Set<ShowPlace> interestingPlacesToVisit, User user, Integer tripId) {
     this.title = title;
     this.countries = countries;
     this.startTripDate = startTripDate;
     this.endTripDate = endTripDate;
     this.mainPhotoUrl = mainPhotoUrl;
+    this.timeOfPublication = timeOfPublication;
     this.moneyInUsd = moneyInUsd;
     this.interestingPlacesToVisit = interestingPlacesToVisit;
     this.user = user;

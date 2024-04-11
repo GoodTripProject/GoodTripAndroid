@@ -3,6 +3,7 @@ package ru.hse.goodtrip.data;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,10 +54,12 @@ public class TripRepository {
   public static ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {
     ru.hse.goodtrip.data.model.trips.Trip result = new ru.hse.goodtrip.data.model.trips.Trip(
         tripResponse.getTitle(), Collections.emptyList(),
-        LocalDate.now(),
-        LocalDate.now(), tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
+        tripResponse.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+        tripResponse.getArrivalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+        tripResponse.getPublicationTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+        tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
         new HashSet<>(), UsersRepository.getInstance()
-        .getLoggedUser(),tripResponse.getId());
+        .getLoggedUser(), tripResponse.getId());
     List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = getCountryVisitsFromCountryVisitResponse(
         tripResponse.getVisits());
     List<ru.hse.goodtrip.data.model.trips.Note> notes = getNotesFromNoteResponses(
