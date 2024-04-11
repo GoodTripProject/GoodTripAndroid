@@ -5,7 +5,17 @@
   android:layout_height="match_parent"
   tools:context=".ui.trips.feed.FeedFragment">
 
+  <TextView
+    android:id="@+id/emptyList"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:textSize="20sp"
+    android:text="No posts yet!\n\nPress (+) to create your own" />
+
   <androidx.recyclerview.widget.RecyclerView
+    android:layout_marginTop="?attr/actionBarSize"
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

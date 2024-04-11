@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
 
@@ -22,6 +23,24 @@ public class FeedFragment extends Fragment {
   private FragmentFeedBinding binding;
 
   private FeedRecyclerViewHolder feedRecyclerViewHolder;
+
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    if (UsersRepository.getInstance().getLoggedUser() != null) {
+      feedRecyclerViewHolder.refreshFeed();
+    }
+
+    ((MainActivity) requireActivity()).getSupportActionBar().show();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+  }
+
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -52,6 +71,12 @@ public class FeedFragment extends Fragment {
       initializeLayoutManager();
       initializeAdapter();
       initializeScrollListener();
+
+      if (feedAdapter.getItemCount() == 0) {
+        binding.emptyList.setVisibility(View.VISIBLE);
+      } else {
+        binding.emptyList.setVisibility(View.GONE);
+      }
     }
 
 
@@ -113,12 +138,19 @@ public class FeedFragment extends Fragment {
             throw new RuntimeException(e);
           }
         }
-        feedRecyclerView.post(() -> {
+        feedRecyclerView.postDelayed(() -> {
               loadData();
 
               feedAdapter.hideLoadingView();
+
+              if (feedAdapter.getItemCount() == 0) {
+                binding.emptyList.setVisibility(View.VISIBLE);
+              } else {
+                binding.emptyList.setVisibility(View.GONE);
+              }
+
               isLoading = false;
-            }
+            }, 1000
         );
       });
 
@@ -128,7 +160,6 @@ public class FeedFragment extends Fragment {
      * Update data with TripsRepository.
      */
     public void loadData() {
-      // TODO: Repository access in future
       feedAdapter.setItems(feedViewModel.getPosts());
     }
   }
