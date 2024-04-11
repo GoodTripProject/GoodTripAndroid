@@ -110,14 +110,10 @@ public class PostEditorFragment extends Fragment {
       }
 
       LinearLayout notes = binding.notes;
-      boolean flag = false; // TODO: first note with image for testing
       for (Note note : trip.getNotes()) {
         ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
         noteBinding.noteHeadline.setText(note.getHeadline());
-        if (!flag) {
-          setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl(), R.drawable.kazantip);
-          flag = true;
-        } else if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
+        if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
           setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
         } else {
           noteBinding.imageContainer.setVisibility(GONE);
@@ -148,6 +144,13 @@ public class PostEditorFragment extends Fragment {
       popupWindowNote.showAtLocation(view, Gravity.CENTER, 0, 0);
       setupAddNotePopup(popupViewNote, popupWindowNote);
     });
+
+    binding.postButton.setOnClickListener(this::newPost);
+  }
+
+  private void newPost(View view) {
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }
 
   private void setupAddNotePopup(View popupView, PopupWindow popupWindow) {

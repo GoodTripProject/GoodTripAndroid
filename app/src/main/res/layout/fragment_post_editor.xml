@@ -177,7 +177,7 @@
       <Button
         android:layout_gravity="center"
         android:background="@drawable/button"
-        android:id="@+id/logInButton"
+        android:id="@+id/postButton"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_height="60dp"
