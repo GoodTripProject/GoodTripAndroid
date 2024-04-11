@@ -8,94 +8,124 @@
   android:background="@color/white"
   tools:context=".ui.profile.ProfileFragment">
 
-  <de.hdodenhof.circleimageview.CircleImageView
-    android:id="@+id/profileImage"
-    android:layout_width="120dp"
-    android:layout_height="120dp"
-    android:contentDescription="@string/profileImg"
-    android:src="@drawable/baseline_account_circle_24"
-    app:civ_border_color="#9D9D9D"
-    app:civ_border_width="2dp"
-    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.24"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
   <LinearLayout
-    android:id="@+id/linearLayout"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintDimensionRatio="1:1"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
-    app:layout_constraintStart_toStartOf="parent"
-    tools:ignore="MissingConstraints">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/profileImage"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="50dp"
+      android:layout_width="200dp"
+      android:layout_height="200dp"
+      android:contentDescription="@string/profileImg"
+      android:src="@drawable/baseline_account_circle_24"
+      app:civ_border_color="#9D9D9D"
+      app:civ_border_width="2dp"
+      app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.24"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/friendsButton"
-      android:layout_width="match_parent"
+    <TextView
+      android:padding="20dp"
+      android:layout_gravity="center_horizontal"
+      android:id="@+id/fullnameView"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="32dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginEnd="32dp"
-      android:layout_marginBottom="16dp"
-      android:background="@color/light_orange"
-      android:text="@string/Friends"
-      android:textColor="@color/white" />
+      android:text="@string/fullName"
+      android:textSize="40sp"
+      android:textStyle="bold"
+      android:textColor="@color/black" />
 
-    <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/settingsButton"
-      android:layout_width="match_parent"
+    <TextView
+      android:layout_gravity="center_horizontal"
+      android:id="@+id/handleView"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="32dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginEnd="32dp"
-      android:layout_marginBottom="16dp"
-      android:background="@color/light_orange"
-      android:text="@string/Settings"
-      android:textColor="@color/white" />
+      android:text="@string/userHandle"
+      android:textSize="25sp"
+      android:textColor="@color/black" />
 
-    <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/myTripsButton"
+    <LinearLayout
+      android:layout_gravity="center_horizontal"
+      android:id="@+id/linearLayout"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="32dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginEnd="32dp"
-      android:layout_marginBottom="16dp"
-      android:background="@color/light_orange"
-      android:text="@string/my_trips"
-      android:textColor="@color/white" />
+      android:layout_height="300dp"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/friendsButton"
+          android:layout_width="300dp"
+          android:padding="20dp"
+          android:layout_height="wrap_content"
+          android:background="@drawable/button"
+          android:text="@string/Friends"
+          android:textColor="@color/white" />
+        <ImageView
+          android:layout_marginStart="10dp"
+          android:layout_width="40dp"
+          android:layout_gravity="center_vertical"
+          android:layout_height="40dp"
+          android:src="@drawable/baseline_contact_phone_24"/>
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/settingsButton"
+          android:layout_width="300dp"
+          android:padding="20dp"
+          android:layout_height="wrap_content"
+          android:background="@drawable/button"
+          android:text="@string/Settings"
+          android:textColor="@color/white" />
+        <ImageView
+          android:layout_marginStart="10dp"
+          android:layout_gravity="center_vertical"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:src="@drawable/baseline_build_24"/>
+      </LinearLayout>
+      <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/myTripsButton"
+          android:layout_width="300dp"
+          android:padding="20dp"
+          android:layout_gravity="center_horizontal"
+          android:layout_height="wrap_content"
+          android:background="@drawable/button"
+          android:text="@string/my_trips"
+          android:textColor="@color/white" />
+        <ImageView
+          android:layout_marginStart="10dp"
+          android:layout_gravity="center_vertical"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:src="@drawable/ic_map"/>
+      </LinearLayout>
+
+
+    </LinearLayout>
 
   </LinearLayout>
 
-  <TextView
-    android:id="@+id/fullnameView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/fullName"
-    android:textSize="17sp"
-    android:textColor="@color/black"
-    app:layout_constraintBottom_toBottomOf="@+id/profileImage"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/profileImage"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.6" />
-
-  <TextView
-    android:id="@+id/handleView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/userHandle"
-    android:textColor="@color/black"
-    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/profileImage"
-    app:layout_constraintTop_toTopOf="@+id/profileImage"
-    app:layout_constraintVertical_bias="0.39" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
