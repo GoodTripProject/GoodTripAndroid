@@ -1,19 +1,19 @@
 package ru.hse.goodtrip.ui.map;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import java.util.Collections;
+import java.util.List;
+import lombok.Getter;
+import ru.hse.goodtrip.data.TripRepository;
+import ru.hse.goodtrip.data.model.trips.Trip;
 
-public class MapsViewModel {
+public class MapsViewModel extends ViewModel {
 
-  private final MutableLiveData<String> text;
+  @Getter
+  private List<Trip> marks = Collections.emptyList();
 
-  public MapsViewModel() {
-    text = new MutableLiveData<>();
-    text.setValue("There will be a map!");
+
+  public void refreshMarks() {
+    marks = TripRepository.getInstance().getTrips();
   }
-
-  public LiveData<String> getText() {
-    return text;
-  }
-
 }
