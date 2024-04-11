@@ -5,7 +5,16 @@
   android:layout_height="match_parent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context=".ui.trips.feed.post.PostNotesFragment">
-  <ScrollView
+
+  <TextView
+    android:id="@+id/noNotes"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="No notes in post :("
+    android:gravity="center"
+    android:textSize="30sp" />
+  <androidx.core.widget.NestedScrollView
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     android:layout_width="match_parent"
@@ -20,6 +29,6 @@
       android:layout_height="wrap_content">
 
     </LinearLayout>
-  </ScrollView>
+  </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.trips.feed.post.PostDetailsFragment">
   <ScrollView
+    android:layout_marginBottom="165dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,6 +24,8 @@
         android:src="@drawable/kazantip" />
 
       <TextView
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:id="@+id/postTitle"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
@@ -35,15 +38,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="duration" />
+      <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
 
       <LinearLayout
+        android:padding="15dp"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="horizontal">
         <ImageView
           android:id="@+id/profileImageView"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
+          android:layout_width="70dp"
+          android:layout_height="70dp"
           android:src="@drawable/baseline_account_circle_24" />
         <LinearLayout
           android:layout_gravity="center_vertical"
@@ -51,30 +61,58 @@
           android:orientation="vertical"
           android:layout_height="wrap_content">
           <TextView
+            android:layout_marginStart="20dp"
             android:id="@+id/profileNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
+            android:textSize="30sp"
             android:textColor="@color/black"
             android:text="@string/name_surname" />
         </LinearLayout>
 
       </LinearLayout>
-      <TextView
-        android:id="@+id/budgetLabel"
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
+
+      <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:textColor="@color/black"
-        android:layout_marginStart="30dp"
-        android:text="two thousand nineteen rubles" />
+        android:orientation="horizontal">
+        <TextView
+          android:textStyle="bold"
+          android:padding="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="30sp"
+          android:textColor="@color/black"
+          android:layout_marginStart="15dp"
+          android:text="Budget:" />
+        <TextView
+          android:id="@+id/budgetLabel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="20sp"
+          android:textColor="@color/black"
+          android:textStyle="italic"
+          android:text="two thousand nineteen rubles" />
+
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
       <TextView
-        android:layout_marginTop="20dp"
+        android:padding="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="15dp"
         android:text="Route:" />
 
       <LinearLayout
@@ -86,7 +124,16 @@
         app:layout_constraintStart_toStartOf="parent">
 
       </LinearLayout>
+      <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:background="#808080" />
+
       <TextView
+        android:textSize="20sp"
+        android:gravity="end"
         android:id="@+id/dateOfPublication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -3,6 +3,7 @@ package ru.hse.goodtrip.ui.trips.feed.post;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDateFormatted;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrlCropped;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,14 +57,14 @@ public class PostDetailsFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     String dateFormat = "dd.MM.yyyy";
 
-    setImageByUrl(binding.profileImageView,
+    setImageByUrlCropped(binding.profileImageView,
         "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg",
         R.drawable.baseline_account_circle_24
     );
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
     binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
     binding.postTitle.setText(trip.getTitle());
-    binding.profileNameText.setText("User name");
+    binding.profileNameText.setText(trip.getUser().getDisplayName());
     binding.tripDuration.setText(
         getDuration(trip.getStartTripDate(), trip.getEndTripDate(), dateFormat));
     binding.dateOfPublication.setText(

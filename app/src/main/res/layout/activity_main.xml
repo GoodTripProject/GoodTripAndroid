@@ -52,11 +52,13 @@
         android:id="@+id/bottomAppBarPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
           android:id="@+id/bottom_navigation_view_post"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           app:labelVisibilityMode="labeled"
           app:menu="@menu/bottom_post_nav_menu" />
@@ -70,6 +72,7 @@
 
       <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -143,17 +143,15 @@ public class FeedFragment extends Fragment {
 
               feedAdapter.hideLoadingView();
 
-              if (feedAdapter.getItemCount() == 0) {
-                binding.emptyList.setVisibility(View.VISIBLE);
-              } else {
-                binding.emptyList.setVisibility(View.GONE);
-              }
-
               isLoading = false;
             }, 1000
         );
       });
-
+      if (feedAdapter.getItemCount() == 0) {
+        binding.emptyList.setVisibility(View.VISIBLE);
+      } else {
+        binding.emptyList.setVisibility(View.GONE);
+      }
     }
 
     /**
