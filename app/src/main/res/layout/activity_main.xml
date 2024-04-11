@@ -11,12 +11,35 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".MainActivity">
-    <include layout="@layout/action_bar" />
+    <com.google.android.material.appbar.AppBarLayout
+      android:background="@android:color/transparent"
+      android:id="@+id/app_bar"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent"
+      app:elevation="0dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+      <androidx.appcompat.widget.Toolbar
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@color/white"
+        android:id="@+id/my_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    </com.google.android.material.appbar.AppBarLayout>
     <fragment
       android:id="@+id/nav_host_fragment_container"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
-      android:layout_height="810dp"
+      android:layout_height="match_parent"
       app:defaultNavHost="true"
       app:navGraph="@navigation/main_navigation_graph" />
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,7 +65,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:id="@+id/bottomToolsBar"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="match_parent">
 
       <com.google.android.material.bottomappbar.BottomAppBar
@@ -50,14 +73,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:fabCradleRoundedCornerRadius="10dp">
+        app:fabCradleRoundedCornerRadius="10dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
           android:id="@+id/bottomNavigationView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="20dp"
-          app:labelVisibilityMode="labeled"
           app:menu="@menu/bottom_nav_menu" />
       </com.google.android.material.bottomappbar.BottomAppBar>
 

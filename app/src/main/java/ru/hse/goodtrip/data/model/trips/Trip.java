@@ -29,6 +29,7 @@ public class Trip implements Serializable {
   private TripState tripState;
   private Integer tripId;
 
+
   /**
    * creates trip.
    *

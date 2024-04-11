@@ -43,7 +43,6 @@ public class TripRepository {
   @Getter
   private List<ru.hse.goodtrip.data.model.trips.Trip> trips = new ArrayList<>();
 
-
   public static TripRepository getInstance() {
     if (instance == null) {
       instance = new TripRepository();
@@ -52,6 +51,7 @@ public class TripRepository {
   }
 
   public static ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {
+
     ru.hse.goodtrip.data.model.trips.Trip result = new ru.hse.goodtrip.data.model.trips.Trip(
         tripResponse.getTitle(), Collections.emptyList(),
         tripResponse.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),

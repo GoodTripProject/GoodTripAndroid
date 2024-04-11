@@ -62,7 +62,6 @@ public class ProfileFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     setUserInfo();
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
-
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());
   }
