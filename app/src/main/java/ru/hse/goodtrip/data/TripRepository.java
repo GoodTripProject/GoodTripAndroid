@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,13 +38,10 @@ public class TripRepository {
     this.tripService = NetworkManager.getInstance().getInstanceOfService(TripService.class);
   }
 
-  private String authToken;
 
-  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
+  @Getter
+  private List<ru.hse.goodtrip.data.model.trips.Trip> trips = new ArrayList<>();
 
-  public void setAuthToken(String authToken) {
-    this.authToken = "Bearer " + authToken;
-  }
 
   public static TripRepository getInstance() {
     if (instance == null) {
@@ -58,7 +56,7 @@ public class TripRepository {
         LocalDate.now(),
         LocalDate.now(), tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
         new HashSet<>(), UsersRepository.getInstance()
-        .getLoggedUser());
+        .getLoggedUser(),tripResponse.getId());
     List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = getCountryVisitsFromCountryVisitResponse(
         tripResponse.getVisits());
     List<ru.hse.goodtrip.data.model.trips.Note> notes = getNotesFromNoteResponses(
@@ -164,6 +162,7 @@ public class TripRepository {
     return new Callback<T>() {
       @Override
       public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+        Log.println(Log.DEBUG, "Response", "Response " + response.body());
         synchronized (resultHolder) {
           T responseBody = response.body();
           if (responseBody == null) {
@@ -179,6 +178,7 @@ public class TripRepository {
 
       @Override
       public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
+        Log.println(Log.DEBUG, "Response", "Response failed" + throwable);
         synchronized (resultHolder) {
           resultHolder.setResult(new Result.Error<>(new InterruptedException(errorMessage)));
           resultHolder.notify();
@@ -201,9 +201,9 @@ public class TripRepository {
   }
 
 
-  public ResultHolder<Object> getTripById(Integer tripId) {//TODO возвращаемый тип
+  public ResultHolder<Object> getTripById(Integer tripId,String token) {//TODO возвращаемый тип
     ResultHolder<Object> resultHolder = new ResultHolder<>();
-    Call<Object> getTripCall = tripService.getTripById(tripId, authToken);
+    Call<Object> getTripCall = tripService.getTripById(tripId, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
     return resultHolder;
   }
@@ -217,44 +217,44 @@ public class TripRepository {
     return resultHolder;
   }
 
-  public ResultHolder<String> deleteTrip(Integer tripId) {
+  public ResultHolder<String> deleteTrip(Integer tripId, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteTripCall = tripService.deleteTripById(tripId, authToken);
+    Call<String> deleteTripCall = tripService.deleteTripById(tripId, getWrappedToken(token));
     deleteTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
     return resultHolder;
   }
 
-  public ResultHolder<Object> getNoteById(Integer noteId) {
+  public ResultHolder<Object> getNoteById(Integer noteId,String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
-    Call<Object> getTripCall = tripService.getNoteById(noteId, authToken);
+    Call<Object> getTripCall = tripService.getNoteById(noteId, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
     return resultHolder;
   }
 
-  public ResultHolder<String> deleteNoteById(Integer noteId) {
+  public ResultHolder<String> deleteNoteById(Integer noteId,String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, authToken);
+    Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, getWrappedToken(token));
     deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
     return resultHolder;
   }
 
-  public ResultHolder<String> addNote(Integer userId, AddNoteRequest addNoteRequest) {
+  public ResultHolder<String> addNote(Integer userId, String token, AddNoteRequest addNoteRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, authToken);
+    Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, getWrappedToken(token));
     addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist"));
     return resultHolder;
   }
 
-  public ResultHolder<String> addCountryVisit(Integer tripId, AddCountryRequest addCountryRequest) {
+  public ResultHolder<String> addCountryVisit(Integer tripId, String token,AddCountryRequest addCountryRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest, authToken);
+    Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest, getWrappedToken(token));
     addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist"));
     return resultHolder;
   }
 
-  public ResultHolder<String> deleteCountryVisit(Integer countryVisitId) {
+  public ResultHolder<String> deleteCountryVisit(Integer countryVisitId,String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId, authToken);
+    Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId, getWrappedToken(token));
     deleteCountryCall.enqueue(getCallback(resultHolder, "Country with this id not exist"));
     return resultHolder;
   }
