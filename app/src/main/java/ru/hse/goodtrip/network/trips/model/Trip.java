@@ -1,6 +1,7 @@
 package ru.hse.goodtrip.network.trips.model;
 
 import androidx.annotation.Nullable;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -8,10 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hse.goodtrip.data.model.trips.TripState;
+
+/**
+ * Trip network object.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Trip {
+public class Trip implements Serializable {
 
   private Integer id;
 
@@ -36,7 +41,22 @@ public class Trip {
 
   private List<CountryVisit> visits;
 
-  public Trip(Integer userId, String title, Integer moneyInUsd, @Nullable String mainPhotoUrl, Date departureDate, Date arrivalDate, TripState state, List<Note> notes, List<CountryVisit> visits) {
+  /**
+   * Creates trip.
+   *
+   * @param userId Id of user.
+   * @param title Title of trip.
+   * @param moneyInUsd Budget of trip.
+   * @param mainPhotoUrl Url to main photo.
+   * @param departureDate Date of departure.
+   * @param arrivalDate Date of arrival.
+   * @param state State of trip.
+   * @param notes Notes.
+   * @param visits CountryVisits.
+   */
+  public Trip(Integer userId, String title, Integer moneyInUsd, @Nullable String mainPhotoUrl,
+      Date departureDate, Date arrivalDate, TripState state, List<Note> notes,
+      List<CountryVisit> visits) {
     this.userId = userId;
     this.title = title;
     this.moneyInUsd = moneyInUsd;

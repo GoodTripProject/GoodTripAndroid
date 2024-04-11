@@ -1,21 +1,22 @@
 package ru.hse.goodtrip.network.trips.model;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * City network object.
+ */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class AddNoteRequest implements Serializable {
+public class City {
 
-  String title;
 
-  String photoUrl;
+  private String city;
 
-  String googlePlaceId;
 
-  Integer tripId;
+  private Double longitude;
 
+  private Double latitude;
 }

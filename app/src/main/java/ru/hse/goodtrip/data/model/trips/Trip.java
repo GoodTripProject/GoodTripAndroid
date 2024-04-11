@@ -24,9 +24,10 @@ public class Trip implements Serializable {
   private Set<ShowPlace> interestingPlacesToVisit;
   private List<Note> notes;
   private User user;
-  private LocalDate timeOfPublication = LocalDate.now(); // TODO
+  private LocalDate timeOfPublication;
   private TripState tripState;
-  private long tripId;
+  private Integer tripId;
+
 
   /**
    * creates trip.
@@ -40,18 +41,23 @@ public class Trip implements Serializable {
    * @param interestingPlacesToVisit places in trip.
    * @param user                     user trip associated with.
    */
-  public Trip(String title, List<CountryVisit> countries, LocalDate startTripDate,
-      LocalDate endTripDate, @Nullable String mainPhotoUrl, int moneyInUsd,
-      Set<ShowPlace> interestingPlacesToVisit, User user) {
+  public Trip(String title, List<CountryVisit> countries,
+      LocalDate startTripDate,
+      LocalDate endTripDate, LocalDate timeOfPublication,
+      @Nullable String mainPhotoUrl,
+      int moneyInUsd, Set<ShowPlace> interestingPlacesToVisit,
+      User user, Integer tripId) {
     this.title = title;
     this.countries = countries;
     this.startTripDate = startTripDate;
     this.endTripDate = endTripDate;
     this.mainPhotoUrl = mainPhotoUrl;
+    this.timeOfPublication = timeOfPublication;
     this.moneyInUsd = moneyInUsd;
     this.interestingPlacesToVisit = interestingPlacesToVisit;
     this.user = user;
     this.tripState = TripState.IN_PLANNING;
+    this.tripId = tripId;
   }
 
   private enum TripState {
