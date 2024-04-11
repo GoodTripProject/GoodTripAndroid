@@ -53,13 +53,19 @@ public class PostNotesFragment extends Fragment {
     if (trip.getNotes().isEmpty()) {
       binding.noNotes.setVisibility(View.VISIBLE);
     } else {
+      int i = 0;
       for (Note note : trip.getNotes()) {
+        i++;
         ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
         noteBinding.noteHeadline.setText(note.getHeadline());
-        if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
-          setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
-        } else {
+        if (i == 2) {
           noteBinding.imageContainer.setVisibility(GONE);
+        } else {
+          if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
+            setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
+          } else {
+            noteBinding.imageContainer.setVisibility(GONE);
+          }
         }
         noteBinding.noteText.setText(note.getNote());
         noteBinding.placeName.setText(note.getPlace().getName());

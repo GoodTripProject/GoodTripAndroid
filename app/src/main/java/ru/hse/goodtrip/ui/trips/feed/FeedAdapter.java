@@ -3,6 +3,7 @@ package ru.hse.goodtrip.ui.trips.feed;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDateFormatted;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrlCropped;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -82,9 +83,15 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         getDuration(trip.getStartTripDate(), trip.getEndTripDate(), dateFormat));
     binding.dateOfPublication.setText(getDateFormatted(trip.getTimeOfPublication(), dateFormat));
     binding.countriesText.setText(countries);
+    if (trip.getUser().getMainPhotoUrl() != null) {
+      setImageByUrl(binding.profileImageView, String.valueOf(trip.getUser().getMainPhotoUrl()),
+          R.drawable.baseline_account_circle_24);
+    } else {
+      setImageByUrlCropped(binding.profileImageView,
+          "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg",
+          R.drawable.baseline_account_circle_24);
+    }
 
-    setImageByUrl(binding.profileImageView, String.valueOf(trip.getUser().getMainPhotoUrl()),
-        R.drawable.baseline_account_circle_24);
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
   }
 

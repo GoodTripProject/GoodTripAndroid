@@ -1,6 +1,7 @@
 package ru.hse.goodtrip.data;
 
 import android.net.Uri;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import lombok.Setter;
 import retrofit2.Call;
