@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
   }
 
   public void setUserInfo() {
-    if (user.getMainPhotoUrl()!=null) {
+    if (user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
     }
     binding.fullnameView.setText(user.getDisplayName());

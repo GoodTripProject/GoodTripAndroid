@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hse.goodtrip.data.model.trips.TripState;
 
+/**
+ * Trip network object.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,6 +41,19 @@ public class Trip implements Serializable {
 
   private List<CountryVisit> visits;
 
+  /**
+   * Creates trip.
+   *
+   * @param userId Id of user.
+   * @param title Title of trip.
+   * @param moneyInUsd Budget of trip.
+   * @param mainPhotoUrl Url to main photo.
+   * @param departureDate Date of departure.
+   * @param arrivalDate Date of arrival.
+   * @param state State of trip.
+   * @param notes Notes.
+   * @param visits CountryVisits.
+   */
   public Trip(Integer userId, String title, Integer moneyInUsd, @Nullable String mainPhotoUrl,
       Date departureDate, Date arrivalDate, TripState state, List<Note> notes,
       List<CountryVisit> visits) {

@@ -54,7 +54,7 @@ public class CityVisit implements Serializable {
 
   static class PointCustomDeserializer extends StdDeserializer<Point> {
 
-    private final static int SRID = 4326;
+    static private final int SRID = 4326;
 
     protected PointCustomDeserializer() {
       super(Point.class);

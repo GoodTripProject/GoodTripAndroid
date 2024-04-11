@@ -2,7 +2,6 @@ package ru.hse.goodtrip.data;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,25 +49,42 @@ public class TripRepository {
     return instance;
   }
 
+  /**
+   * Convert trip from network to trip.
+   *
+   * @param tripResponse Trip response.
+   * @return Trip.
+   */
   public static ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {
 
     ru.hse.goodtrip.data.model.trips.Trip result = new ru.hse.goodtrip.data.model.trips.Trip(
         tripResponse.getTitle(), Collections.emptyList(),
-        tripResponse.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-        tripResponse.getArrivalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-        tripResponse.getPublicationTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+        tripResponse.getDepartureDate().toInstant()
+            .atZone(ZoneId.systemDefault()).toLocalDate(),
+        tripResponse.getArrivalDate().toInstant()
+            .atZone(ZoneId.systemDefault()).toLocalDate(),
+        tripResponse.getPublicationTimestamp().toInstant()
+            .atZone(ZoneId.systemDefault()).toLocalDate(),
         tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
         new HashSet<>(), UsersRepository.getInstance()
         .getLoggedUser(), tripResponse.getId());
-    List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = getCountryVisitsFromCountryVisitResponse(
+    List<ru.hse.goodtrip.data.model.trips.CountryVisit>
+        countryVisits = getCountryVisitsFromCountryVisitResponse(
         tripResponse.getVisits());
-    List<ru.hse.goodtrip.data.model.trips.Note> notes = getNotesFromNoteResponses(
+    List<ru.hse.goodtrip.data.model.trips.Note>
+        notes = getNotesFromNoteResponses(
         tripResponse.getNotes());
     result.setCountries(countryVisits);
     result.setNotes(notes);
     return result;
   }
 
+  /**
+   * Converts noteResponses to notes.
+   *
+   * @param noteResponses Notes from network.
+   * @return List of notes.
+   */
   @NonNull
   public static List<ru.hse.goodtrip.data.model.trips.Note> getNotesFromNoteResponses(
       List<Note> noteResponses) {
@@ -76,29 +92,49 @@ public class TripRepository {
     for (Note noteResponse : noteResponses) {
       notes.add(
           new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(), noteResponse.getText(),
-              noteResponse.getPhotoUrl(), new Country("name", new Coordinates(0, 0))));
+              noteResponse.getPhotoUrl(),
+              new Country(noteResponse.getGooglePlaceId(),
+                  new Coordinates(0, 0))));
     }
     return notes;
   }
 
+  /**
+   * Converts country visit response to country visit.
+   *
+   * @param countryVisitResponses Country visit responses.
+   * @return List of country visit.
+   */
   @NonNull
   public static List<ru.hse.goodtrip.data.model.trips.CountryVisit> getCountryVisitsFromCountryVisitResponse(
       List<CountryVisit> countryVisitResponses) {
     List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = new ArrayList<>();
     for (CountryVisit visit : countryVisitResponses) {
-      countryVisits.add(getCountryVisitFromCountryVisitResponse(visit));
+      countryVisits.add(
+          getCountryVisitFromCountryVisitResponse(visit));
     }
     return countryVisits;
   }
 
+  /**
+   * Converts CountryVisit response to CountryVisit.
+   *
+   * @param visit CountryVisit response.
+   * @return CountryVisit.
+   */
   @NonNull
   public static ru.hse.goodtrip.data.model.trips.CountryVisit getCountryVisitFromCountryVisitResponse(
       CountryVisit visit) {
-    ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit = new ru.hse.goodtrip.data.model.trips.CountryVisit(
-        new Country(visit.getCountry(), new Coordinates(0, 0)), Collections.emptyList());
+    ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit
+        = new ru.hse.goodtrip.data.model.trips.CountryVisit(
+        new Country(visit.getCountry(),
+            new Coordinates(0, 0)),
+        Collections.emptyList());
     List<ru.hse.goodtrip.data.model.trips.City> cities = new ArrayList<>();
     for (CityVisit cityVisitResponse : visit.getCities()) {
-      cities.add(new ru.hse.goodtrip.data.model.trips.City(cityVisitResponse.getCity(),
+      cities.add(new
+          ru.hse.goodtrip.data.model.trips.City(
+          cityVisitResponse.getCity(),
           new Coordinates(0, 0),
           countryVisit.getCountry()));
     }
@@ -106,6 +142,12 @@ public class TripRepository {
     return countryVisit;
   }
 
+  /**
+   * Converts CountryVisit to AddCountryRequest.
+   *
+   * @param visit CountryVisit.
+   * @return Add Country Request.
+   */
   @NonNull
   public static AddCountryRequest getAddCountryRequestFromCountryVisit(
       ru.hse.goodtrip.data.model.trips.CountryVisit visit) {
@@ -119,6 +161,12 @@ public class TripRepository {
     return countryVisit;
   }
 
+  /**
+   * Converts TripResponses to Trips.
+   *
+   * @param tripResponse trips from network.
+   * @return Returns list of trips.
+   */
   public static List<ru.hse.goodtrip.data.model.trips.Trip> getTripsFromTripResponses(
       List<Trip> tripResponse) {
     List<ru.hse.goodtrip.data.model.trips.Trip> result = new ArrayList<>();
@@ -128,6 +176,12 @@ public class TripRepository {
     return result;
   }
 
+  /**
+   * Make a trip callback.
+   *
+   * @param resultHolder result Holder.
+   * @return callback.
+   */
   private Callback<List<Trip>> getTripCallback(
       ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder) {
     return new Callback<List<Trip>>() {
@@ -161,6 +215,12 @@ public class TripRepository {
     };
   }
 
+  /**
+   * Make a callback.
+   *
+   * @param resultHolder result Holder.
+   * @return callback.
+   */
   private <T> Callback<T> getCallback(ResultHolder<T> resultHolder, String errorMessage) {
     return new Callback<T>() {
       @Override
@@ -190,6 +250,13 @@ public class TripRepository {
     };
   }
 
+  /**
+   * Make request to the server to get trips.
+   *
+   * @param userId User id.
+   * @param token  Jwt token.
+   * @return Result Holder of trips.
+   */
   public ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> getUserTrips(Integer userId,
       String token) {
     Log.println(Log.WARN, "hey", "trips");
@@ -199,18 +266,39 @@ public class TripRepository {
     return resultHolder;
   }
 
+  /**
+   * Wraps token.
+   *
+   * @param token Bare jwt token.
+   * @return Wrapped token.
+   */
   private String getWrappedToken(String token) {
     return "Bearer " + token;
   }
 
 
-  public ResultHolder<Object> getTripById(Integer tripId,String token) {//TODO возвращаемый тип
+  /**
+   * Make request to the server to get trip.
+   *
+   * @param tripId Id of trip.
+   * @param token  Jwt token.
+   * @return ResultHolder of trip.
+   */
+  public ResultHolder<Object> getTripById(Integer tripId, String token) {//TODO возвращаемый тип
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = tripService.getTripById(tripId, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
     return resultHolder;
   }
 
+  /**
+   * Make request to the server to add trip.
+   *
+   * @param userId         Id of user.
+   * @param token          Jwt token.
+   * @param addTripRequest Request.
+   * @return ResultHolder of String which holds result of request.
+   */
   public ResultHolder<String> addTrip(Integer userId, String token,
       AddTripRequest addTripRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
@@ -220,6 +308,13 @@ public class TripRepository {
     return resultHolder;
   }
 
+  /**
+   * Make request to the server to delete trip.
+   *
+   * @param tripId Id of trip.
+   * @param token  Jwt token.
+   * @return ResultHolder of String which holds result of request.
+   */
   public ResultHolder<String> deleteTrip(Integer tripId, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> deleteTripCall = tripService.deleteTripById(tripId, getWrappedToken(token));
@@ -227,20 +322,42 @@ public class TripRepository {
     return resultHolder;
   }
 
-  public ResultHolder<Object> getNoteById(Integer noteId,String token) {
+  /**
+   * Make request to the server to get note by id.
+   *
+   * @param noteId Id of note.
+   * @param token  Jwt token.
+   * @return ResultHolder.
+   */
+  public ResultHolder<Object> getNoteById(Integer noteId, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = tripService.getNoteById(noteId, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
     return resultHolder;
   }
 
-  public ResultHolder<String> deleteNoteById(Integer noteId,String token) {
+  /**
+   * Make request to the server to delete note by id.
+   *
+   * @param noteId Id of note.
+   * @param token  Jwt token.
+   * @return ResultHolder.
+   */
+  public ResultHolder<String> deleteNoteById(Integer noteId, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, getWrappedToken(token));
     deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
     return resultHolder;
   }
 
+  /**
+   * Make request to the server to add note.
+   *
+   * @param userId         Id of user.
+   * @param token          Jwt token.
+   * @param addNoteRequest AddNoteRequest.
+   * @return ResultHolder of String which holds result of request.
+   */
   public ResultHolder<String> addNote(Integer userId, String token, AddNoteRequest addNoteRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, getWrappedToken(token));
@@ -248,16 +365,34 @@ public class TripRepository {
     return resultHolder;
   }
 
-  public ResultHolder<String> addCountryVisit(Integer tripId, String token,AddCountryRequest addCountryRequest) {
+  /**
+   * Make request to the server to add country visit.
+   *
+   * @param tripId            Id of trip.
+   * @param token             Jwt token.
+   * @param addCountryRequest AddCountryRequest.
+   * @return ResultHolder of String which holds result of request.
+   */
+  public ResultHolder<String> addCountryVisit(Integer tripId, String token,
+      AddCountryRequest addCountryRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest, getWrappedToken(token));
+    Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest,
+        getWrappedToken(token));
     addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist"));
     return resultHolder;
   }
 
-  public ResultHolder<String> deleteCountryVisit(Integer countryVisitId,String token) {
+  /**
+   * Make request to the server to delete country visit.
+   *
+   * @param countryVisitId Id of trip.
+   * @param token          Jwt token.
+   * @return ResultHolder of String which holds result of request.
+   */
+  public ResultHolder<String> deleteCountryVisit(Integer countryVisitId, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId, getWrappedToken(token));
+    Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId,
+        getWrappedToken(token));
     deleteCountryCall.enqueue(getCallback(resultHolder, "Country with this id not exist"));
     return resultHolder;
   }
