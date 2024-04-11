@@ -14,6 +14,8 @@ public class AddNoteRequest implements Serializable {
 
   String photoUrl;
 
+  String text;
+
   String googlePlaceId;
 
   Integer tripId;
