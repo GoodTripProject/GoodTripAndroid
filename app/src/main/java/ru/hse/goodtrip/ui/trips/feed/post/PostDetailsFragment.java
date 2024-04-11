@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import ru.hse.goodtrip.MainActivity;
@@ -57,7 +56,8 @@ public class PostDetailsFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     String dateFormat = "dd.MM.yyyy";
 
-    setImageByUrl(binding.profileImageView,"https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg",
+    setImageByUrl(binding.profileImageView,
+        "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg",
         R.drawable.baseline_account_circle_24
     );
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);

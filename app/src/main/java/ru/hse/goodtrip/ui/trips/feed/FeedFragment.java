@@ -32,7 +32,7 @@ public class FeedFragment extends Fragment {
       feedRecyclerViewHolder.refreshFeed();
     }
 
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
+    ((MainActivity) requireActivity()).getSupportActionBar().hide();
   }
 
   @Override

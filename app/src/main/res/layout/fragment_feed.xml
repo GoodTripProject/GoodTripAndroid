@@ -15,7 +15,6 @@
     android:text="No posts yet!\n\nPress (+) to create your own" />
 
   <androidx.recyclerview.widget.RecyclerView
-    android:layout_marginTop="?attr/actionBarSize"
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
