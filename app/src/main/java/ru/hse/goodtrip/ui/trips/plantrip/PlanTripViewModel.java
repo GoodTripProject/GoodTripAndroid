@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.sql.Date;
 import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
@@ -36,7 +40,10 @@ public class PlanTripViewModel extends ViewModel {
   List<CountryVisit> countries = new ArrayList<>();
 
   private Date parseDate(String dateString) throws DateTimeException {
-    return new Date(123);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    return new Date(
+        LocalDate.parse(dateString, formatter).atStartOfDay().atZone(ZoneId.systemDefault())
+            .toInstant().toEpochMilli());
   }
 
   /**
@@ -69,13 +76,19 @@ public class PlanTripViewModel extends ViewModel {
     } else {
       planTripFormState.setValue(new PlanTripFormState(true));
 
-      ResultHolder<String> result = tripRepository.addTrip(UsersRepository.getInstance().user.getId(), UsersRepository.getInstance().user.getToken(),
-          new AddTripRequest(name, Integer.parseInt(moneyInUsd), mainPhotoUrl, parseDate(startTripDate), parseDate(endTripDate),
-              TripState.PLANNED, Collections.emptyList(), Collections.emptyList()));
-      runExecutorToWaitResult(result, () -> {});
+      ResultHolder<String> result = tripRepository.addTrip(
+          UsersRepository.getInstance().user.getId(), UsersRepository.getInstance().user.getToken(),
+          new AddTripRequest(name, Integer.parseInt(moneyInUsd), mainPhotoUrl,
+              parseDate(startTripDate), parseDate(endTripDate),
+              TripState.PLANNED, Collections.emptyList(),
+              countries.stream().map(TripRepository::getAddCountryRequestFromCountryVisit).collect(
+                  Collectors.toList())));
+      runExecutorToWaitResult(result, () -> {
+      });
     }
   }
-  private<T> void runExecutorToWaitResult(ResultHolder<T> result, Runnable func) {
+
+  private <T> void runExecutorToWaitResult(ResultHolder<T> result, Runnable func) {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     Handler handler = new Handler(Looper.getMainLooper());
     executor.execute(() -> {
@@ -90,6 +103,7 @@ public class PlanTripViewModel extends ViewModel {
     });
 
   }
+
   private boolean isDateNotValid(String dateString) {
     // check date format is dd.mm.yyyy
     try {
@@ -126,7 +140,7 @@ public class PlanTripViewModel extends ViewModel {
     ArrayList<String> countries = new ArrayList<>();
     for (Locale locale : locales) {
       String country = locale.getDisplayCountry();
-      if (country.trim().length() > 0 && !countries.contains(country)) {
+      if (!country.trim().isEmpty() && !countries.contains(country)) {
         countries.add(country);
       }
     }

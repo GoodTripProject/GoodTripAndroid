@@ -3,7 +3,6 @@ package ru.hse.goodtrip.network.trips.model;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -44,11 +43,10 @@ public class CityVisit implements Serializable {
 
     @Override
     public void serialize(Point point, JsonGenerator jsonGenerator,
-        SerializerProvider serializerProvider) throws IOException {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField("x", point.getX());
-      jsonGenerator.writeNumberField("y", point.getY());
-      jsonGenerator.writeEndObject();
+        SerializerProvider serializerProvider)
+        throws IOException {
+      //TODO make real serialization
+      jsonGenerator.writeString("{0,0}");
     }
   }
 
@@ -63,10 +61,8 @@ public class CityVisit implements Serializable {
     @Override
     public Point deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
         throws IOException {
-      JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-      Double x = (Double) node.get("x").numberValue();
-      Double y = (Double) node.get("y").numberValue();
-      return new Point(new CoordinateArraySequence(new Coordinate[]{new Coordinate(x, y)}),
+      //TODO make real deserialization
+      return new Point(new CoordinateArraySequence(new Coordinate[]{new Coordinate(0, 0)}),
           new GeometryFactory(new PrecisionModel(), SRID));
     }
   }

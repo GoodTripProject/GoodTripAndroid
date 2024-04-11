@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
-import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.network.NetworkManager;
@@ -21,6 +19,7 @@ import ru.hse.goodtrip.network.trips.TripService;
 import ru.hse.goodtrip.network.trips.model.AddCountryRequest;
 import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
 import ru.hse.goodtrip.network.trips.model.AddTripRequest;
+import ru.hse.goodtrip.network.trips.model.City;
 import ru.hse.goodtrip.network.trips.model.CityVisit;
 import ru.hse.goodtrip.network.trips.model.CountryVisit;
 import ru.hse.goodtrip.network.trips.model.Note;
@@ -28,16 +27,22 @@ import ru.hse.goodtrip.network.trips.model.Trip;
 
 public class TripRepository {
 
+  private static final int SRID = 4326;
+
   private static volatile TripRepository instance;
 
   private final TripService tripService;
-  private String authToken;
-
-  @Getter
-  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
 
   private TripRepository() {
     this.tripService = NetworkManager.getInstance().getInstanceOfService(TripService.class);
+  }
+
+  private String authToken;
+
+  private List<ru.hse.goodtrip.data.model.trips.Trip> trips;
+
+  public void setAuthToken(String authToken) {
+    this.authToken = "Bearer " + authToken;
   }
 
   public static TripRepository getInstance() {
@@ -47,52 +52,73 @@ public class TripRepository {
     return instance;
   }
 
-  public void setAuthToken(String authToken) {
-    this.authToken = "Bearer " + authToken;
-  }
-
-  private ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {
+  public static ru.hse.goodtrip.data.model.trips.Trip getTripFromTripResponse(Trip tripResponse) {
     ru.hse.goodtrip.data.model.trips.Trip result = new ru.hse.goodtrip.data.model.trips.Trip(
         tripResponse.getTitle(), Collections.emptyList(),
         LocalDate.now(),
         LocalDate.now(), tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
         new HashSet<>(), UsersRepository.getInstance()
         .getLoggedUser());
-    List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = new ArrayList<>();
-    for (CountryVisit visit : tripResponse.getVisits()) {
-      ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit = new ru.hse.goodtrip.data.model.trips.CountryVisit(
-          new Country(visit.getCountry(), new Coordinates(0, 0)), Collections.emptyList());
-      List<City> cities = new ArrayList<>();
-      for (CityVisit cityVisitResponse : visit.getCities()) {
-        cities.add(new City(cityVisitResponse.getCity(), new Coordinates(0, 0),
-            countryVisit.getCountry()));
-      }
-      countryVisit.setVisitedCities(cities);
-      countryVisits.add(countryVisit);
-    }
-    List<ru.hse.goodtrip.data.model.trips.Note> notes = new ArrayList<>();
-    for (CountryVisit visit : tripResponse.getVisits()) {
-      ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit = new ru.hse.goodtrip.data.model.trips.CountryVisit(
-          new Country(visit.getCountry(), new Coordinates(0, 0)), Collections.emptyList());
-      List<City> cities = new ArrayList<>();
-      for (CityVisit cityVisitResponse : visit.getCities()) {
-        cities.add(new City(cityVisitResponse.getCity(), new Coordinates(0, 0),
-            countryVisit.getCountry()));
-      }
-      countryVisit.setVisitedCities(cities);
-      countryVisits.add(countryVisit);
-    }
-    for (Note noteResponse : tripResponse.getNotes()) {
-      notes.add(
-          new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(), noteResponse.getText(),
-              noteResponse.getPhotoUrl(), new Country("name", new Coordinates(0, 0))));
-    }
+    List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = getCountryVisitsFromCountryVisitResponse(
+        tripResponse.getVisits());
+    List<ru.hse.goodtrip.data.model.trips.Note> notes = getNotesFromNoteResponses(
+        tripResponse.getNotes());
     result.setCountries(countryVisits);
     result.setNotes(notes);
     return result;
   }
 
-  private List<ru.hse.goodtrip.data.model.trips.Trip> getTripsFromTripResponses(
+  @NonNull
+  public static List<ru.hse.goodtrip.data.model.trips.Note> getNotesFromNoteResponses(
+      List<Note> noteResponses) {
+    List<ru.hse.goodtrip.data.model.trips.Note> notes = new ArrayList<>();
+    for (Note noteResponse : noteResponses) {
+      notes.add(
+          new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(), noteResponse.getText(),
+              noteResponse.getPhotoUrl(), new Country("name", new Coordinates(0, 0))));
+    }
+    return notes;
+  }
+
+  @NonNull
+  public static List<ru.hse.goodtrip.data.model.trips.CountryVisit> getCountryVisitsFromCountryVisitResponse(
+      List<CountryVisit> countryVisitResponses) {
+    List<ru.hse.goodtrip.data.model.trips.CountryVisit> countryVisits = new ArrayList<>();
+    for (CountryVisit visit : countryVisitResponses) {
+      countryVisits.add(getCountryVisitFromCountryVisitResponse(visit));
+    }
+    return countryVisits;
+  }
+
+  @NonNull
+  public static ru.hse.goodtrip.data.model.trips.CountryVisit getCountryVisitFromCountryVisitResponse(
+      CountryVisit visit) {
+    ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit = new ru.hse.goodtrip.data.model.trips.CountryVisit(
+        new Country(visit.getCountry(), new Coordinates(0, 0)), Collections.emptyList());
+    List<ru.hse.goodtrip.data.model.trips.City> cities = new ArrayList<>();
+    for (CityVisit cityVisitResponse : visit.getCities()) {
+      cities.add(new ru.hse.goodtrip.data.model.trips.City(cityVisitResponse.getCity(),
+          new Coordinates(0, 0),
+          countryVisit.getCountry()));
+    }
+    countryVisit.setVisitedCities(cities);
+    return countryVisit;
+  }
+
+  @NonNull
+  public static AddCountryRequest getAddCountryRequestFromCountryVisit(
+      ru.hse.goodtrip.data.model.trips.CountryVisit visit) {
+    AddCountryRequest countryVisit = new AddCountryRequest();
+    countryVisit.setCountry(visit.getCountry().getName());
+    List<City> cities = new ArrayList<>();
+    for (ru.hse.goodtrip.data.model.trips.City cityVisitResponse : visit.getVisitedCities()) {
+      cities.add(new City(cityVisitResponse.getName(), 0.0, 0.0));
+    }
+    countryVisit.setCities(cities);
+    return countryVisit;
+  }
+
+  public static List<ru.hse.goodtrip.data.model.trips.Trip> getTripsFromTripResponses(
       List<Trip> tripResponse) {
     List<ru.hse.goodtrip.data.model.trips.Trip> result = new ArrayList<>();
     for (Trip response : tripResponse) {
@@ -102,7 +128,7 @@ public class TripRepository {
   }
 
   private Callback<List<Trip>> getTripCallback(
-      ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder, String errorMessage) {
+      ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder) {
     return new Callback<List<Trip>>() {
       /** */
       @Override
@@ -113,7 +139,7 @@ public class TripRepository {
           List<Trip> responseBody = response.body();
           if (responseBody == null) {
             resultHolder.setResult(
-                new Result.Error<>(new InterruptedException(errorMessage))
+                new Result.Error<>(new InterruptedException("No trips"))
             );
           } else {
             trips = getTripsFromTripResponses(responseBody);//TODO глянуть нет ли ошибки
@@ -127,7 +153,7 @@ public class TripRepository {
       public void onFailure(@NonNull Call<List<Trip>> call, @NonNull Throwable throwable) {
         Log.println(Log.WARN, "Response", "Trip response happened and failed: " + throwable);
         synchronized (resultHolder) {
-          resultHolder.setResult(new Result.Error<>(new InterruptedException(errorMessage)));
+          resultHolder.setResult(new Result.Error<>(new InterruptedException("No trips")));
           resultHolder.notify();
         }
       }
@@ -166,7 +192,7 @@ public class TripRepository {
     Log.println(Log.WARN, "hey", "trips");
     ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder = new ResultHolder<>();
     Call<List<Trip>> getTripsCall = tripService.getUserTrips(userId, getWrappedToken(token));
-    getTripsCall.enqueue(getTripCallback(resultHolder, "No trips"));
+    getTripsCall.enqueue(getTripCallback(resultHolder));
     return resultHolder;
   }
 
