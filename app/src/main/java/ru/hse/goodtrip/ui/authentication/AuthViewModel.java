@@ -18,14 +18,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
-import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.User;
 
 /**
@@ -48,30 +46,20 @@ public class AuthViewModel extends ViewModel {
    */
   public void login(String username, String password) {
     // can be launched in a separate asynchronous job
-    ResultHolder<User> result = usersRepository.login(username, password);
+    CompletableFuture<Result<User>> result = usersRepository.login(username, password);
     runExecutorToWaitResult(result);
   }
 
-  private void runExecutorToWaitResult(ResultHolder<User> result) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
+  private void runExecutorToWaitResult(CompletableFuture<Result<User>> future) {
     Handler handler = new Handler(Looper.getMainLooper());
-    executor.execute(() -> {
-      synchronized (result) {
-        try {
-          result.wait();
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
+    future.whenCompleteAsync((result, throwable) -> handler.post(() -> {
+      if (result.isSuccess()) {
+        User data = ((Result.Success<User>) result).getData();
+        loginResult.setValue(new LoginResult(data));
+      } else {
+        loginResult.setValue(new LoginResult(R.string.login_failed));
       }
-      handler.post(() -> {
-        if (result.getResult().isSuccess()) {
-          User data = ((Result.Success<User>) result.getResult()).getData();
-          loginResult.setValue(new LoginResult(data));
-        } else {
-          loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
-      });
-    });
+    }));
   }
 
   /**
@@ -85,7 +73,8 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    ResultHolder<User> result = usersRepository.signUp(username, password, handle, surname, name);
+    CompletableFuture<Result<User>> result = usersRepository.signUp(username, password, handle,
+        surname, name);
     runExecutorToWaitResult(result);
   }
 
@@ -96,9 +85,9 @@ public class AuthViewModel extends ViewModel {
    * @param password password.
    */
   public void loginDataChanged(String username, String password) {
-    if (!isUserNameValid(username)) {
+    if (isUserNameNotValid(username)) {
       loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
-    } else if (!isPasswordValid(password)) {
+    } else if (isPasswordNotValid(password)) {
       loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
     } else {
       loginFormState.setValue(new LoginFormState(true));
@@ -115,9 +104,9 @@ public class AuthViewModel extends ViewModel {
    */
   public void signUpDataChanged(String username, String password, String repeatedPassword,
       String handler) {
-    if (!isUserNameValid(username)) {
+    if (isUserNameNotValid(username)) {
       signUpFormState.setValue(new SignUpFormState(R.string.invalid_username, null, null, null));
-    } else if (!isPasswordValid(password)) {
+    } else if (isPasswordNotValid(password)) {
       signUpFormState.setValue(new SignUpFormState(null, R.string.invalid_password, null, null));
     } else if (!isRepeatedPasswordMatches(password, repeatedPassword)) {
       signUpFormState.setValue(
@@ -135,14 +124,14 @@ public class AuthViewModel extends ViewModel {
    * @param username username.
    * @return true if name is valid, false otherwise.
    */
-  private boolean isUserNameValid(String username) {
+  private boolean isUserNameNotValid(String username) {
     if (username == null) {
-      return false;
+      return true;
     }
     if (username.contains("@")) {
-      return Patterns.EMAIL_ADDRESS.matcher(username).matches();
+      return !Patterns.EMAIL_ADDRESS.matcher(username).matches();
     } else {
-      return !username.trim().isEmpty();
+      return username.trim().isEmpty();
     }
   }
 
@@ -152,8 +141,8 @@ public class AuthViewModel extends ViewModel {
    * @param password password.
    * @return true if password is valid, false otherwise.
    */
-  private boolean isPasswordValid(String password) {
-    return password != null && password.trim().length() > 5;
+  private boolean isPasswordNotValid(String password) {
+    return password == null || password.trim().length() <= 5;
   }
 
   /**

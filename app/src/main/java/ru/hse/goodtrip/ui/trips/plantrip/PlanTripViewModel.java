@@ -1,7 +1,6 @@
 package ru.hse.goodtrip.ui.trips.plantrip;
 
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,14 +14,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.UsersRepository;
-import ru.hse.goodtrip.data.model.ResultHolder;
+import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
@@ -76,13 +73,17 @@ public class PlanTripViewModel extends ViewModel {
     } else {
       planTripFormState.setValue(new PlanTripFormState(true));
 
-      ResultHolder<String> result = tripRepository.addTrip(
+      Log.d(this.getClass().getName(), "Trip addition started to happen.");
+      tripRepository.addTrip(
           UsersRepository.getInstance().user.getId(), UsersRepository.getInstance().user.getToken(),
           new AddTripRequest(name, Integer.parseInt(moneyInUsd), mainPhotoUrl,
               parseDate(startTripDate), parseDate(endTripDate),
               TripState.PLANNED, Collections.emptyList(),
               countries.stream().map(TripRepository::getAddCountryRequestFromCountryVisit).collect(
-                  Collectors.toList())));
+                  Collectors.toList()))).whenCompleteAsync((result, throwable) -> {
+        //TODO amybe add some logic
+      });
+      Log.d(this.getClass().getName(), "Trip addition ended.");
     }
   }
 

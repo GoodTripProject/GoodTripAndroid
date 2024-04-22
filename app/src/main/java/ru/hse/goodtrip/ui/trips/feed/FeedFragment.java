@@ -128,19 +128,11 @@ public class FeedFragment extends Fragment {
      * Refresh feed with FeedViewModel.
      */
     private void refreshFeed() {
-      Log.println(Log.WARN, "hey", "troubles");
-      ExecutorService executor = Executors.newSingleThreadExecutor();
+      ExecutorService executor = Executors.newCachedThreadPool();
       feedAdapter.showLoadingView();
       executor.execute(() -> {
-        synchronized (FeedViewModel.class) {
-          feedViewModel.getUserTrips(UsersRepository.getInstance().user.getId(),
+        feedViewModel.getUserTrips(UsersRepository.getInstance().user.getId(),
               UsersRepository.getInstance().user.getToken());
-          try {
-            FeedViewModel.class.wait();
-          } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-          }
-        }
         feedRecyclerView.postDelayed(() -> {
               loadData();
 
