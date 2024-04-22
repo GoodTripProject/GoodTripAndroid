@@ -25,7 +25,7 @@ public class NetworkManager {
    * Creates instance of service.
    *
    * @param type interface of retrofit service to create.
-   * @param <T>    type of interface.
+   * @param <T>  type of interface.
    * @return instance of interface.
    */
   public <T> T getInstanceOfService(Class<T> type) {

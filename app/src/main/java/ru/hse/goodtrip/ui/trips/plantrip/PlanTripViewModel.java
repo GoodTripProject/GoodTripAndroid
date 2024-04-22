@@ -19,7 +19,6 @@ import lombok.Getter;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.UsersRepository;
-import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;

@@ -1,7 +1,6 @@
 package ru.hse.goodtrip.ui.trips.feed;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +131,7 @@ public class FeedFragment extends Fragment {
       feedAdapter.showLoadingView();
       executor.execute(() -> {
         feedViewModel.getUserTrips(UsersRepository.getInstance().user.getId(),
-              UsersRepository.getInstance().user.getToken());
+            UsersRepository.getInstance().user.getToken());
         feedRecyclerView.postDelayed(() -> {
               loadData();
 

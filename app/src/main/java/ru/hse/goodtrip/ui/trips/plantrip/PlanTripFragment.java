@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;

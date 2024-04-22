@@ -38,10 +38,10 @@ public class FeedViewModel extends ViewModel {
           posts = ((Result.Success<List<Trip>>) result).getData();
         }
       }).get();
-    } catch (InterruptedException e){
-      Log.e(this.getClass().getName(),"InterruptedException happened in trips getting: "+e);
-    }catch (ExecutionException e){
-      Log.e(this.getClass().getName(),"ExecutionException happened in trips getting: "+e);
+    } catch (InterruptedException e) {
+      Log.e(this.getClass().getName(), "InterruptedException happened in trips getting: " + e);
+    } catch (ExecutionException e) {
+      Log.e(this.getClass().getName(), "ExecutionException happened in trips getting: " + e);
     }
   }
 
