@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class AuthenticationResponse implements Serializable {
+
   public int id;
   public String handle;
   public String name;

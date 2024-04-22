@@ -1,7 +1,7 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
 
-import android.net.Uri;
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,11 @@ public class PostEditorViewModel extends ViewModel {
 
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
     tripRepository.addNote(UsersRepository.getInstance().user.getId(),
-        UsersRepository.getInstance().user.getToken(),
-        new AddNoteRequest(noteHeadline, photo, noteText, place, trip.getTripId()));
+            UsersRepository.getInstance().user.getToken(),
+            new AddNoteRequest(noteHeadline, photo, noteText, place, trip.getTripId()))
+        .whenCompleteAsync((result, throwable) -> {
+          Log.d(this.getClass().getName(), "Add note happened");
+          //TODO maybe add some logic
+        });
   }
 }

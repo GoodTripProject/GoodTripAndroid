@@ -44,15 +44,15 @@ public class Trip implements Serializable {
   /**
    * Creates trip.
    *
-   * @param userId Id of user.
-   * @param title Title of trip.
-   * @param moneyInUsd Budget of trip.
-   * @param mainPhotoUrl Url to main photo.
+   * @param userId        Id of user.
+   * @param title         Title of trip.
+   * @param moneyInUsd    Budget of trip.
+   * @param mainPhotoUrl  Url to main photo.
    * @param departureDate Date of departure.
-   * @param arrivalDate Date of arrival.
-   * @param state State of trip.
-   * @param notes Notes.
-   * @param visits CountryVisits.
+   * @param arrivalDate   Date of arrival.
+   * @param state         State of trip.
+   * @param notes         Notes.
+   * @param visits        CountryVisits.
    */
   public Trip(Integer userId, String title, Integer moneyInUsd, @Nullable String mainPhotoUrl,
       Date departureDate, Date arrivalDate, TripState state, List<Note> notes,

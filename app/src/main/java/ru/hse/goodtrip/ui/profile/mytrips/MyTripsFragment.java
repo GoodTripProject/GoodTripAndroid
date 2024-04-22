@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.MainActivity;
-import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentMyTripsBinding;
