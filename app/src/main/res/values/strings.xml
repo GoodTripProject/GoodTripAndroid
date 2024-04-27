@@ -14,6 +14,7 @@
   <string name="invalid_repeat_password">Passwords does not matches</string>
   <string name="invalid_handler">Handler is invalid</string>
   <string name="login_failed">"Login failed"</string>
+  <string name="google_authorization_failed">"Google authorization failed"</string>
   <string name="signup_failed">"Sign up failed"</string>
   <string name="surname">Surname</string>
   <string name="name">Name</string>
