@@ -182,12 +182,15 @@ public class AuthViewModel extends ViewModel {
         .setFilterByAuthorizedAccounts(false)
         .setServerClientId(serverClientId)
         .build();
+    Log.d(TAG, "Google id Option: " + googleIdOption);
     GetPasswordOption getPasswordOption = new GetPasswordOption();
+    Log.d(TAG, "Google password Option: " + getPasswordOption);
 
     GetCredentialRequest request = new GetCredentialRequest.Builder()
         .addCredentialOption(googleIdOption)
         .addCredentialOption(getPasswordOption)
         .build();
+    Log.d(TAG, "Google GetCredentialRequest: " + request);
 
     credentialManager.getCredentialAsync(
         context,
@@ -202,6 +205,7 @@ public class AuthViewModel extends ViewModel {
 
           @Override
           public void onError(@NonNull GetCredentialException e) {
+            loginResult.setValue(new LoginResult(R.string.google_authorization_failed));
           }
         }
     );
@@ -235,12 +239,14 @@ public class AuthViewModel extends ViewModel {
    */
   public void handleGoogleSignIn(GetCredentialResponse result) {
     Credential credential = result.getCredential();
-
+    Log.d(TAG, "Trying to auth with Google, credential: " + credential);
     if (credential instanceof PasswordCredential) {
+      Log.d(TAG, "Trying to auth with Google, credential is PasswordCredential: " + credential);
       String username = ((PasswordCredential) credential).getId();
       String password = ((PasswordCredential) credential).getPassword();
       login(username, password);
     } else if (credential instanceof CustomCredential) {
+      Log.d(TAG, "Trying to auth with Google, credential is CustomCredential: " + credential);
       if (GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
         GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(
             (credential).getData());
