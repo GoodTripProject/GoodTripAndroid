@@ -165,8 +165,7 @@ public class AuthViewModel extends ViewModel {
    * @return true if handler is valid.
    */
   private boolean isHandlerValid(String handler) {
-    //TODO
-    return true;
+    return handler.length() <= 64;
   }
 
   /**
