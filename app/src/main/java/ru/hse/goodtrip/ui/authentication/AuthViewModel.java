@@ -45,19 +45,20 @@ public class AuthViewModel extends ViewModel {
    * @param password password
    */
   public void login(String username, String password) {
-    // can be launched in a separate asynchronous job
     CompletableFuture<Result<User>> result = usersRepository.login(username, password);
-    runExecutorToWaitResult(result);
+    runExecutorToWaitResult(result,
+        () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
   }
 
-  private void runExecutorToWaitResult(CompletableFuture<Result<User>> future) {
+  private void runExecutorToWaitResult(CompletableFuture<Result<User>> future,
+      Runnable troublesHandler) {
     Handler handler = new Handler(Looper.getMainLooper());
     future.whenCompleteAsync((result, throwable) -> handler.post(() -> {
       if (result.isSuccess()) {
         User data = ((Result.Success<User>) result).getData();
         loginResult.setValue(new LoginResult(data));
       } else {
-        loginResult.setValue(new LoginResult(R.string.login_failed));
+        troublesHandler.run();
       }
     }));
   }
@@ -75,7 +76,8 @@ public class AuthViewModel extends ViewModel {
     loginDataChanged(username, password);
     CompletableFuture<Result<User>> result = usersRepository.signUp(username, password, handle,
         surname, name);
-    runExecutorToWaitResult(result);
+    runExecutorToWaitResult(result,
+        () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
   }
 
   /**
@@ -206,6 +208,26 @@ public class AuthViewModel extends ViewModel {
     );
   }
 
+  /**
+   * Firstly, send request to sign up new user with data from Google account, if this user exists,
+   * function send request to login him and updates data.
+   *
+   * @param username username.
+   * @param password password.
+   * @param name     name.
+   * @param surname  surname.
+   * @param handle   handle.
+   */
+  private void googleSignUp(String username, String password, String name, String surname,
+      String handle) {
+    loginDataChanged(username, password);
+    CompletableFuture<Result<User>> result = usersRepository.login(username,
+        password); //try to login
+    runExecutorToWaitResult(result, () -> {
+      // if login failed trying to sign up user
+      signUp(username, password, name, surname, handle);
+    });
+  }
 
   /**
    * Handle sign in via Google.
@@ -223,7 +245,7 @@ public class AuthViewModel extends ViewModel {
       if (GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
         GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(
             (credential).getData());
-        signUp(googleIdTokenCredential.getId(),
+        googleSignUp(googleIdTokenCredential.getId(),
             googleIdTokenCredential.getIdToken(),
             googleIdTokenCredential.getGivenName(),
             googleIdTokenCredential.getFamilyName(),
