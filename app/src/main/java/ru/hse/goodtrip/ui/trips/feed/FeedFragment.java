@@ -30,7 +30,8 @@ public class FeedFragment extends Fragment {
   public void onResume() {
     super.onResume();
 
-    if (UsersRepository.getInstance().getLoggedUser() != null) {
+    if (UsersRepository.getInstance().getLoggedUser() != null
+        && feedRecyclerViewHolder.feedAdapter.getItemCount() < 3) {
       feedRecyclerViewHolder.refreshFeed();
     }
 
@@ -113,10 +114,14 @@ public class FeedFragment extends Fragment {
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
           super.onScrolled(recyclerView, dx, dy);
-          if (!isLoading && dy < 0) {
-            if (feedLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-              isLoading = true;
-              refreshFeed();
+          if (!isLoading) {
+            if (dy < 0) {
+              if (feedLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                isLoading = true;
+                refreshFeed();
+              }
+            } else {
+              //
             }
           }
         }
