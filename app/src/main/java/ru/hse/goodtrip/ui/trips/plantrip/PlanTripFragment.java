@@ -27,6 +27,7 @@ import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
+import ru.hse.goodtrip.ui.trips.plantrip.PlanTripDialogWindows.DialogAddNewDestinationFragment;
 
 public class PlanTripFragment extends Fragment {
 
@@ -175,5 +176,4 @@ public class PlanTripFragment extends Fragment {
   private void navigateUp() {
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }
-
 }
