@@ -25,6 +25,7 @@ import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
+import ru.hse.goodtrip.network.authentication.model.AuthenticationResponse;
 
 /**
  * ViewModel that provides interactions with LoginService.
@@ -45,17 +46,21 @@ public class AuthViewModel extends ViewModel {
    * @param password password
    */
   public void login(String username, String password) {
-    CompletableFuture<Result<User>> result = usersRepository.login(username, password);
+    CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.login(username,
+        password);
     runExecutorToWaitResult(result,
         () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
   }
 
-  private void runExecutorToWaitResult(CompletableFuture<Result<User>> future,
+  private void runExecutorToWaitResult(CompletableFuture<Result<AuthenticationResponse>> future,
       Runnable troublesHandler) {
     Handler handler = new Handler(Looper.getMainLooper());
     future.whenCompleteAsync((result, throwable) -> handler.post(() -> {
       if (result.isSuccess()) {
-        User data = ((Result.Success<User>) result).getData();
+        AuthenticationResponse response = ((Result.Success<AuthenticationResponse>) result).getData();
+        User data = new User(response.getId(), response.getHandle(),
+            response.getName() + " " + response.getSurname(),
+            response.getUrl(), response.getToken());
         loginResult.setValue(new LoginResult(data));
       } else {
         troublesHandler.run();
@@ -74,7 +79,8 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    CompletableFuture<Result<User>> result = usersRepository.signUp(username, password, handle,
+    CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.signUp(username,
+        password, handle,
         surname, name);
     runExecutorToWaitResult(result,
         () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
@@ -191,7 +197,6 @@ public class AuthViewModel extends ViewModel {
         .addCredentialOption(getPasswordOption)
         .build();
     Log.d(TAG, "Google GetCredentialRequest: " + request);
-
     credentialManager.getCredentialAsync(
         context,
         request,
@@ -224,7 +229,7 @@ public class AuthViewModel extends ViewModel {
   private void googleSignUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    CompletableFuture<Result<User>> result = usersRepository.login(username,
+    CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.login(username,
         password); //try to login
     runExecutorToWaitResult(result, () -> {
       // if login failed trying to sign up user
@@ -246,10 +251,13 @@ public class AuthViewModel extends ViewModel {
       String password = ((PasswordCredential) credential).getPassword();
       login(username, password);
     } else if (credential instanceof CustomCredential) {
-      Log.d(TAG, "Trying to auth with Google, credential is CustomCredential: " + credential);
+      Log.d(TAG, "Trying to auth with Google, credential is : " + credential.getType() + " data is "
+          + credential.getData().getString("password"));
       if (GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
         GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(
             (credential).getData());
+        Log.d(TAG, "GOOGLE id: " + googleIdTokenCredential.getId() + "\nid token:"
+            + googleIdTokenCredential.getIdToken());
         googleSignUp(googleIdTokenCredential.getId(),
             googleIdTokenCredential.getIdToken(),
             googleIdTokenCredential.getGivenName(),

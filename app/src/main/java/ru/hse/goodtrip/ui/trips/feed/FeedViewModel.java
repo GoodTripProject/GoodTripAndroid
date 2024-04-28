@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.Result;
@@ -29,13 +30,17 @@ public class FeedViewModel extends ViewModel {
   }
 
   public void getUserTrips(Integer userId, String token) {
-    CompletableFuture<Result<List<Trip>>> future = tripRepository.getUserTrips(userId, token);
+    CompletableFuture<Result<List<ru.hse.goodtrip.network.trips.model.Trip>>> future = tripRepository.getUserTrips(userId, token);
     Log.d(FeedViewModel.class.getName(), "Completable future is accepted");
     try {
       future.whenCompleteAsync((result, exception) -> {
         Log.d(FeedViewModel.class.getName(), "Async handling of result is happening:" + result);
         if (result.isSuccess()) {
-          posts = ((Result.Success<List<Trip>>) result).getData();
+          posts = ((Result.Success<List<ru.hse.goodtrip.network.trips.model.Trip>>) result)
+              .getData()
+              .stream()
+              .map(TripRepository::getTripFromTripResponse).collect(
+              Collectors.toList());
         }
       }).get();
     } catch (InterruptedException e) {

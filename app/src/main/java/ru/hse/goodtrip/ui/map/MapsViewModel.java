@@ -14,6 +14,6 @@ public class MapsViewModel extends ViewModel {
 
 
   public void refreshMarks() {
-    marks = TripRepository.getInstance().getTrips();
+    marks = TripRepository.getInstance().getUserTrips();
   }
 }

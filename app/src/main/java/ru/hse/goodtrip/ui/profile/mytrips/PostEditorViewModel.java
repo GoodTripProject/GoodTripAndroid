@@ -9,12 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.trips.AbstractPlace;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
+import ru.hse.goodtrip.network.trips.model.AddCountryRequest;
 import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
 
 
@@ -34,10 +36,27 @@ public class PostEditorViewModel extends ViewModel {
 
   public void postTrip(Trip trip) {
 //    TripRepository.postTrip(trip);
+    // TODO Add changing status of trip here
   }
 
   public void saveTrip() {
     // TODO
+    for (CountryVisit visit: countries){
+      tripRepository.addCountryVisit(trip.getTripId(),UsersRepository.getInstance().user.getToken(),
+          TripRepository.getAddCountryRequestFromCountryVisit(visit)).whenCompleteAsync((result, throwable) -> {
+            Log.d(this.getClass().getSimpleName(),"Add country visit happened, result is:"+result);
+            // TODO maybe add some logic
+      });
+    }
+    for (Note note: notes){
+      tripRepository.addNote(UsersRepository.getInstance().user.getId(),
+              UsersRepository.getInstance().user.getToken(),
+              new AddNoteRequest(note.getHeadline(), note.getPhotoUrl(), note.getNote(), note.getPlace().getName(), trip.getTripId()))
+          .whenCompleteAsync((result, throwable) -> {
+            Log.d(this.getClass().getName(), "Add note happened");
+            //TODO maybe add some logic
+          });
+    }
   }
 
   /**
@@ -57,12 +76,8 @@ public class PostEditorViewModel extends ViewModel {
   }
 
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
-    tripRepository.addNote(UsersRepository.getInstance().user.getId(),
-            UsersRepository.getInstance().user.getToken(),
-            new AddNoteRequest(noteHeadline, photo, noteText, place, trip.getTripId()))
-        .whenCompleteAsync((result, throwable) -> {
-          Log.d(this.getClass().getName(), "Add note happened");
-          //TODO maybe add some logic
-        });
+    //TODO
+    notes.add(new Note(noteHeadline, noteText, photo, new City(place,new Coordinates(0,0), new Country("",new Coordinates(0,0)))));
+
   }
 }
