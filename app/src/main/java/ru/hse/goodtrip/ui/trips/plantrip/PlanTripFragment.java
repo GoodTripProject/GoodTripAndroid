@@ -4,10 +4,11 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -74,18 +75,17 @@ public class PlanTripFragment extends Fragment {
     binding.route.addView(countryView);
   }
 
-  private void setupAddCountryPopup(View popupView, PopupWindow popupWindow) {
-    binding.getRoot().setAlpha((float) 0.2);
-    final AutoCompleteTextView autoCompleteTextViewCountries = popupView.findViewById(
-        R.id.enter_country_name);
+  private void setupAddCountryDialog(DialogAddNewDestinationFragment dialog) {
+    final AutoCompleteTextView autoCompleteTextViewCountries = dialog.binding.enterCountryName;
     ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
         android.R.layout.select_dialog_item,
         planTripViewModel.getCountriesList().toArray(new String[0]));
     autoCompleteTextViewCountries.setThreshold(0);
     autoCompleteTextViewCountries.setAdapter(adapter);
-    final Button addCountry = popupView.findViewById(R.id.popup_add_country);
-    final Button addCity = popupView.findViewById(R.id.popup_add_city);
-    LinearLayout citiesLayout = popupView.findViewById(R.id.add_cities);
+    final Button addCountry = dialog.binding.popupAddCountry;
+    final Button addCity = dialog.binding.popupAddCity;
+    final ImageButton closeButton = dialog.binding.closeButton;
+    LinearLayout citiesLayout = dialog.binding.addCities;
     addCountry.setOnClickListener(v -> {
       String country = autoCompleteTextViewCountries.getText().toString();
       List<String> cities = new ArrayList<>();
@@ -96,9 +96,7 @@ public class PlanTripFragment extends Fragment {
       }
       planTripViewModel.addCountry(country, cities);
       addCountryView(country, cities);
-      popupWindow.dismiss();
-      binding.getRoot().setAlpha((float) 1);
-      setEditTexts(true);
+      dialog.dismiss();
     });
 
     addCity.setOnClickListener(v -> {
@@ -109,13 +107,11 @@ public class PlanTripFragment extends Fragment {
               LinearLayout.LayoutParams.WRAP_CONTENT));
       citiesLayout.addView(view);
       citiesLayout.refreshDrawableState();
-      popupView.refreshDrawableState();
     });
-  }
 
-  private void setEditTexts(boolean enabled) {
-    binding.travelNameEditText.setEnabled(enabled);
-    binding.budgetEditText.setEnabled(enabled);
+    closeButton.setOnClickListener(v -> {
+      dialog.dismiss();
+    });
   }
 
   private void selectDepartureDate(View view) {
@@ -146,6 +142,8 @@ public class PlanTripFragment extends Fragment {
     final Button saveButton = binding.saveButton;
     final ImageButton addCountry = binding.addCountry;
     final EditText moneyEditText = binding.budgetEditText;
+    DialogAddNewDestinationFragment dialog = new DialogAddNewDestinationFragment();
+
     LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
         LAYOUT_INFLATER_SERVICE);
     View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, null);
@@ -153,9 +151,15 @@ public class PlanTripFragment extends Fragment {
         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
     popupWindow.setOutsideTouchable(false);
     addCountry.setOnClickListener(v -> {
-      popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-      setupAddCountryPopup(popupView, popupWindow);
-      setEditTexts(false);
+      dialog.show(getChildFragmentManager(), "dialog..."); // TODO
+      getChildFragmentManager().executePendingTransactions();
+
+      DisplayMetrics metrics = getResources().getDisplayMetrics();
+      int width = metrics.widthPixels;
+
+      dialog.getDialog().getWindow().setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
+
+      setupAddCountryDialog(dialog);
     });
     saveButton.setOnClickListener(v -> {
       planTripViewModel.createTrip(travelNameEditText.getText().toString(),
