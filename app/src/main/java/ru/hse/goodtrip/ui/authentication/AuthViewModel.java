@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
@@ -61,6 +62,7 @@ public class AuthViewModel extends ViewModel {
         User data = new User(response.getId(), response.getHandle(),
             response.getName() + " " + response.getSurname(),
             response.getUrl(), response.getToken());
+        TripRepository.getInstance().getUserTrips(usersRepository.user.getId(),usersRepository.user.getToken());
         loginResult.setValue(new LoginResult(data));
       } else {
         troublesHandler.run();
