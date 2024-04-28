@@ -86,6 +86,33 @@ public class PostEditorFragment extends Fragment {
     return binding.getRoot();
   }
 
+  public void loadRoute() {
+    List<String> cities = new ArrayList<>();
+    for (CountryVisit country : trip.getCountries()) {
+      for (City city : country.getVisitedCities()) {
+        cities.add(city.getName());
+      }
+      addCountryView(country.getCountry().getName(), cities);
+    }
+  }
+
+  public void loadNotes() {
+    LinearLayout notes = binding.notes;
+    for (Note note : trip.getNotes()) {
+      ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
+      noteBinding.noteHeadline.setText(note.getHeadline());
+      if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
+        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
+      } else {
+        noteBinding.imageContainer.setVisibility(GONE);
+      }
+      noteBinding.noteText.setText(note.getNote());
+      noteBinding.placeName.setText(note.getPlace().getName());
+
+      notes.addView(noteBinding.getRoot());
+    }
+  }
+
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -100,29 +127,8 @@ public class PostEditorFragment extends Fragment {
       setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
       binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
       binding.postTitle.setText(trip.getTitle());
-
-      List<String> cities = new ArrayList<>();
-      for (CountryVisit country : trip.getCountries()) {
-        for (City city : country.getVisitedCities()) {
-          cities.add(city.getName());
-        }
-        addCountryView(country.getCountry().getName(), cities);
-      }
-
-      LinearLayout notes = binding.notes;
-      for (Note note : trip.getNotes()) {
-        ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
-        noteBinding.noteHeadline.setText(note.getHeadline());
-        if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
-          setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
-        } else {
-          noteBinding.imageContainer.setVisibility(GONE);
-        }
-        noteBinding.noteText.setText(note.getNote());
-        noteBinding.placeName.setText(note.getPlace().getName());
-
-        notes.addView(noteBinding.getRoot());
-      }
+      loadRoute();
+      loadNotes();
     }
 
     LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
