@@ -1,23 +1,20 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.view.View.GONE;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -37,8 +34,9 @@ import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentPostEditorBinding;
 import ru.hse.goodtrip.databinding.ItemNoteBinding;
+import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewDestinationDialogFragment;
+import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewNoteDialogFragment;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
-import ru.hse.goodtrip.ui.trips.plantrip.PlanTripViewModel;
 
 /**
  * A post editor fragment.
@@ -100,76 +98,128 @@ public class PostEditorFragment extends Fragment {
       setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
       binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
       binding.postTitle.setText(trip.getTitle());
-
-      List<String> cities = new ArrayList<>();
-      for (CountryVisit country : trip.getCountries()) {
-        for (City city : country.getVisitedCities()) {
-          cities.add(city.getName());
-        }
-        addCountryView(country.getCountry().getName(), cities);
-      }
-
-      LinearLayout notes = binding.notes;
-      for (Note note : trip.getNotes()) {
-        ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
-        noteBinding.noteHeadline.setText(note.getHeadline());
-        if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
-          setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
-        } else {
-          noteBinding.imageContainer.setVisibility(GONE);
-        }
-        noteBinding.noteText.setText(note.getNote());
-        noteBinding.placeName.setText(note.getPlace().getName());
-
-        notes.addView(noteBinding.getRoot());
-      }
+      loadRoute();
+      loadNotes();
     }
 
-    LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
-        LAYOUT_INFLATER_SERVICE);
-    View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, null);
-    final PopupWindow popupWindow = new PopupWindow(popupView,
-        LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-    popupWindow.setOutsideTouchable(false);
-    binding.addNewCountry.setOnClickListener(v -> {
-      popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-      setupAddCountryPopup(popupView, popupWindow);
-    });
+    AddNewDestinationDialogFragment addNewDestinationDialogFragment = new AddNewDestinationDialogFragment();
+    binding.addNewCountry.setOnClickListener(
+        v -> showAddNewDestinationDialog(addNewDestinationDialogFragment));
 
-    View popupViewNote = inflater.inflate(R.layout.popup_add_new_note, null);
-    final PopupWindow popupWindowNote = new PopupWindow(popupViewNote,
-        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
-    popupWindowNote.setOutsideTouchable(false);
-    binding.addNewNote.setOnClickListener(v -> {
-      popupWindowNote.showAtLocation(view, Gravity.CENTER, 0, 0);
-      setupAddNotePopup(popupViewNote, popupWindowNote);
-    });
+    AddNewNoteDialogFragment newNoteDialogFragment = new AddNewNoteDialogFragment();
+    binding.addNewNote.setOnClickListener(v -> showAddNewNoteDialog(newNoteDialogFragment));
 
     binding.postButton.setOnClickListener(this::newPost);
+  }
+
+  private void showAddNewNoteDialog(AddNewNoteDialogFragment newNoteDialogFragment) {
+    newNoteDialogFragment.show(getChildFragmentManager(), "dialog..."); // TODO
+    getChildFragmentManager().executePendingTransactions();
+    DisplayMetrics metrics = getResources().getDisplayMetrics();
+    int width = metrics.widthPixels;
+    newNoteDialogFragment.getDialog().getWindow()
+        .setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    setupAddNoteDialog(newNoteDialogFragment);
+  }
+
+  private void setupAddNoteDialog(AddNewNoteDialogFragment newNoteDialogFragment) {
+    final Button addNote = newNoteDialogFragment.binding.popupAddNote;
+    final ImageButton closeButton = newNoteDialogFragment.binding.closeButton;
+    addNote.setOnClickListener(v -> {
+      String headline = newNoteDialogFragment.binding.noteHeadlineEditText.getText().toString();
+      String text = newNoteDialogFragment.binding.noteTextEditText.getText().toString();
+      String place = newNoteDialogFragment.binding.notePlaceEditText.getText().toString();
+
+      // TODO
+      postEditorViewModel.addNote(headline, text, place, postEditorViewModel.getPhoto());
+      addNoteView(headline, text, postEditorViewModel.getPhoto(), place);
+      newNoteDialogFragment.dismiss();
+    });
+    closeButton.setOnClickListener(v -> newNoteDialogFragment.dismiss());
+  }
+
+  private void showAddNewDestinationDialog(
+      AddNewDestinationDialogFragment addNewDestinationDialogFragment) {
+    addNewDestinationDialogFragment.show(getChildFragmentManager(), "dialog..."); // TODO
+    getChildFragmentManager().executePendingTransactions();
+    DisplayMetrics metrics = getResources().getDisplayMetrics();
+    int width = metrics.widthPixels;
+    addNewDestinationDialogFragment.getDialog().getWindow()
+        .setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
+    setupAddCountryDialog(addNewDestinationDialogFragment);
+  }
+
+  private void setupAddCountryDialog(AddNewDestinationDialogFragment dialog) {
+    final AutoCompleteTextView autoCompleteTextViewCountries = dialog.binding.enterCountryName;
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+        android.R.layout.select_dialog_item,
+        postEditorViewModel.getCountries().toArray(new String[0]));
+    autoCompleteTextViewCountries.setThreshold(0);
+    autoCompleteTextViewCountries.setAdapter(adapter);
+    final Button addCountry = dialog.binding.popupAddCountry;
+    final Button addCity = dialog.binding.popupAddCity;
+    final ImageButton closeButton = dialog.binding.closeButton;
+    LinearLayout citiesLayout = dialog.binding.addCities;
+    addCountry.setOnClickListener(v -> {
+      String country = autoCompleteTextViewCountries.getText().toString();
+      List<String> cities = new ArrayList<>();
+      for (int index = 0; index < citiesLayout.getChildCount(); ++index) {
+        cities.add(
+            ((TextView) (citiesLayout.getChildAt(index)).findViewById(
+                R.id.enter_city_name)).getText().toString());
+      }
+      postEditorViewModel.addCountry(country, cities);
+      addCountryView(country, cities);
+      dialog.dismiss();
+    });
+
+    addCity.setOnClickListener(v -> {
+      View view = LayoutInflater.from(requireContext())
+          .inflate(R.layout.item_add_city, null);
+      view.setLayoutParams(
+          new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+              LinearLayout.LayoutParams.WRAP_CONTENT));
+      citiesLayout.addView(view);
+      citiesLayout.refreshDrawableState();
+    });
+
+    closeButton.setOnClickListener(v -> {
+      dialog.dismiss();
+    });
+  }
+
+
+  private void loadRoute() {
+    List<String> cities = new ArrayList<>();
+    for (CountryVisit country : trip.getCountries()) {
+      for (City city : country.getVisitedCities()) {
+        cities.add(city.getName());
+      }
+      addCountryView(country.getCountry().getName(), cities);
+    }
+  }
+
+  private void loadNotes() {
+    LinearLayout notes = binding.notes;
+    for (Note note : trip.getNotes()) {
+      ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
+      noteBinding.noteHeadline.setText(note.getHeadline());
+      if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
+        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
+      } else {
+        noteBinding.imageContainer.setVisibility(GONE);
+      }
+      noteBinding.noteText.setText(note.getNote());
+      noteBinding.placeName.setText(note.getPlace().getName());
+
+      notes.addView(noteBinding.getRoot());
+    }
   }
 
   private void newPost(View view) {
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
-  }
-
-  private void setupAddNotePopup(View popupView, PopupWindow popupWindow) {
-    binding.getRoot().setAlpha((float) 0.2);
-    final Button addNote = popupView.findViewById(R.id.popup_add_note);
-    addNote.setOnClickListener(v -> {
-      String headline = ((EditText) popupView.findViewById(R.id.noteHeadlineEditText)).getText()
-          .toString();
-      String text = ((EditText) popupView.findViewById(R.id.noteTextEditText)).getText()
-          .toString();
-      String place = ((EditText) popupView.findViewById(R.id.notePlaceEditText)).getText()
-          .toString();
-
-      // TODO
-      postEditorViewModel.addNote(headline, text, place, postEditorViewModel.getPhoto());
-      addNoteView(headline, text, postEditorViewModel.getPhoto(), place);
-      popupWindow.dismiss();
-      binding.getRoot().setAlpha((float) 1);
-    });
   }
 
   private void uploadImageFromGallery() {
@@ -182,45 +232,6 @@ public class PostEditorFragment extends Fragment {
           return null;
         });
   }
-
-  private void setupAddCountryPopup(View popupView, PopupWindow popupWindow) {
-    binding.getRoot().setAlpha((float) 0.2);
-    final AutoCompleteTextView autoCompleteTextViewCountries = popupView.findViewById(
-        R.id.enter_country_name);
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-        android.R.layout.select_dialog_item,
-        PlanTripViewModel.getCountriesList().toArray(new String[0]));
-    autoCompleteTextViewCountries.setThreshold(0);
-    autoCompleteTextViewCountries.setAdapter(adapter);
-    final Button addCountry = popupView.findViewById(R.id.popup_add_country);
-    final Button addCity = popupView.findViewById(R.id.popup_add_city);
-    LinearLayout citiesLayout = popupView.findViewById(R.id.add_cities);
-    addCountry.setOnClickListener(v -> {
-      String country = autoCompleteTextViewCountries.getText().toString();
-      List<String> cities = new ArrayList<>();
-      for (int index = 0; index < citiesLayout.getChildCount(); ++index) {
-        cities.add(
-            ((TextView) (citiesLayout.getChildAt(index)).findViewById(
-                R.id.enter_city_name)).getText().toString());
-      }
-      postEditorViewModel.addCountry(country, cities);
-      addCountryView(country, cities);
-      popupWindow.dismiss();
-      binding.getRoot().setAlpha((float) 1);
-    });
-
-    addCity.setOnClickListener(v -> {
-      View view = LayoutInflater.from(requireContext())
-          .inflate(R.layout.item_add_city, null);
-      view.setLayoutParams(
-          new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-              LinearLayout.LayoutParams.WRAP_CONTENT));
-      citiesLayout.addView(view);
-      citiesLayout.refreshDrawableState();
-      popupView.refreshDrawableState();
-    });
-  }
-
 
   private void addCountryView(String country, List<String> cities) {
     View countryView = LayoutInflater.from(requireContext())
@@ -257,5 +268,4 @@ public class PostEditorFragment extends Fragment {
     noteBinding.placeName.setText(place);
     binding.notes.addView(noteBinding.getRoot());
   }
-
 }
