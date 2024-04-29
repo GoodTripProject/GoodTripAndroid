@@ -16,8 +16,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
-import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
+import ru.hse.goodtrip.network.trips.model.TripView;
 
 public class FeedFragment extends Fragment {
 
@@ -120,8 +120,6 @@ public class FeedFragment extends Fragment {
                 isLoading = true;
                 refreshFeed();
               }
-            } else {
-              //
             }
           }
         }
@@ -135,7 +133,8 @@ public class FeedFragment extends Fragment {
       ExecutorService executor = Executors.newCachedThreadPool();
       feedAdapter.showLoadingView();
       executor.execute(() -> {
-        feedViewModel.getUserTrips(UsersRepository.getInstance().user.getId(),
+        feedViewModel.getTripRepository().resetAuthorTrips();
+        feedViewModel.getAuthorTrips(UsersRepository.getInstance().user.getId(),
             UsersRepository.getInstance().user.getToken());
         feedRecyclerView.postDelayed(() -> {
               loadData();
@@ -158,7 +157,7 @@ public class FeedFragment extends Fragment {
      */
     public void loadData() {
       feedViewModel.getPosts().sort(Comparator.comparing(
-          Trip::getTimeOfPublication));
+          TripView::getPublicationTimestamp)); //TODO maybe it is incorrect
       Collections.reverse(feedViewModel.getPosts());
       feedAdapter.setItems(feedViewModel.getPosts());
     }

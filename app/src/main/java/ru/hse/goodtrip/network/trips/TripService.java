@@ -53,11 +53,11 @@ public interface TripService {
   Call<String> deleteCountryVisit(@Path("countryVisitId") Integer countryVisitId,
       @Header("Authorization") String authorization);
 
-  @PUT("/update_trip")
+  @PUT("/trip/update_trip")
   Call<String> updateTrip(@Body Trip trip);
 
-  @GET("get_authors_trips/?userId={userId}&start={start}")
-  Call<List<TripView>> getAuthorsTrips(@Path("userId") Integer userId,
-      @Path("start") Integer start);
+  @GET("/trip/get_authors_trips/{user_id}/{start}")
+  Call<List<TripView>> getAuthorsTrips(@Path("user_id") Integer userId,
+      @Path("start") Integer start, @Header("Authorization") String authorization);
 
 }

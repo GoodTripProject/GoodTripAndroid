@@ -2,15 +2,23 @@ package ru.hse.goodtrip.network.trips.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.TripState;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TripView {
 
   private Integer id;
 
-  private Integer userId;
+  private String displayName;
+
+  private String userMainPhotoUrl;
 
   private String title;
 
@@ -20,18 +28,20 @@ public class TripView {
 
   private Date departureDate;
 
-
   private Date arrivalDate;
-
 
   private Timestamp publicationTimestamp;
 
   private TripState state;
 
-  public TripView(Trip trip) {
+  private List<CountryVisit> visits;
+
+  public TripView(Trip trip, User user) {
     id = trip.getId();
-    userId = trip.getUserId();
+    displayName = user.getDisplayName();
+    userMainPhotoUrl = user.getMainPhotoUrl().toString();
     title = trip.getTitle();
+    visits = trip.getVisits();
     moneyInUsd = trip.getMoneyInUsd();
     mainPhotoUrl = trip.getMainPhotoUrl();
     departureDate = trip.getDepartureDate();

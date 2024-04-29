@@ -23,6 +23,7 @@ import ru.hse.goodtrip.network.trips.model.CityVisit;
 import ru.hse.goodtrip.network.trips.model.CountryVisit;
 import ru.hse.goodtrip.network.trips.model.Note;
 import ru.hse.goodtrip.network.trips.model.Trip;
+import ru.hse.goodtrip.network.trips.model.TripView;
 
 public class TripRepository extends AbstractRepository {
 
@@ -42,7 +43,12 @@ public class TripRepository extends AbstractRepository {
   private List<ru.hse.goodtrip.data.model.trips.Trip> userTrips = new ArrayList<>();
 
   @Getter
-  private List<ru.hse.goodtrip.data.model.trips.Trip> authorTrips = new ArrayList<>();
+  private List<TripView> authorTrips = new ArrayList<>();
+
+
+  public void resetAuthorTrips() {
+    authorTrips = new ArrayList<>();
+  }
 
   public static TripRepository getInstance() {
     if (instance == null) {
@@ -196,6 +202,26 @@ public class TripRepository extends AbstractRepository {
     }));
     return super.getCompletableFuture(resultHolder);
   }
+
+  /**
+   * Make request to the server to get trips of authors.
+   *
+   * @param userId User id.
+   * @param token  Jwt token.
+   * @return CompletableFuture of Result of trips.
+   */
+  public CompletableFuture<Result<List<TripView>>> getAuthorsTrips(
+      Integer userId,
+      String token) {
+    ResultHolder<List<TripView>> resultHolder = new ResultHolder<>();
+    Call<List<TripView>> getTripsCall = tripService.getAuthorsTrips(userId, authorTrips.size(),
+        getWrappedToken(token));
+    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> {
+      authorTrips.addAll(result);
+    }));
+    return super.getCompletableFuture(resultHolder);
+  }
+
 
   /**
    * Wraps token.

@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.Trip;
+import ru.hse.goodtrip.network.trips.model.TripView;
 
 @Getter
 public class FeedViewModel extends ViewModel {
@@ -20,7 +20,7 @@ public class FeedViewModel extends ViewModel {
   public static User fakeUser = new User(0, "aboba", "Jane Doe", null, null);
   private final TripRepository tripRepository = TripRepository.getInstance();
   @Getter
-  private List<Trip> posts = Collections.emptyList();
+  private List<TripView> posts = Collections.emptyList();
 
   /**
    * Initialize FeedViewModel.
@@ -29,18 +29,17 @@ public class FeedViewModel extends ViewModel {
     posts = new ArrayList<>();
   }
 
-  public void getUserTrips(Integer userId, String token) {
-    CompletableFuture<Result<List<ru.hse.goodtrip.network.trips.model.Trip>>> future = tripRepository.getUserTrips(userId, token);
+  public void getAuthorTrips(Integer userId, String token) {
+    CompletableFuture<Result<List<ru.hse.goodtrip.network.trips.model.TripView>>> future = tripRepository.getAuthorsTrips(
+        userId, token);
     Log.d(FeedViewModel.class.getName(), "Completable future is accepted");
     try {
       future.whenCompleteAsync((result, exception) -> {
-        Log.d(FeedViewModel.class.getName(), "Async handling of result is happening:" + result);
+        Log.d(FeedViewModel.class.getName(),
+            "Async handling of result is happening: " + result + " exception: " + exception);
         if (result.isSuccess()) {
-          posts = ((Result.Success<List<ru.hse.goodtrip.network.trips.model.Trip>>) result)
-              .getData()
-              .stream()
-              .map(TripRepository::getTripFromTripResponse).collect(
-              Collectors.toList());
+          posts = ((Result.Success<List<TripView>>) result)
+              .getData();
         }
       }).get();
     } catch (InterruptedException e) {
