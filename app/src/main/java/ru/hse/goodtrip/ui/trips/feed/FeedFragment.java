@@ -115,10 +115,16 @@ public class FeedFragment extends Fragment {
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
           super.onScrolled(recyclerView, dx, dy);
           if (!isLoading) {
-            if (dy < 0) {
+            if (dy < 0) { // scrolled up
               if (feedLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                 isLoading = true;
                 refreshFeed();
+              }
+            } else { // scrolled down
+              if (feedLayoutManager.findLastCompletelyVisibleItemPosition()
+                  == feedAdapter.getItemCount() - 1) {
+                isLoading = true;
+                //
               }
             }
           }
