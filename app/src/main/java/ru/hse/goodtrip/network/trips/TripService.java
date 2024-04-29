@@ -9,6 +9,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import ru.hse.goodtrip.network.trips.model.AddCountryRequest;
 import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
 import ru.hse.goodtrip.network.trips.model.AddTripRequest;
@@ -56,8 +57,8 @@ public interface TripService {
   @PUT("/trip/update_trip")
   Call<String> updateTrip(@Body Trip trip);
 
-  @GET("/trip/get_authors_trips/{user_id}/{start}")
-  Call<List<TripView>> getAuthorsTrips(@Path("user_id") Integer userId,
-      @Path("start") Integer start, @Header("Authorization") String authorization);
+  @GET("/trip/get_authors_trips")
+  Call<List<TripView>> getAuthorsTrips(@Query("user_id") Integer userId,
+    @Query("start") Integer start, @Header("Authorization") String authorization);
 
 }
