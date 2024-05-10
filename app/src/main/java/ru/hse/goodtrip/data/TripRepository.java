@@ -1,13 +1,18 @@
 package ru.hse.goodtrip.data;
 
 import androidx.annotation.NonNull;
+import java.sql.Date;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import lombok.Getter;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
@@ -85,6 +90,49 @@ public class TripRepository extends AbstractRepository {
     result.setCountries(countryVisits);
     result.setNotes(notes);
     return result;
+  }
+
+  private static Note getNetworkNoteFromNote(int tripId,
+      ru.hse.goodtrip.data.model.trips.Note noteModel) {
+    return new Note(null, noteModel.getHeadline(), noteModel.getPhotoUrl(),
+        noteModel.getPlace().getName(),
+        noteModel.getNote(), tripId);
+  }
+
+  private static CountryVisit getNetworkCountryVisitFromCountryVisit(int tripId,
+      ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit) {
+    return new CountryVisit(null,
+        countryVisit.getCountry().getName(),
+        countryVisit.getVisitedCities().stream().map(
+            TripRepository::getNetworkCityVisitFromCityVisit).collect(Collectors.toList()), tripId);
+  }
+
+  private static CityVisit getNetworkCityVisitFromCityVisit(
+      ru.hse.goodtrip.data.model.trips.City city) {
+    return new CityVisit(null, city.getName(), new Point(
+        new Coordinate(city.getCoordinates().getLatitude(), city.getCoordinates().getLongitude()),
+        new PrecisionModel(), SRID), null);
+  }
+
+  /**
+   * Convert trip from network to trip.
+   *
+   * @param tripModel Trip.
+   * @return Trip network.
+   */
+  public static Trip getNetworkTripFromTrip(int userId,
+      ru.hse.goodtrip.data.model.trips.Trip tripModel) {
+    return new Trip(tripModel.getTripId(), userId,
+        tripModel.getTitle(), tripModel.getMoneyInUsd(), tripModel.getMainPhotoUrl(),
+        Date.valueOf(tripModel.getStartTripDate().toString()),
+        Date.valueOf(tripModel.getEndTripDate().toString()), null,
+        tripModel.getTripState(),
+        tripModel.getNotes().stream()
+            .map(note -> getNetworkNoteFromNote(tripModel.getTripId(), note)).collect(
+                Collectors.toList()),
+        tripModel.getCountries().stream().map(
+            countryVisit -> getNetworkCountryVisitFromCountryVisit(tripModel.getTripId(),
+                countryVisit)).collect(Collectors.toList()));
   }
 
   /**
@@ -197,9 +245,7 @@ public class TripRepository extends AbstractRepository {
       String token) {
     ResultHolder<List<Trip>> resultHolder = new ResultHolder<>();
     Call<List<Trip>> getTripsCall = tripService.getUserTrips(userId, getWrappedToken(token));
-    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> {
-      userTrips = getTripsFromTripResponses(result);
-    }));
+    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> userTrips = getTripsFromTripResponses(result)));
     return super.getCompletableFuture(resultHolder);
   }
 
@@ -216,9 +262,7 @@ public class TripRepository extends AbstractRepository {
     ResultHolder<List<TripView>> resultHolder = new ResultHolder<>();
     Call<List<TripView>> getTripsCall = tripService.getAuthorsTrips(userId, authorTrips.size(),
         getWrappedToken(token));
-    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> {
-      authorTrips.addAll(result);
-    }));
+    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> authorTrips.addAll(result)));
     return super.getCompletableFuture(resultHolder);
   }
 
@@ -327,6 +371,22 @@ public class TripRepository extends AbstractRepository {
     Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, getWrappedToken(token));
     addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist", (result) -> {
     }));
+    return super.getCompletableFuture(resultHolder);
+  }
+
+  /**
+   * Make request to update trip.
+   *
+   * @param trip  New version of trip.
+   * @param token Jwt token.
+   * @return CompletableFuture of Result of String which holds result of request.
+   */
+  public CompletableFuture<Result<String>> updateTrip(Trip trip, String token) {
+    ResultHolder<String> resultHolder = new ResultHolder<>();
+    Call<String> addNoteCall = tripService.updateTrip(trip, getWrappedToken(token));
+    addNoteCall.enqueue(
+        getCallback(resultHolder, "User or trip with this id not exist", (result) -> {
+        }));
     return super.getCompletableFuture(resultHolder);
   }
 

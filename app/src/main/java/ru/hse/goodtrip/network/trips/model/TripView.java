@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hse.goodtrip.data.model.User;
-import ru.hse.goodtrip.data.model.trips.TripState;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +31,7 @@ public class TripView {
 
   private Timestamp publicationTimestamp;
 
-  private TripState state;
+  private ru.hse.goodtrip.network.trips.model.TripState state;
 
   private List<CountryVisit> visits;
 

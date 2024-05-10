@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.Data;
 import ru.hse.goodtrip.data.model.User;
+import ru.hse.goodtrip.network.trips.model.TripState;
 
 /**
  * Users trip.
@@ -56,11 +57,7 @@ public class Trip implements Serializable {
     this.moneyInUsd = moneyInUsd;
     this.interestingPlacesToVisit = interestingPlacesToVisit;
     this.user = user;
-    this.tripState = TripState.IN_PLANNING;
+    this.tripState = ru.hse.goodtrip.network.trips.model.TripState.PLANNED;
     this.tripId = tripId;
-  }
-
-  private enum TripState {
-    IN_PLANNING, IN_PROGRESS, PUBLISHED
   }
 }

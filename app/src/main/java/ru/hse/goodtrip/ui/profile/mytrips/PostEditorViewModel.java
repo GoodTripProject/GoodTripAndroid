@@ -34,6 +34,7 @@ public class PostEditorViewModel extends ViewModel {
 
   public void postTrip(Trip trip) {
 //    TripRepository.postTrip(trip);
+    tripRepository.updateTrip(TripRepository.getNetworkTripFromTrip(UsersRepository.getInstance().user.getId(),trip),UsersRepository.getInstance().user.getToken());
     // TODO Add changing status of trip here
   }
 
