@@ -55,7 +55,7 @@ public interface TripService {
       @Header("Authorization") String authorization);
 
   @PUT("/trip/update_trip")
-  Call<String> updateTrip(@Body Trip trip,@Header("Authorization") String authorization);
+  Call<String> updateTrip(@Query("userId") Integer userId,@Body Trip trip,@Header("Authorization") String authorization);
 
   @GET("/trip/get_authors_trips")
   Call<List<TripView>> getAuthorsTrips(@Query("userId") Integer userId,
