@@ -22,7 +22,8 @@ abstract class AbstractRepository {
     return new Callback<T>() {
       @Override
       public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        Log.println(Log.DEBUG, "Response", "Response " + response.body());
+        Log.d("Response", "Response " + response.body());
+        Log.d("Response", "Response for request" + call.request());
         T responseBody = response.body();
         if (responseBody == null) {
           resultHolder.setResult(
@@ -37,6 +38,7 @@ abstract class AbstractRepository {
       @Override
       public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
         Log.println(Log.DEBUG, "Response", "Response failed" + throwable);
+        Log.d("Response", "Response for request" + call.request());
         resultHolder.setResult(new Result.Error<>(new InterruptedException(errorMessage)));
       }
     };
