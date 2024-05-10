@@ -1,7 +1,6 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
-import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
+import ru.hse.goodtrip.network.trips.model.TripState;
 
 
 /**
@@ -27,20 +26,22 @@ public class PostEditorViewModel extends ViewModel {
 
   private TripRepository tripRepository = TripRepository.getInstance();
   private Trip trip;
-  private List<CountryVisit> countries = new ArrayList<>();
-  private List<Note> notes = new ArrayList<>();
 
   String photo;
 
-  public void postTrip(Trip trip) {
+  public void postTrip() {
 //    TripRepository.postTrip(trip);
-    tripRepository.updateTrip(TripRepository.getNetworkTripFromTrip(UsersRepository.getInstance().user.getId(),trip),UsersRepository.getInstance().user.getToken());
+    trip.setTripState(TripState.PUBLISHED);
+    saveTrip();
     // TODO Add changing status of trip here
   }
 
   public void saveTrip() {
     // TODO
-    for (CountryVisit visit : countries) {
+    tripRepository.updateTrip(
+        TripRepository.getNetworkTripFromTrip(UsersRepository.getInstance().user.getId(), trip),
+        UsersRepository.getInstance().user.getToken());
+    /*for (CountryVisit visit : countries) {
       tripRepository.addCountryVisit(trip.getTripId(),
               UsersRepository.getInstance().user.getToken(),
               TripRepository.getAddCountryRequestFromCountryVisit(visit))
@@ -59,7 +60,7 @@ public class PostEditorViewModel extends ViewModel {
             Log.d(this.getClass().getName(), "Add note happened");
             //TODO maybe add some logic
           });
-    }
+    }*/
   }
 
   /**
@@ -75,12 +76,12 @@ public class PostEditorViewModel extends ViewModel {
       cities.add(new City(cityName, new Coordinates(0, 0), country));
     }
     CountryVisit countryVisit = new CountryVisit(country, cities);
-    countries.add(countryVisit);
+    trip.getCountries().add(countryVisit);
   }
 
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
     //TODO
-    notes.add(new Note(noteHeadline, noteText, photo,
+    trip.getNotes().add(new Note(noteHeadline, noteText, photo,
         new City(place, new Coordinates(0, 0), new Country("", new Coordinates(0, 0)))));
 
   }
