@@ -21,7 +21,7 @@ public class MapsFragment extends Fragment {
 
 
   MapsViewModel mapsViewModel;
-  private OnMapReadyCallback callback = googleMap -> {
+  private final OnMapReadyCallback callback = googleMap -> {
     mapsViewModel.refreshMarks();
     for (Trip trip : mapsViewModel.getMarks()) {
       if (trip.getCountries().size() > 0) {

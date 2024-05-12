@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hse.goodtrip.data.model.User;
 
+/**
+ * Entity to show trip without notes.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +38,12 @@ public class TripView {
 
   private List<CountryVisit> visits;
 
+  /**
+   * Generates TripView from Trip and User.
+   *
+   * @param trip trip of user
+   * @param user user
+   */
   public TripView(Trip trip, User user) {
     id = trip.getId();
     displayName = user.getDisplayName();

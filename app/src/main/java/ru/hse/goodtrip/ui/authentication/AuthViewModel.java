@@ -58,7 +58,8 @@ public class AuthViewModel extends ViewModel {
     Handler handler = new Handler(Looper.getMainLooper());
     future.whenCompleteAsync((result, throwable) -> handler.post(() -> {
       if (result.isSuccess()) {
-        AuthenticationResponse response = ((Result.Success<AuthenticationResponse>) result).getData();
+        AuthenticationResponse response =
+            ((Result.Success<AuthenticationResponse>) result).getData();
         User data = new User(response.getId(), response.getHandle(),
             response.getName() + " " + response.getSurname(),
             response.getUrl(), response.getToken());

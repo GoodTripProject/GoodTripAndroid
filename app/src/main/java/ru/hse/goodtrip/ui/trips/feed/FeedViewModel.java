@@ -29,10 +29,19 @@ public class FeedViewModel extends ViewModel {
     posts = new ArrayList<>();
   }
 
+  /**
+   * Get all trips of authors.
+   *
+   * @param userId user Id.
+   * @param token  users token.
+   */
   public void getAuthorTrips(Integer userId, String token) {
-    CompletableFuture<Result<List<ru.hse.goodtrip.network.trips.model.TripView>>> future = tripRepository.getAuthorsTrips(
-        userId, token);
-    Log.d(FeedViewModel.class.getName(), "Completable future is accepted");
+    CompletableFuture<Result<List<
+        ru.hse.goodtrip.network.trips.model.TripView>>> future =
+        tripRepository.getAuthorsTrips(
+            userId, token);
+    Log.d(FeedViewModel.class.getName(),
+        "Completable future is accepted");
     try {
       future.whenCompleteAsync((result, exception) -> {
         Log.d(FeedViewModel.class.getName(),
