@@ -56,6 +56,9 @@ abstract class AbstractRepository {
         }
     );
   }
+  protected String getWrappedToken(String token) {
+    return "Bearer " + token;
+  }
 
   protected AbstractRepository() {
   }

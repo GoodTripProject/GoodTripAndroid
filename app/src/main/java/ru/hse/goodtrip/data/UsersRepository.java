@@ -2,6 +2,9 @@ package ru.hse.goodtrip.data;
 
 import android.net.Uri;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import lombok.Setter;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
@@ -71,6 +74,15 @@ public class UsersRepository extends AbstractRepository {
     this.user = user;
   }
 
+  private void updatingToken(String username, String password) {
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    executor.scheduleAtFixedRate(() -> {
+      synchronized (this) {
+        login(username, password);
+      }
+    }, 4, 4, TimeUnit.MINUTES);
+  }
+
   /**
    * login user.
    *
@@ -88,7 +100,12 @@ public class UsersRepository extends AbstractRepository {
                 new User(result.getId(), result.getHandle(),
                     result.getName() + " " + result.getSurname(),
                     result.getUrl(), result.getToken()))));
-    return getCompletableFuture(resultOfAuthorization);
+    updatingToken(username, password);
+    return getCompletableFuture(resultOfAuthorization).whenCompleteAsync((result, throwable) -> {
+      if (result.isSuccess()) {
+        updatingToken(username, password);
+      }
+    });
   }
 
   /**
@@ -114,6 +131,10 @@ public class UsersRepository extends AbstractRepository {
                 new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
                     authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
                     authenticationResponse.getUrl(), authenticationResponse.getToken()))));
-    return getCompletableFuture(resultOfAuthorization);
+    return getCompletableFuture(resultOfAuthorization).whenCompleteAsync((result, throwable) -> {
+      if (result.isSuccess()) {
+        updatingToken(username, password);
+      }
+    });
   }
 }
