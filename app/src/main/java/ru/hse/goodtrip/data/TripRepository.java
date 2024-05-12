@@ -246,7 +246,7 @@ public class TripRepository extends AbstractRepository {
     ResultHolder<List<Trip>> resultHolder = new ResultHolder<>();
     Call<List<Trip>> getTripsCall = tripService.getUserTrips(userId, getWrappedToken(token));
     getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> userTrips = getTripsFromTripResponses(result)));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -263,7 +263,7 @@ public class TripRepository extends AbstractRepository {
     Call<List<TripView>> getTripsCall = tripService.getAuthorsTrips(userId, authorTrips.size(),
         getWrappedToken(token));
     getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> authorTrips.addAll(result)));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
 
@@ -291,7 +291,7 @@ public class TripRepository extends AbstractRepository {
     Call<Object> getTripCall = tripService.getTripById(tripId, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -309,7 +309,7 @@ public class TripRepository extends AbstractRepository {
         getWrappedToken(token));
     addTripCall.enqueue(getCallback(resultHolder, "User with this id not exists", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -324,7 +324,7 @@ public class TripRepository extends AbstractRepository {
     Call<String> deleteTripCall = tripService.deleteTripById(tripId, getWrappedToken(token));
     deleteTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -339,7 +339,7 @@ public class TripRepository extends AbstractRepository {
     Call<Object> getTripCall = tripService.getNoteById(noteId, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -354,7 +354,7 @@ public class TripRepository extends AbstractRepository {
     Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, getWrappedToken(token));
     deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -371,7 +371,7 @@ public class TripRepository extends AbstractRepository {
     Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, getWrappedToken(token));
     addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -387,7 +387,7 @@ public class TripRepository extends AbstractRepository {
     updateTripCall.enqueue(
         getCallback(resultHolder, "User or trip with this id not exist", (result) -> {
         }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -405,7 +405,7 @@ public class TripRepository extends AbstractRepository {
         getWrappedToken(token));
     addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist", (result) -> {
     }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -423,7 +423,7 @@ public class TripRepository extends AbstractRepository {
     deleteCountryCall.enqueue(
         getCallback(resultHolder, "Country with this id not exist", (result) -> {
         }));
-    return super.getCompletableFuture(resultHolder);
+    return getCompletableFuture(resultHolder);
   }
 
 }

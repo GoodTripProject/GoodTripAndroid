@@ -37,10 +37,13 @@ public class PostEditorViewModel extends ViewModel {
   }
 
   public void saveTrip() {
-    // TODO
+    int userId = UsersRepository.getInstance().user.getId();
+    String token = UsersRepository.getInstance().user.getToken();
     tripRepository.updateTrip(
-        TripRepository.getNetworkTripFromTrip(UsersRepository.getInstance().user.getId(), trip),
-        UsersRepository.getInstance().user.getToken());
+            TripRepository.getNetworkTripFromTrip(userId, trip),
+            token)
+        .thenRunAsync(() -> tripRepository.getUserTrips(userId, token))
+        .thenRunAsync(() -> tripRepository.getAuthorsTrips(userId, token));
     /*for (CountryVisit visit : countries) {
       tripRepository.addCountryVisit(trip.getTripId(),
               UsersRepository.getInstance().user.getToken(),

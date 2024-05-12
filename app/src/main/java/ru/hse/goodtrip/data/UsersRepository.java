@@ -84,13 +84,11 @@ public class UsersRepository extends AbstractRepository {
         new AuthorizationRequest(username, password));
     loginServiceCall.enqueue(
         getCallback(resultOfAuthorization, "Username or password are not correct"
-            , (result) -> {
-              setLoggedInUser(
-                  new User(result.getId(), result.getHandle(),
-                      result.getName() + " " + result.getSurname(),
-                      result.getUrl(), result.getToken()));
-            }));
-    return super.getCompletableFuture(resultOfAuthorization);
+            , (result) -> setLoggedInUser(
+                new User(result.getId(), result.getHandle(),
+                    result.getName() + " " + result.getSurname(),
+                    result.getUrl(), result.getToken()))));
+    return getCompletableFuture(resultOfAuthorization);
   }
 
   /**
@@ -112,12 +110,10 @@ public class UsersRepository extends AbstractRepository {
         new RegisterRequest(username, handle, password, name, surname));
     loginServiceCall.enqueue(
         getCallback(resultOfAuthorization, "Username is not correct or is already taken"
-            , authenticationResponse -> {
-              setLoggedInUser(
-                  new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
-                      authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
-                      authenticationResponse.getUrl(), authenticationResponse.getToken()));
-            }));
-    return super.getCompletableFuture(resultOfAuthorization);
+            , authenticationResponse -> setLoggedInUser(
+                new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
+                    authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
+                    authenticationResponse.getUrl(), authenticationResponse.getToken()))));
+    return getCompletableFuture(resultOfAuthorization);
   }
 }
