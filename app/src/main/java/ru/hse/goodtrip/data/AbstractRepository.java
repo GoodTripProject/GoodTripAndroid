@@ -11,13 +11,14 @@ import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
 
 abstract class AbstractRepository {
+
   /**
    * Make a callback.
    *
    * @param resultHolder result Holder.
    * @return callback.
    */
-  protected  <T> Callback<T> getCallback(ResultHolder<T> resultHolder, String errorMessage,
+  protected <T> Callback<T> getCallback(ResultHolder<T> resultHolder, String errorMessage,
       Consumer<T> handler) {
     return new Callback<T>() {
       @Override
@@ -43,6 +44,7 @@ abstract class AbstractRepository {
       }
     };
   }
+
   protected <T> CompletableFuture<Result<T>> getCompletableFuture(ResultHolder<T> resultHolder) {
     return CompletableFuture.supplyAsync(() -> {
           Log.d(this.getClass().getName(),

@@ -245,7 +245,8 @@ public class TripRepository extends AbstractRepository {
       String token) {
     ResultHolder<List<Trip>> resultHolder = new ResultHolder<>();
     Call<List<Trip>> getTripsCall = tripService.getUserTrips(userId, getWrappedToken(token));
-    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> userTrips = getTripsFromTripResponses(result)));
+    getTripsCall.enqueue(
+        getCallback(resultHolder, "", (result) -> userTrips = getTripsFromTripResponses(result)));
     return getCompletableFuture(resultHolder);
   }
 
@@ -383,7 +384,8 @@ public class TripRepository extends AbstractRepository {
    */
   public CompletableFuture<Result<String>> updateTrip(Trip trip, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> updateTripCall = tripService.updateTrip(trip.getUserId(),trip, getWrappedToken(token));
+    Call<String> updateTripCall = tripService.updateTrip(trip.getUserId(), trip,
+        getWrappedToken(token));
     updateTripCall.enqueue(
         getCallback(resultHolder, "User or trip with this id not exist", (result) -> {
         }));

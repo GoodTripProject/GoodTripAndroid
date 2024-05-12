@@ -54,7 +54,8 @@ public class Trip implements Serializable {
    * @param visits        CountryVisits.
    */
   public Trip(Integer userId, String title, Integer moneyInUsd, @Nullable String mainPhotoUrl,
-      Date departureDate, Date arrivalDate, ru.hse.goodtrip.network.trips.model.TripState state, List<Note> notes,
+      Date departureDate, Date arrivalDate, ru.hse.goodtrip.network.trips.model.TripState state,
+      List<Note> notes,
       List<CountryVisit> visits) {
     this.userId = userId;
     this.title = title;

@@ -62,7 +62,8 @@ public class AuthViewModel extends ViewModel {
         User data = new User(response.getId(), response.getHandle(),
             response.getName() + " " + response.getSurname(),
             response.getUrl(), response.getToken());
-        TripRepository.getInstance().getUserTrips(usersRepository.user.getId(),usersRepository.user.getToken());
+        TripRepository.getInstance()
+            .getUserTrips(usersRepository.user.getId(), usersRepository.user.getToken());
         loginResult.setValue(new LoginResult(data));
       } else {
         troublesHandler.run();
