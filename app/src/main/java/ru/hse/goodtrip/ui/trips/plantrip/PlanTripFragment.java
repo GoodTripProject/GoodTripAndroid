@@ -1,20 +1,18 @@
 package ru.hse.goodtrip.ui.trips.plantrip;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -29,6 +27,7 @@ import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
+import ru.hse.goodtrip.ui.trips.plantrip.PlanTripDialogWindows.DialogAddNewDestinationFragment;
 
 public class PlanTripFragment extends Fragment {
 
@@ -59,6 +58,20 @@ public class PlanTripFragment extends Fragment {
     return binding.getRoot();
   }
 
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    final EditText arrivalDateEditText = binding.arrivalDateEditText;
+    final EditText departureDateEditText = binding.departureDateEditText;
+    final Button saveButton = binding.saveButton;
+    final ImageButton addCountry = binding.addCountry;
+    DialogAddNewDestinationFragment dialog = new DialogAddNewDestinationFragment();
+    addCountry.setOnClickListener(v -> showAddNewDestinationDialog(dialog));
+
+    saveButton.setOnClickListener(this::saveTrip);
+    departureDateEditText.setOnClickListener(this::selectDepartureDate);
+    arrivalDateEditText.setOnClickListener(this::selectArrivalDate);
+  }
+
   private void addCountryView(String country, List<String> cities) {
     View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
@@ -74,18 +87,17 @@ public class PlanTripFragment extends Fragment {
     binding.route.addView(countryView);
   }
 
-  private void setupAddCountryPopup(View popupView, PopupWindow popupWindow) {
-    binding.getRoot().setAlpha((float) 0.2);
-    final AutoCompleteTextView autoCompleteTextViewCountries = popupView.findViewById(
-        R.id.enter_country_name);
+  private void setupAddCountryDialog(DialogAddNewDestinationFragment dialog) {
+    final AutoCompleteTextView autoCompleteTextViewCountries = dialog.binding.enterCountryName;
     ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
         android.R.layout.select_dialog_item,
         planTripViewModel.getCountriesList().toArray(new String[0]));
     autoCompleteTextViewCountries.setThreshold(0);
     autoCompleteTextViewCountries.setAdapter(adapter);
-    final Button addCountry = popupView.findViewById(R.id.popup_add_country);
-    final Button addCity = popupView.findViewById(R.id.popup_add_city);
-    LinearLayout citiesLayout = popupView.findViewById(R.id.add_cities);
+    final Button addCountry = dialog.binding.popupAddCountry;
+    final Button addCity = dialog.binding.popupAddCity;
+    final ImageButton closeButton = dialog.binding.closeButton;
+    LinearLayout citiesLayout = dialog.binding.addCities;
     addCountry.setOnClickListener(v -> {
       String country = autoCompleteTextViewCountries.getText().toString();
       List<String> cities = new ArrayList<>();
@@ -96,9 +108,7 @@ public class PlanTripFragment extends Fragment {
       }
       planTripViewModel.addCountry(country, cities);
       addCountryView(country, cities);
-      popupWindow.dismiss();
-      binding.getRoot().setAlpha((float) 1);
-      setEditTexts(true);
+      dialog.dismiss();
     });
 
     addCity.setOnClickListener(v -> {
@@ -109,13 +119,11 @@ public class PlanTripFragment extends Fragment {
               LinearLayout.LayoutParams.WRAP_CONTENT));
       citiesLayout.addView(view);
       citiesLayout.refreshDrawableState();
-      popupView.refreshDrawableState();
     });
-  }
 
-  private void setEditTexts(boolean enabled) {
-    binding.travelNameEditText.setEnabled(enabled);
-    binding.budgetEditText.setEnabled(enabled);
+    closeButton.setOnClickListener(v -> {
+      dialog.dismiss();
+    });
   }
 
   private void selectDepartureDate(View view) {
@@ -138,47 +146,34 @@ public class PlanTripFragment extends Fragment {
     datePickerDialog.show();
   }
 
-  @Override
-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    final EditText travelNameEditText = binding.travelNameEditText;
-    final EditText arrivalDateEditText = binding.arrivalDateEditText;
-    final EditText departureDateEditText = binding.departureDateEditText;
-    final Button saveButton = binding.saveButton;
-    final ImageButton addCountry = binding.addCountry;
-    final EditText moneyEditText = binding.budgetEditText;
-    LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(
-        LAYOUT_INFLATER_SERVICE);
-    View popupView = inflater.inflate(R.layout.popup_add_country_and_cities, null);
-    final PopupWindow popupWindow = new PopupWindow(popupView,
-        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-    popupWindow.setOutsideTouchable(false);
-    addCountry.setOnClickListener(v -> {
-      popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-      setupAddCountryPopup(popupView, popupWindow);
-      setEditTexts(false);
-    });
-    saveButton.setOnClickListener(v -> {
-      planTripViewModel.createTrip(travelNameEditText.getText().toString(),
-          departureDateEditText.getText().toString(), arrivalDateEditText.getText().toString(),
-          null, moneyEditText.getText().toString(), new HashSet<>(),
-          UsersRepository.getInstance().getLoggedUser()); // TODO
-      if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
-          .isDataValid()) {
-        updateUi();
-      } else {
-        Toast toast = Toast.makeText(requireContext(),
-            Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue().getError()),
-            Toast.LENGTH_LONG);
-        toast.show();
-      }
-    });
-
-    departureDateEditText.setOnClickListener(this::selectDepartureDate);
-    arrivalDateEditText.setOnClickListener(this::selectArrivalDate);
+  private void showAddNewDestinationDialog(DialogAddNewDestinationFragment dialog) {
+    dialog.show(getChildFragmentManager(), "dialog..."); // TODO
+    getChildFragmentManager().executePendingTransactions();
+    DisplayMetrics metrics = getResources().getDisplayMetrics();
+    int width = metrics.widthPixels;
+    dialog.getDialog().getWindow().setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
+    setupAddCountryDialog(dialog);
   }
 
-  private void updateUi() {
+  private void saveTrip(View v) {
+    planTripViewModel.createTrip(binding.travelNameEditText.getText().toString(),
+        binding.departureDateEditText.getText().toString(),
+        binding.arrivalDateEditText.getText().toString(),
+        null, binding.budgetEditText.getText().toString(),
+        new HashSet<>(),
+        UsersRepository.getInstance().getLoggedUser()); // TODO
+    if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
+        .isDataValid()) {
+      navigateUp();
+    } else {
+      Toast toast = Toast.makeText(requireContext(),
+          Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue().getError()),
+          Toast.LENGTH_LONG);
+      toast.show();
+    }
+  }
+
+  private void navigateUp() {
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }
-
 }
