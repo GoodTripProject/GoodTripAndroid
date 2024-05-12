@@ -16,6 +16,7 @@ public class PlaceRequest {
   @Nullable
   private PlacesTypes type;
 }
+@SuppressWarnings("unused")
 enum PlacesTypes {
   amusement_park,
   aquarium,
