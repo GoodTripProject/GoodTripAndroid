@@ -274,9 +274,6 @@ public class TripRepository extends AbstractRepository {
    * @param token Bare jwt token.
    * @return Wrapped token.
    */
-  private String getWrappedToken(String token) {
-    return "Bearer " + token;
-  }
 
 
   /**
