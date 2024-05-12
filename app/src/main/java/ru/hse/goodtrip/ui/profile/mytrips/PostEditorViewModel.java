@@ -1,7 +1,6 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
-import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
+import ru.hse.goodtrip.network.trips.model.TripState;
 
 
 /**
@@ -27,17 +26,26 @@ public class PostEditorViewModel extends ViewModel {
 
   private TripRepository tripRepository = TripRepository.getInstance();
   private Trip trip;
-  private List<CountryVisit> countries = new ArrayList<>();
-  private List<Note> notes = new ArrayList<>();
 
   String photo;
 
-  public void postTrip(Trip trip) {
-//    TripRepository.postTrip(trip);
+  /**
+   * Post and save trip.
+   */
+  public void postTrip() {
+    trip.setTripState(TripState.PUBLISHED);
+    saveTrip();
   }
 
+  /**
+   * Save trip.
+   */
   public void saveTrip() {
-    // TODO
+    int userId = UsersRepository.getInstance().user.getId();
+    String token = UsersRepository.getInstance().user.getToken();
+    tripRepository.updateTrip(TripRepository.getNetworkTripFromTrip(userId, trip), token)
+        .thenRunAsync(() -> tripRepository.getUserTrips(userId, token))
+        .thenRunAsync(() -> tripRepository.getAuthorsTrips(userId, token));
   }
 
   /**
@@ -53,16 +61,12 @@ public class PostEditorViewModel extends ViewModel {
       cities.add(new City(cityName, new Coordinates(0, 0), country));
     }
     CountryVisit countryVisit = new CountryVisit(country, cities);
-    countries.add(countryVisit);
+    trip.getCountries().add(countryVisit);
   }
 
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
-    tripRepository.addNote(UsersRepository.getInstance().user.getId(),
-            UsersRepository.getInstance().user.getToken(),
-            new AddNoteRequest(noteHeadline, photo, noteText, place, trip.getTripId()))
-        .whenCompleteAsync((result, throwable) -> {
-          Log.d(this.getClass().getName(), "Add note happened");
-          //TODO maybe add some logic
-        });
+    trip.getNotes().add(new Note(noteHeadline, noteText, photo,
+        new City(place, new Coordinates(0, 0), new Country("", new Coordinates(0, 0)))));
+
   }
 }

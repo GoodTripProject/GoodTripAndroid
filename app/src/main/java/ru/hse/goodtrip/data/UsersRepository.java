@@ -1,16 +1,10 @@
 package ru.hse.goodtrip.data;
 
 import android.net.Uri;
-import android.util.Log;
-import androidx.annotation.NonNull;
 import java.util.concurrent.CompletableFuture;
 import lombok.Setter;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import ru.hse.goodtrip.data.model.Result;
-import ru.hse.goodtrip.data.model.Result.Error;
-import ru.hse.goodtrip.data.model.Result.Success;
 import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.network.NetworkManager;
@@ -84,43 +78,17 @@ public class UsersRepository extends AbstractRepository {
    * @param password password.
    * @return result value.
    */
-  public CompletableFuture<Result<User>> login(String username, String password) {
-    final ResultHolder<User> resultOfAuthorization = new ResultHolder<>();
+  public CompletableFuture<Result<AuthenticationResponse>> login(String username, String password) {
+    final ResultHolder<AuthenticationResponse> resultOfAuthorization = new ResultHolder<>();
     Call<AuthenticationResponse> loginServiceCall = loginService.login(
         new AuthorizationRequest(username, password));
     loginServiceCall.enqueue(
         getCallback(resultOfAuthorization, "Username or password are not correct"
-        ));
-    return super.getCompletableFuture(resultOfAuthorization);
-  }
-
-  @NonNull
-  private Callback<AuthenticationResponse> getCallback(ResultHolder<User> resultOfAuthorization,
-      String failureAuthenticationString) {
-    return new Callback<AuthenticationResponse>() {
-      @Override
-      public void onResponse(@NonNull Call<AuthenticationResponse> call,
-          @NonNull Response<AuthenticationResponse> response) {
-        AuthenticationResponse authenticationResponse = response.body();
-        if (authenticationResponse == null) {
-          resultOfAuthorization.setResult(
-              new Error<>(new InterruptedException(failureAuthenticationString)));
-        } else {
-          setLoggedInUser(
-              new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
-                  authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
-                  authenticationResponse.getUrl(), authenticationResponse.getToken()));
-          resultOfAuthorization.setResult(new Success<>(user));
-        }
-      }
-
-      @Override
-      public void onFailure(@NonNull Call<AuthenticationResponse> call,
-          @NonNull Throwable throwable) {
-        resultOfAuthorization.setResult(
-            new Error<>(new InterruptedException("Some connection issues happened")));
-      }
-    };
+            , (result) -> setLoggedInUser(
+                new User(result.getId(), result.getHandle(),
+                    result.getName() + " " + result.getSurname(),
+                    result.getUrl(), result.getToken()))));
+    return getCompletableFuture(resultOfAuthorization);
   }
 
   /**
@@ -133,15 +101,19 @@ public class UsersRepository extends AbstractRepository {
    * @param surname  user surname.
    * @return result value.
    */
-  public CompletableFuture<Result<User>> signUp(String username, String password, String handle,
+  public CompletableFuture<Result<AuthenticationResponse>> signUp(String username, String password,
+      String handle,
       String name,
       String surname) {
-    final ResultHolder<User> resultOfAuthorization = new ResultHolder<>();
+    final ResultHolder<AuthenticationResponse> resultOfAuthorization = new ResultHolder<>();
     Call<AuthenticationResponse> loginServiceCall = loginService.register(
         new RegisterRequest(username, handle, password, name, surname));
     loginServiceCall.enqueue(
         getCallback(resultOfAuthorization, "Username is not correct or is already taken"
-        ));
-    return super.getCompletableFuture(resultOfAuthorization);
+            , authenticationResponse -> setLoggedInUser(
+                new User(authenticationResponse.getId(), authenticationResponse.getHandle(),
+                    authenticationResponse.getName() + " " + authenticationResponse.getSurname(),
+                    authenticationResponse.getUrl(), authenticationResponse.getToken()))));
+    return getCompletableFuture(resultOfAuthorization);
   }
 }

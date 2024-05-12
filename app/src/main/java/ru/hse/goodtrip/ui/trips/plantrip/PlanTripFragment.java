@@ -91,7 +91,7 @@ public class PlanTripFragment extends Fragment {
     final AutoCompleteTextView autoCompleteTextViewCountries = dialog.binding.enterCountryName;
     ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
         android.R.layout.select_dialog_item,
-        planTripViewModel.getCountriesList().toArray(new String[0]));
+        PlanTripViewModel.getCountriesList().toArray(new String[0]));
     autoCompleteTextViewCountries.setThreshold(0);
     autoCompleteTextViewCountries.setAdapter(adapter);
     final Button addCountry = dialog.binding.popupAddCountry;

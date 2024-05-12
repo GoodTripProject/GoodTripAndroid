@@ -1,17 +1,19 @@
 package ru.hse.goodtrip.data;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
+import java.sql.Date;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import lombok.Getter;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
@@ -26,6 +28,7 @@ import ru.hse.goodtrip.network.trips.model.CityVisit;
 import ru.hse.goodtrip.network.trips.model.CountryVisit;
 import ru.hse.goodtrip.network.trips.model.Note;
 import ru.hse.goodtrip.network.trips.model.Trip;
+import ru.hse.goodtrip.network.trips.model.TripView;
 
 public class TripRepository extends AbstractRepository {
 
@@ -42,7 +45,15 @@ public class TripRepository extends AbstractRepository {
 
 
   @Getter
-  private List<ru.hse.goodtrip.data.model.trips.Trip> trips = new ArrayList<>();
+  private List<ru.hse.goodtrip.data.model.trips.Trip> userTrips = new ArrayList<>();
+
+  @Getter
+  private List<TripView> authorTrips = new ArrayList<>();
+
+
+  public void resetAuthorTrips() {
+    authorTrips = new ArrayList<>();
+  }
 
   public static TripRepository getInstance() {
     if (instance == null) {
@@ -79,6 +90,49 @@ public class TripRepository extends AbstractRepository {
     result.setCountries(countryVisits);
     result.setNotes(notes);
     return result;
+  }
+
+  private static Note getNetworkNoteFromNote(int tripId,
+      ru.hse.goodtrip.data.model.trips.Note noteModel) {
+    return new Note(null, noteModel.getHeadline(), noteModel.getPhotoUrl(),
+        noteModel.getPlace().getName(),
+        noteModel.getNote(), tripId);
+  }
+
+  private static CountryVisit getNetworkCountryVisitFromCountryVisit(int tripId,
+      ru.hse.goodtrip.data.model.trips.CountryVisit countryVisit) {
+    return new CountryVisit(null,
+        countryVisit.getCountry().getName(),
+        countryVisit.getVisitedCities().stream().map(
+            TripRepository::getNetworkCityVisitFromCityVisit).collect(Collectors.toList()), tripId);
+  }
+
+  private static CityVisit getNetworkCityVisitFromCityVisit(
+      ru.hse.goodtrip.data.model.trips.City city) {
+    return new CityVisit(null, city.getName(), new Point(
+        new Coordinate(city.getCoordinates().getLatitude(), city.getCoordinates().getLongitude()),
+        new PrecisionModel(), SRID), null);
+  }
+
+  /**
+   * Convert trip from network to trip.
+   *
+   * @param tripModel Trip.
+   * @return Trip network.
+   */
+  public static Trip getNetworkTripFromTrip(int userId,
+      ru.hse.goodtrip.data.model.trips.Trip tripModel) {
+    return new Trip(tripModel.getTripId(), userId,
+        tripModel.getTitle(), tripModel.getMoneyInUsd(), tripModel.getMainPhotoUrl(),
+        Date.valueOf(tripModel.getStartTripDate().toString()),
+        Date.valueOf(tripModel.getEndTripDate().toString()), null,
+        tripModel.getTripState(),
+        tripModel.getNotes().stream()
+            .map(note -> getNetworkNoteFromNote(tripModel.getTripId(), note)).collect(
+                Collectors.toList()),
+        tripModel.getCountries().stream().map(
+            countryVisit -> getNetworkCountryVisitFromCountryVisit(tripModel.getTripId(),
+                countryVisit)).collect(Collectors.toList()));
   }
 
   /**
@@ -178,69 +232,6 @@ public class TripRepository extends AbstractRepository {
     return result;
   }
 
-  // TODO maybe make from two methods one
-
-  /**
-   * Make a trip callback.
-   *
-   * @param resultHolder result Holder.
-   * @return callback.
-   */
-  private Callback<List<Trip>> getTripCallback(
-      ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder) {
-    return new Callback<List<Trip>>() {
-      /** */
-      @Override
-      public void onResponse(@NonNull Call<List<Trip>> call,
-          @NonNull Response<List<Trip>> response) {
-        Log.println(Log.WARN, "Response", "Trip response happened: " + response.body());
-        List<Trip> responseBody = response.body();
-        if (responseBody == null) {
-          resultHolder.setResult(
-              new Result.Error<>(new InterruptedException("No trips"))
-          );
-        } else {
-          trips = getTripsFromTripResponses(responseBody);
-          resultHolder.setResult(new Result.Success<>(trips));
-        }
-      }
-
-      @Override
-      public void onFailure(@NonNull Call<List<Trip>> call, @NonNull Throwable throwable) {
-        Log.println(Log.WARN, "Response", "Trip response happened and failed: " + throwable);
-        resultHolder.setResult(new Result.Error<>(new InterruptedException("No trips")));
-      }
-    };
-  }
-
-  /**
-   * Make a callback.
-   *
-   * @param resultHolder result Holder.
-   * @return callback.
-   */
-  private <T> Callback<T> getCallback(ResultHolder<T> resultHolder, String errorMessage) {
-    return new Callback<T>() {
-      @Override
-      public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        Log.println(Log.DEBUG, "Response", "Response " + response.body());
-        T responseBody = response.body();
-        if (responseBody == null) {
-          resultHolder.setResult(
-              new Result.Error<>(new InterruptedException(errorMessage))
-          );
-        } else {
-          resultHolder.setResult(new Result.Success<>(responseBody));
-        }
-      }
-
-      @Override
-      public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
-        Log.println(Log.DEBUG, "Response", "Response failed" + throwable);
-        resultHolder.setResult(new Result.Error<>(new InterruptedException(errorMessage)));
-      }
-    };
-  }
 
   /**
    * Make request to the server to get trips.
@@ -249,14 +240,33 @@ public class TripRepository extends AbstractRepository {
    * @param token  Jwt token.
    * @return CompletableFuture of Result of trips.
    */
-  public CompletableFuture<Result<List<ru.hse.goodtrip.data.model.trips.Trip>>> getUserTrips(
+  public CompletableFuture<Result<List<Trip>>> getUserTrips(
       Integer userId,
       String token) {
-    ResultHolder<List<ru.hse.goodtrip.data.model.trips.Trip>> resultHolder = new ResultHolder<>();
+    ResultHolder<List<Trip>> resultHolder = new ResultHolder<>();
     Call<List<Trip>> getTripsCall = tripService.getUserTrips(userId, getWrappedToken(token));
-    getTripsCall.enqueue(getTripCallback(resultHolder));
-    return super.getCompletableFuture(resultHolder);
+    getTripsCall.enqueue(
+        getCallback(resultHolder, "", (result) -> userTrips = getTripsFromTripResponses(result)));
+    return getCompletableFuture(resultHolder);
   }
+
+  /**
+   * Make request to the server to get trips of authors.
+   *
+   * @param userId User id.
+   * @param token  Jwt token.
+   * @return CompletableFuture of Result of trips.
+   */
+  public CompletableFuture<Result<List<TripView>>> getAuthorsTrips(
+      Integer userId,
+      String token) {
+    ResultHolder<List<TripView>> resultHolder = new ResultHolder<>();
+    Call<List<TripView>> getTripsCall = tripService.getAuthorsTrips(userId, authorTrips.size(),
+        getWrappedToken(token));
+    getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> authorTrips.addAll(result)));
+    return getCompletableFuture(resultHolder);
+  }
+
 
   /**
    * Wraps token.
@@ -277,11 +287,12 @@ public class TripRepository extends AbstractRepository {
    * @return CompletableFuture of Result of trip.
    */
   public CompletableFuture<Result<Object>> getTripById(Integer tripId,
-      String token) {//TODO возвращаемый тип
+      String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = tripService.getTripById(tripId, getWrappedToken(token));
-    getTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
-    return super.getCompletableFuture(resultHolder);
+    getTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -297,8 +308,9 @@ public class TripRepository extends AbstractRepository {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> addTripCall = tripService.addTrip(userId, addTripRequest,
         getWrappedToken(token));
-    addTripCall.enqueue(getCallback(resultHolder, "User with this id not exists"));
-    return super.getCompletableFuture(resultHolder);
+    addTripCall.enqueue(getCallback(resultHolder, "User with this id not exists", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -311,8 +323,9 @@ public class TripRepository extends AbstractRepository {
   public CompletableFuture<Result<String>> deleteTrip(Integer tripId, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> deleteTripCall = tripService.deleteTripById(tripId, getWrappedToken(token));
-    deleteTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists"));
-    return super.getCompletableFuture(resultHolder);
+    deleteTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -325,8 +338,9 @@ public class TripRepository extends AbstractRepository {
   public CompletableFuture<Result<Object>> getNoteById(Integer noteId, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = tripService.getNoteById(noteId, getWrappedToken(token));
-    getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
-    return super.getCompletableFuture(resultHolder);
+    getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -339,8 +353,9 @@ public class TripRepository extends AbstractRepository {
   public CompletableFuture<Result<String>> deleteNoteById(Integer noteId, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, getWrappedToken(token));
-    deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists"));
-    return super.getCompletableFuture(resultHolder);
+    deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -355,8 +370,26 @@ public class TripRepository extends AbstractRepository {
       AddNoteRequest addNoteRequest) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, getWrappedToken(token));
-    addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist"));
-    return super.getCompletableFuture(resultHolder);
+    addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
+  }
+
+  /**
+   * Make request to update trip.
+   *
+   * @param trip  New version of trip.
+   * @param token Jwt token.
+   * @return CompletableFuture of Result of String which holds result of request.
+   */
+  public CompletableFuture<Result<String>> updateTrip(Trip trip, String token) {
+    ResultHolder<String> resultHolder = new ResultHolder<>();
+    Call<String> updateTripCall = tripService.updateTrip(trip.getUserId(), trip,
+        getWrappedToken(token));
+    updateTripCall.enqueue(
+        getCallback(resultHolder, "User or trip with this id not exist", (result) -> {
+        }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -372,8 +405,9 @@ public class TripRepository extends AbstractRepository {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest,
         getWrappedToken(token));
-    addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist"));
-    return super.getCompletableFuture(resultHolder);
+    addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist", (result) -> {
+    }));
+    return getCompletableFuture(resultHolder);
   }
 
   /**
@@ -388,8 +422,10 @@ public class TripRepository extends AbstractRepository {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId,
         getWrappedToken(token));
-    deleteCountryCall.enqueue(getCallback(resultHolder, "Country with this id not exist"));
-    return super.getCompletableFuture(resultHolder);
+    deleteCountryCall.enqueue(
+        getCallback(resultHolder, "Country with this id not exist", (result) -> {
+        }));
+    return getCompletableFuture(resultHolder);
   }
 
 }

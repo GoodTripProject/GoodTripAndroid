@@ -7,11 +7,14 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import ru.hse.goodtrip.network.trips.model.AddCountryRequest;
 import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
 import ru.hse.goodtrip.network.trips.model.AddTripRequest;
 import ru.hse.goodtrip.network.trips.model.Trip;
+import ru.hse.goodtrip.network.trips.model.TripView;
 
 public interface TripService {
 
@@ -50,5 +53,13 @@ public interface TripService {
   @DELETE("/trip/country/{countryVisitId}")
   Call<String> deleteCountryVisit(@Path("countryVisitId") Integer countryVisitId,
       @Header("Authorization") String authorization);
+
+  @PUT("/trip/update_trip")
+  Call<String> updateTrip(@Query("userId") Integer userId, @Body Trip trip,
+      @Header("Authorization") String authorization);
+
+  @GET("/trip/get_authors_trips")
+  Call<List<TripView>> getAuthorsTrips(@Query("userId") Integer userId,
+      @Query("start") Integer start, @Header("Authorization") String authorization);
 
 }

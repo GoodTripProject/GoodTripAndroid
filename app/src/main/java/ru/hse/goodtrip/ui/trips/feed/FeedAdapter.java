@@ -6,6 +6,7 @@ import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrlCropped;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
-import ru.hse.goodtrip.data.model.trips.CountryVisit;
-import ru.hse.goodtrip.data.model.trips.Trip;
+import ru.hse.goodtrip.data.TripRepository;
+import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.databinding.FeedLoadingViewBinding;
 import ru.hse.goodtrip.databinding.ItemPostTripBinding;
+import ru.hse.goodtrip.network.trips.model.CountryVisit;
+import ru.hse.goodtrip.network.trips.model.TripView;
 import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedLoadingViewHolder;
 import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedPostViewHolder;
 
@@ -31,10 +37,10 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   private static final int VIEW_TYPE_ITEM = 0;
   private static final int VIEW_TYPE_LOADING = 1;
   private static final String TAG = "FEED_ADAPTER";
-  List<Trip> items = Collections.emptyList();
+  List<TripView> items = Collections.emptyList();
 
   @SuppressLint("NotifyDataSetChanged")
-  public void setItems(List<Trip> newItems) {
+  public void setItems(List<TripView> newItems) {
     items = newItems;
     notifyDataSetChanged();
   }
@@ -63,28 +69,32 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   }
 
   private void showPostView(FeedPostViewHolder viewHolder, int position) {
-    Trip trip = items.get(position);
+    TripView trip = items.get(position);
     viewHolder.itemView.setOnClickListener(this);
     viewHolder.itemView.setTag(trip);
     ItemPostTripBinding binding = viewHolder.getBinding();
     setPostInfoWithTrip(trip, binding);
+
   }
 
-  private void setPostInfoWithTrip(Trip trip, ItemPostTripBinding binding) {
+  private void setPostInfoWithTrip(TripView trip, ItemPostTripBinding binding) {
     String dateFormat = "dd.MM.yyyy";
     StringBuilder countries = new StringBuilder();
-    for (CountryVisit country : trip.getCountries()) {
-      countries.append(country.getCountry().getName());
+    for (CountryVisit country : trip.getVisits()) {
+      countries.append(country.getCountry());
     }
-
     binding.titleText.setText(trip.getTitle());
-    binding.profileNameText.setText(trip.getUser().getDisplayName());
+    binding.profileNameText.setText(trip.getDisplayName());
     binding.tripDuration.setText(
-        getDuration(trip.getStartTripDate(), trip.getEndTripDate(), dateFormat));
-    binding.dateOfPublication.setText(getDateFormatted(trip.getTimeOfPublication(), dateFormat));
+        getDuration(
+            trip.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            trip.getArrivalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            dateFormat));
+    binding.dateOfPublication.setText(getDateFormatted(trip.getPublicationTimestamp().toInstant()
+        .atZone(ZoneId.systemDefault()).toLocalDate(), dateFormat));
     binding.countriesText.setText(countries);
-    if (trip.getUser().getMainPhotoUrl() != null) {
-      setImageByUrl(binding.profileImageView, String.valueOf(trip.getUser().getMainPhotoUrl()),
+    if (trip.getUserMainPhotoUrl() != null) {
+      setImageByUrl(binding.profileImageView, trip.getUserMainPhotoUrl(),
           R.drawable.baseline_account_circle_24);
     } else {
       setImageByUrlCropped(binding.profileImageView,
@@ -113,10 +123,29 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   @Override
   public void onClick(View v) {
     // TODO: what if `v` is not post?
-    Trip postClicked = (Trip) v.getTag();
+
+    TripView postClicked = (TripView) v.getTag();
 
     MainActivity activity = (MainActivity) v.getContext();
-    activity.getNavigationGraph().navigateToPostPage(postClicked);
+    Handler handler = new Handler(activity.getMainLooper());
+    TripRepository.getInstance()
+        .getTripById(postClicked.getId(), UsersRepository.getInstance().user.getToken())
+        .thenAccept((fullTrip) -> {
+          if (fullTrip.isSuccess()) {
+            Log.d(TAG, "Get trip by id is happened, id of trip is:" + postClicked.getId());
+
+          } else {
+            Log.e(TAG, "Get trip by id is happened, issues happened, id of trip is:"
+                + postClicked.getId());
+
+          }
+          handler.post(() -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            activity.getNavigationGraph().navigateToPostPage(TripRepository.getTripFromTripResponse(
+                objectMapper.convertValue(((Result.Success<?>) fullTrip).getData(),
+                    ru.hse.goodtrip.network.trips.model.Trip.class)));
+          });
+        });
   }
 
   @Override

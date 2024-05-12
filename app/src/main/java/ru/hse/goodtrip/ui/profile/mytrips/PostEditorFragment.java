@@ -218,6 +218,7 @@ public class PostEditorFragment extends Fragment {
   }
 
   private void newPost(View view) {
+    postEditorViewModel.postTrip();
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
     ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
   }

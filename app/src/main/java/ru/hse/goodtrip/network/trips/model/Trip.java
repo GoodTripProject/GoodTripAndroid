@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.hse.goodtrip.data.model.trips.TripState;
 
 /**
  * Trip network object.
@@ -35,7 +34,7 @@ public class Trip implements Serializable {
 
   private Timestamp publicationTimestamp;
 
-  private TripState state;
+  private ru.hse.goodtrip.network.trips.model.TripState state;
 
   private List<Note> notes;
 
@@ -55,7 +54,8 @@ public class Trip implements Serializable {
    * @param visits        CountryVisits.
    */
   public Trip(Integer userId, String title, Integer moneyInUsd, @Nullable String mainPhotoUrl,
-      Date departureDate, Date arrivalDate, TripState state, List<Note> notes,
+      Date departureDate, Date arrivalDate, ru.hse.goodtrip.network.trips.model.TripState state,
+      List<Note> notes,
       List<CountryVisit> visits) {
     this.userId = userId;
     this.title = title;

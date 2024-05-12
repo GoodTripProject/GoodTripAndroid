@@ -45,7 +45,7 @@ public class MyTripsFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     LinearLayout trips = binding.trips;
-    for (Trip trip : TripRepository.getInstance().getTrips()) {
+    for (Trip trip : TripRepository.getInstance().getUserTrips()) {
       ItemTripProfileBinding tripProfileBinding = ItemTripProfileBinding.inflate(
           getLayoutInflater());
       tripProfileBinding.tripTitle.setText(trip.getTitle());
