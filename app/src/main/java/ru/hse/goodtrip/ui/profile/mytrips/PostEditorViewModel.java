@@ -69,4 +69,8 @@ public class PostEditorViewModel extends ViewModel {
         new City(place, new Coordinates(0, 0), new Country("", new Coordinates(0, 0)))));
 
   }
+
+  public List<String> getCountries() {
+    return new ArrayList<>(); //TODO
+  }
 }
