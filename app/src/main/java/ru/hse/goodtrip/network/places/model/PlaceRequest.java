@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlaceRequest {
 
+  /**
+   * Types of places.
+   */
   @SuppressWarnings("unused")
   public enum PlacesTypes {
     amusement_park,
