@@ -24,10 +24,10 @@ public class MapsFragment extends Fragment {
   private final OnMapReadyCallback callback = googleMap -> {
     mapsViewModel.refreshMarks();
     for (Trip trip : mapsViewModel.getMarks()) {
-      if (trip.getCountries().size() > 0) {
+      if (!trip.getCountries().isEmpty()) {
         CountryVisit firstDestination = trip.getCountries().get(0);
-        int latitude = firstDestination.getCountry().getCoordinates().getLatitude();
-        int longitude = firstDestination.getCountry().getCoordinates().getLongitude();
+        double latitude = firstDestination.getCountry().getCoordinates().getLatitude();
+        double longitude = firstDestination.getCountry().getCoordinates().getLongitude();
         LatLng tripMark = new LatLng(latitude, longitude);
         googleMap.addMarker(new MarkerOptions().position(tripMark).title(trip.getTitle()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(tripMark));
