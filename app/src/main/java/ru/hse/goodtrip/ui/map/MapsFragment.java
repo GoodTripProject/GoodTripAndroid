@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -86,6 +87,7 @@ public class MapsFragment extends Fragment {
     mapsViewModel.refreshMarks();
 
     for (Trip trip : mapsViewModel.getMarks()) {
+      Log.d("asd", "зашел");
       if (trip.getCountries().size() > 0) {
         PolylineOptions path = new PolylineOptions();
         for (CountryVisit country : trip.getCountries()) {
@@ -94,10 +96,10 @@ public class MapsFragment extends Fragment {
                 city.getCoordinates().getLongitude());
             Marker mark = googleMap.addMarker(
                 new MarkerOptions().position(marker).title(trip.getTitle()));
-
             assert mark != null; //TODO: ??
 
             mark.setTag(trip);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
             path.add(marker);
           }
         }
