@@ -16,7 +16,7 @@ public interface PlacesService {
    *
    * @param placeRequest  PlaceRequest.
    * @param authorization Jwt token.
-   * @return Returns String when error happens, otherwise returns List<PlacesResponse>.
+   * @return Returns String when error happens, otherwise returns List of PlacesResponse.
    */
   @POST("/places")
   Call<Object> getNearPlaces(@Body PlaceRequest placeRequest,

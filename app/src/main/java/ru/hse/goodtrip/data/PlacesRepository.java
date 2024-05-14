@@ -31,7 +31,7 @@ public class PlacesRepository extends AbstractRepository {
    *
    * @param placeName name of place.
    * @param token     Jwt token.
-   * @return CompletableFuture<Result < Point>> - point of requested place.
+   * @return CompletableFuture - point of requested place.
    */
   @SuppressWarnings("unchecked")
   public CompletableFuture<Result<Point>> getPlaceCoordinate(String placeName, String token) {
@@ -69,6 +69,11 @@ public class PlacesRepository extends AbstractRepository {
     });
   }*/
 
+  /**
+   * Get instance of PlacesRepository.
+   *
+   * @return instance of PlacesRepository.
+   */
   public static PlacesRepository getInstance() {
     if (instance == null) {
       instance = new PlacesRepository();
