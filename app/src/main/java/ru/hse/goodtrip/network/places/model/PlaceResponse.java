@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Response for places API.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

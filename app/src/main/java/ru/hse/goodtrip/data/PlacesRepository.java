@@ -11,6 +11,9 @@ import ru.hse.goodtrip.network.places.PlacesService;
 import ru.hse.goodtrip.network.places.model.PlaceRequest;
 import ru.hse.goodtrip.network.places.model.PlaceResponse;
 
+/**
+ * Repository to work with Places.
+ */
 public class PlacesRepository extends AbstractRepository {
 
   private static volatile PlacesRepository instance;
@@ -23,6 +26,13 @@ public class PlacesRepository extends AbstractRepository {
   }
 
 
+  /**
+   * Get coordinate of place.
+   *
+   * @param placeName name of place.
+   * @param token     Jwt token.
+   * @return CompletableFuture<Result < Point>> - point of requested place.
+   */
   @SuppressWarnings("unchecked")
   public CompletableFuture<Result<Point>> getPlaceCoordinate(String placeName, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
@@ -59,7 +69,7 @@ public class PlacesRepository extends AbstractRepository {
     });
   }*/
 
-  static public PlacesRepository getInstance() {
+  public static PlacesRepository getInstance() {
     if (instance == null) {
       instance = new PlacesRepository();
     }
