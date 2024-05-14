@@ -62,6 +62,17 @@ public class TripRepository extends AbstractRepository {
     return instance;
   }
 
+  private static CompletableFuture<Point> getCoordinates(String name) {
+    return PlacesRepository.getInstance().getPlaceCoordinate(name,
+            UsersRepository.getInstance().getLoggedUser().getToken())
+        .thenApply(pointResult -> {
+          if (pointResult instanceof Result.Success) {
+            return ((Success<Point>) pointResult).getData();
+          }
+          return createNewPoint(0, 0);
+        });
+  }
+
   /**
    * Convert trip from network to trip.
    *
