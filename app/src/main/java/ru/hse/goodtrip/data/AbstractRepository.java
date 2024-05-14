@@ -4,6 +4,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import org.locationtech.jts.geom.CoordinateXY;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -11,6 +14,10 @@ import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
 
 abstract class AbstractRepository {
+
+  protected static final int SRID = 4326;
+  protected static final GeometryFactory factory = new GeometryFactory();
+
 
   /**
    * Make a callback.
@@ -56,6 +63,26 @@ abstract class AbstractRepository {
         }
     );
   }
+
+  /**
+   * Constructs Point from x and y coordinate.
+   *
+   * @param x x coordinate.
+   * @param y y coordinate.
+   * @return Point.
+   */
+  protected static Point createNewPoint(double x, double y) {
+    Point point = factory.createPoint(new CoordinateXY(x, y));
+    point.setSRID(SRID);
+    return point;
+  }
+
+  /**
+   * Wraps token.
+   *
+   * @param token Bare jwt token.
+   * @return Wrapped token.
+   */
   protected String getWrappedToken(String token) {
     return "Bearer " + token;
   }
