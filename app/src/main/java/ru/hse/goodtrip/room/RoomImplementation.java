@@ -3,8 +3,6 @@ package ru.hse.goodtrip.room;
 import android.app.Application;
 import androidx.room.Room;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import ru.hse.goodtrip.room.entities.UserEntity;
 
 /**
@@ -30,12 +28,14 @@ public class RoomImplementation extends Application {
   }
 
   public void setLoggedUser(String name, String password) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.execute(() -> {
+    if (getLoggedUser() == null) {
+      localStorage.userDao().insert(
+          new UserEntity(USER_KEY, name, password));
+    } else {
       localStorage.userDao().update(
           new UserEntity(USER_KEY, name, password));
-      AppPreferences.setUserLoggedIn(this, true);
-    });
+    }
+    AppPreferences.setUserLoggedIn(this, true);
   }
 
   public boolean isUserLoggedIn() {

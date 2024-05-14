@@ -89,6 +89,7 @@ public class LoginFragment extends Fragment {
     if (RoomImplementation.getInstance().isUserLoggedIn()) {
       UserEntity user = RoomImplementation.getInstance().getLoggedUser();
       if (user != null && !user.name.isEmpty()) {
+        Log.d("login", "got logged user!");
         showLoadingView();
         authViewModel.login(user.name, user.password);
       }
@@ -188,8 +189,10 @@ public class LoginFragment extends Fragment {
    */
   private void loginSuccessful(User user) {
     User loggedUser = UsersRepository.getInstance().getLoggedUser();
-    RoomImplementation.getInstance()
-        .setLoggedUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+    if (!RoomImplementation.getInstance().isUserLoggedIn()) {
+      RoomImplementation.getInstance()
+          .setLoggedUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+    }
     Log.d("LoginFragment", loggedUser.getDisplayName());
     ((MainActivity) requireActivity()).getNavigationGraph().navigateToMainGraph();
   }
