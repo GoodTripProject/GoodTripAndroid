@@ -28,19 +28,23 @@ public class PlacesRepository extends AbstractRepository {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
         new PlaceRequest(placeName, 10, null, null), getWrappedToken(token));
-    getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
-    }));
-    return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
-      if (result instanceof List) {
-        PlaceResponse response = ((List<PlaceResponse>) result).get(0);
-        return new Result.Success<>(createNewPoint(response.getLat(), response.getLng()));
-      }
-      return new Result.Error<>(new Exception(result.toString()));
-    });
+    getTripCall.enqueue(getCallback(resultHolder,
+        "Note with this id not exists", (result) -> {
+        }));
+    return getCompletableFuture(resultHolder)
+        .thenApplyAsync(result -> {
+          if (result instanceof List) {
+            PlaceResponse response = ((List<PlaceResponse>) result).get(0);
+            return new Result.Success<>(createNewPoint(response.getLat(), response.getLng()));
+          }
+          return new Result.Error<>(new Exception(result.toString()));
+        });
   }
 
-  @SuppressWarnings("unchecked")
-  /*public CompletableFuture<Result<List<PlaceResponse>>> getNearPlaces(String placeName, int radius, @Nullable String rankBy, @Nullable PlacesTypes type, String token) {
+  //@SuppressWarnings("unchecked")
+  /*public CompletableFuture<Result<List<PlaceResponse>>> getNearPlaces(String placeName,
+  int radius, @Nullable String rankBy,
+   @Nullable PlacesTypes type, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
         new PlaceRequest(placeName, radius, rankBy, type), getWrappedToken(token));

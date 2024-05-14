@@ -231,7 +231,7 @@ public class TripRepository extends AbstractRepository {
         }
       }));
     }
-    for (CompletableFuture<Void> future: futures){
+    for (CompletableFuture<Void> future : futures) {
       future.join();
     }
     countryVisit.setCities(cities);
@@ -290,13 +290,6 @@ public class TripRepository extends AbstractRepository {
     getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> authorTrips.addAll(result)));
     return getCompletableFuture(resultHolder);
   }
-
-  /**
-   * Wraps token.
-   *
-   * @param token Bare jwt token.
-   * @return Wrapped token.
-   */
 
 
   /**

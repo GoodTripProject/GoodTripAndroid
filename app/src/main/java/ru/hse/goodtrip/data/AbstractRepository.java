@@ -14,6 +14,7 @@ import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
 
 abstract class AbstractRepository {
+
   protected static final int SRID = 4326;
   protected static final GeometryFactory factory = new GeometryFactory();
 
@@ -62,11 +63,26 @@ abstract class AbstractRepository {
         }
     );
   }
+
+  /**
+   * Constructs Point from x and y coordinate.
+   *
+   * @param x x coordinate.
+   * @param y y coordinate.
+   * @return Point.
+   */
   protected static Point createNewPoint(double x, double y) {
     Point point = factory.createPoint(new CoordinateXY(x, y));
     point.setSRID(SRID);
     return point;
   }
+
+  /**
+   * Wraps token.
+   *
+   * @param token Bare jwt token.
+   * @return Wrapped token.
+   */
   protected String getWrappedToken(String token) {
     return "Bearer " + token;
   }

@@ -86,10 +86,8 @@ public class PlanTripViewModel extends ViewModel {
                         .stream()
                         .map(TripRepository::getAddCountryRequestFromCountryVisit)
                         .collect(Collectors.toList())))
-            .whenCompleteAsync((result, throwable) -> {
-              Log.d(this.getClass().getSimpleName(),
-                  "Trip is planning, userId is: " + UsersRepository.getInstance().user.getId());
-            })
+            .whenCompleteAsync((result, throwable) -> Log.d(this.getClass().getSimpleName(),
+                "Trip is planning, userId is: " + UsersRepository.getInstance().user.getId()))
             .thenRunAsync(() -> tripRepository.getUserTrips(user.getId(), user.getToken()))
             .thenRunAsync(() -> tripRepository.getAuthorsTrips(user.getId(), user.getToken()));
         Log.d(this.getClass().getName(), "Trip addition ended.");
