@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textColor="#ff000000"
+    android:text="trip title"
+    android:textSize="14dp"
+    android:textStyle="bold" />
+  <ImageView
+    android:layout_gravity="center"
+    android:id="@+id/tripImage"
+    android:layout_width="145dp"
+    android:layout_height="110dp"
+    android:src="@drawable/kazantip"/>
+  <TextView
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/snippet"
+    android:text="trip snippet"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textColor="#ff7f7f7f"
+    android:textSize="14dp" />
+  <Button
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/button"
+    android:id="@+id/showTripButton"
+    android:layout_height="35dp"
+    android:layout_width="130dp"
+    android:text="show trip"
+    android:textSize="13sp" />
+</LinearLayout>
