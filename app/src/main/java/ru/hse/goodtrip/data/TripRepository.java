@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
+import ru.hse.goodtrip.data.model.Result.Success;
 import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
@@ -32,27 +31,18 @@ import ru.hse.goodtrip.network.trips.model.TripView;
 
 public class TripRepository extends AbstractRepository {
 
-  private static final int SRID = 4326;
 
   private static volatile TripRepository instance;
 
   private final TripService tripService;
+  @Getter
+  private List<ru.hse.goodtrip.data.model.trips.Trip> userTrips = new ArrayList<>();
+  @Getter
+  private List<TripView> authorTrips = new ArrayList<>();
 
   private TripRepository() {
     super();
     this.tripService = NetworkManager.getInstance().getInstanceOfService(TripService.class);
-  }
-
-
-  @Getter
-  private List<ru.hse.goodtrip.data.model.trips.Trip> userTrips = new ArrayList<>();
-
-  @Getter
-  private List<TripView> authorTrips = new ArrayList<>();
-
-
-  public void resetAuthorTrips() {
-    authorTrips = new ArrayList<>();
   }
 
   public static TripRepository getInstance() {
@@ -120,9 +110,9 @@ public class TripRepository extends AbstractRepository {
 
   private static CityVisit getNetworkCityVisitFromCityVisit(
       ru.hse.goodtrip.data.model.trips.City city) {
-    return new CityVisit(null, city.getName(), new Point(
-        new Coordinate(city.getCoordinates().getLatitude(), city.getCoordinates().getLongitude()),
-        new PrecisionModel(), SRID), null);
+    return new CityVisit(null, city.getName(),
+        createNewPoint(city.getCoordinates().getLatitude(), city.getCoordinates().getLongitude())
+        , null);
   }
 
   /**
@@ -157,11 +147,19 @@ public class TripRepository extends AbstractRepository {
       List<Note> noteResponses) {
     List<ru.hse.goodtrip.data.model.trips.Note> notes = new ArrayList<>();
     for (Note noteResponse : noteResponses) {
-      notes.add(
-          new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(), noteResponse.getText(),
-              noteResponse.getPhotoUrl(),
-              new Country(noteResponse.getGooglePlaceId(),
-                  new Coordinates(0, 0))));
+      getCoordinates(noteResponse.getGooglePlaceId()).thenAcceptAsync(point -> {
+        synchronized (notes) {
+          notes.add(
+              new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(),
+                  noteResponse.getText(),
+                  noteResponse.getPhotoUrl(),
+                  new Country(noteResponse.getGooglePlaceId(),
+                      new Coordinates(point.getX(), point.getY())
+                  )
+              )
+          );
+        }
+      });
     }
     return notes;
   }
@@ -202,8 +200,12 @@ public class TripRepository extends AbstractRepository {
       cities.add(new
           ru.hse.goodtrip.data.model.trips.City(
           cityVisitResponse.getCity(),
-          new Coordinates(0, 0),
+          new Coordinates(cityVisitResponse.getPoint().getX(), cityVisitResponse.getPoint().getY()),
           countryVisit.getCountry()));
+    }
+    if (!cities.isEmpty()) {
+      countryVisit.setCountry(new Country(countryVisit.getCountry().getName(),
+          cities.get(0).getCoordinates()));
     }
     countryVisit.setVisitedCities(cities);
     return countryVisit;
@@ -221,8 +223,16 @@ public class TripRepository extends AbstractRepository {
     AddCountryRequest countryVisit = new AddCountryRequest();
     countryVisit.setCountry(visit.getCountry().getName());
     List<City> cities = new ArrayList<>();
+    List<CompletableFuture<Void>> futures = new ArrayList<>();
     for (ru.hse.goodtrip.data.model.trips.City cityVisitResponse : visit.getVisitedCities()) {
-      cities.add(new City(cityVisitResponse.getName(), 0.0, 0.0));
+      futures.add(getCoordinates(cityVisitResponse.getName()).thenAcceptAsync(point -> {
+        synchronized (cities) {
+          cities.add(new City(cityVisitResponse.getName(), point.getX(), point.getY()));
+        }
+      }));
+    }
+    for (CompletableFuture<Void> future: futures){
+      future.join();
     }
     countryVisit.setCities(cities);
     return countryVisit;
@@ -243,6 +253,9 @@ public class TripRepository extends AbstractRepository {
     return result;
   }
 
+  public void resetAuthorTrips() {
+    authorTrips = new ArrayList<>();
+  }
 
   /**
    * Make request to the server to get trips.
@@ -277,7 +290,6 @@ public class TripRepository extends AbstractRepository {
     getTripsCall.enqueue(getCallback(resultHolder, "", (result) -> authorTrips.addAll(result)));
     return getCompletableFuture(resultHolder);
   }
-
 
   /**
    * Wraps token.
