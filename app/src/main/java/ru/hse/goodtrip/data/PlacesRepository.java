@@ -1,6 +1,5 @@
 package ru.hse.goodtrip.data;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import org.locationtech.jts.geom.Point;
@@ -9,7 +8,6 @@ import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.network.places.PlacesService;
-import ru.hse.goodtrip.network.trips.model.City;
 
 /**
  * Repository to work with Places.
@@ -33,7 +31,7 @@ public class PlacesRepository extends AbstractRepository {
    * @param token     Jwt token.
    * @return CompletableFuture - point of requested place.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "ConstantConditions"})
   public CompletableFuture<Result<Point>> getPlaceCoordinate(String placeName, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getCoordinates(
@@ -44,9 +42,11 @@ public class PlacesRepository extends AbstractRepository {
     return getCompletableFuture(resultHolder)
         .thenApplyAsync(result -> {
           if (result.isSuccess()) {
-            HashMap<Object,Object> response = (HashMap<Object,Object>)((Result.Success<Object>)result).getData();
+            HashMap<Object, Object> response = (HashMap<Object, Object>)
+                ((Result.Success<Object>) result).getData();
             return new Result.Success<>(
-                createNewPoint((Double)response.get("latitude"), (Double)response.get("longitude")));
+                createNewPoint((Double) response.get("latitude"),
+                    (Double) response.get("longitude")));
           }
           return new Result.Error<>(new Exception(result.toString()));
         });
