@@ -71,6 +71,11 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.main_navigation_graph);
   }
 
+  public void navigateToPostPageFromMap(Trip trip) {
+    activity.getNavigationGraph().navigateToMainGraph();
+    activity.getNavigationGraph().navigateToPostPage(trip);
+  }
+
   public void navigateToMyTrips() {
     navController.navigate(R.id.navigation_my_trips);
   }
