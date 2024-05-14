@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import ru.hse.goodtrip.R;
@@ -71,24 +73,27 @@ public class PlanTripViewModel extends ViewModel {
       planTripFormState.setValue(new PlanTripFormState(null, null, null, null, null, null));
     } else {
       planTripFormState.setValue(new PlanTripFormState(true));
-
-      Log.d(this.getClass().getName(), "Trip addition started to happen.");
-      tripRepository.addTrip(
-              UsersRepository.getInstance().user.getId(), UsersRepository.getInstance().user.getToken(),
-              new AddTripRequest(name, Integer.parseInt(moneyInUsd), mainPhotoUrl,
-                  parseDate(startTripDate), parseDate(endTripDate),
-                  TripState.PLANNED, Collections.emptyList(),
-                  countries
-                      .stream()
-                      .map(TripRepository::getAddCountryRequestFromCountryVisit)
-                      .collect(Collectors.toList())))
-          .whenCompleteAsync((result, throwable) -> {
-            Log.d(this.getClass().getSimpleName(),
-                "Trip is planning, userId is: " + UsersRepository.getInstance().user.getId());
-          })
-          .thenRunAsync(() -> tripRepository.getUserTrips(user.getId(), user.getToken()))
-          .thenRunAsync(() -> tripRepository.getAuthorsTrips(user.getId(), user.getToken()));
-      Log.d(this.getClass().getName(), "Trip addition ended.");
+      ExecutorService executorService = Executors.newSingleThreadExecutor();
+      executorService.submit(() -> {
+        Log.d(this.getClass().getName(), "Trip addition started to happen.");
+        tripRepository.addTrip(
+                UsersRepository.getInstance().user.getId(),
+                UsersRepository.getInstance().user.getToken(),
+                new AddTripRequest(name, Integer.parseInt(moneyInUsd), mainPhotoUrl,
+                    parseDate(startTripDate), parseDate(endTripDate),
+                    TripState.PLANNED, Collections.emptyList(),
+                    countries
+                        .stream()
+                        .map(TripRepository::getAddCountryRequestFromCountryVisit)
+                        .collect(Collectors.toList())))
+            .whenCompleteAsync((result, throwable) -> {
+              Log.d(this.getClass().getSimpleName(),
+                  "Trip is planning, userId is: " + UsersRepository.getInstance().user.getId());
+            })
+            .thenRunAsync(() -> tripRepository.getUserTrips(user.getId(), user.getToken()))
+            .thenRunAsync(() -> tripRepository.getAuthorsTrips(user.getId(), user.getToken()));
+        Log.d(this.getClass().getName(), "Trip addition ended.");
+      });
     }
   }
 
