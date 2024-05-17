@@ -38,6 +38,14 @@ public class RoomImplementation extends Application {
     AppPreferences.setUserLoggedIn(this, true);
   }
 
+  public void logOutUser() {
+    UserEntity user = getLoggedUser();
+    if (user != null) {
+      localStorage.userDao().deleteById(user.uid);
+    }
+    AppPreferences.setUserLoggedIn(this, false);
+  }
+
   public boolean isUserLoggedIn() {
     return AppPreferences.isUserLoggedIn(this);
   }

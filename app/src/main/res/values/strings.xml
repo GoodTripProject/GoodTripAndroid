@@ -184,4 +184,5 @@
   <string name="duration">duration</string>
   <string name="add_new_note">Add new note</string>
   <string name="plan_your_trip">Plan your trip!</string>
+  <string name="log_out">Log out</string>
 </resources>

@@ -20,6 +20,9 @@ public interface UserDao {
   @Delete
   void delete(UserEntity user);
 
+  @Query("DELETE FROM userEntity WHERE uid = :uid")
+  void deleteById(int uid);
+
   @Update
   void update(UserEntity user);
 }
