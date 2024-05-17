@@ -92,6 +92,7 @@ public class PlanTripViewModel extends ViewModel {
             .thenRunAsync(() -> tripRepository.getAuthorsTrips(user.getId(), user.getToken()));
         Log.d(this.getClass().getName(), "Trip addition ended.");
       });
+      executorService.shutdown();
     }
   }
 

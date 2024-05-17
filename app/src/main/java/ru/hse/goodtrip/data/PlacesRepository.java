@@ -1,6 +1,8 @@
 package ru.hse.goodtrip.data;
 
+import androidx.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import org.locationtech.jts.geom.Point;
 import retrofit2.Call;
@@ -8,6 +10,9 @@ import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.network.places.PlacesService;
+import ru.hse.goodtrip.network.places.model.PlaceRequest;
+import ru.hse.goodtrip.network.places.model.PlaceRequest.PlacesTypes;
+import ru.hse.goodtrip.network.places.model.PlaceResponse;
 
 /**
  * Repository to work with Places.
@@ -52,13 +57,14 @@ public class PlacesRepository extends AbstractRepository {
         });
   }
 
-  //@SuppressWarnings("unchecked")
-  /*public CompletableFuture<Result<List<PlaceResponse>>> getNearPlaces(String placeName,
+  @SuppressWarnings("unchecked")
+  public CompletableFuture<Result<List<PlaceResponse>>> getNearPlaces(double lat,
+      double lng,
   int radius, @Nullable String rankBy,
    @Nullable PlacesTypes type, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
-        new PlaceRequest(placeName, radius, rankBy, type), getWrappedToken(token));
+        new PlaceRequest(lng, lat, radius, rankBy, type), getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
     }));
     return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
@@ -68,7 +74,7 @@ public class PlacesRepository extends AbstractRepository {
       }
       return new Result.Error<>(new Exception(result.toString()));
     });
-  }*/
+  }
 
   /**
    * Get instance of PlacesRepository.
