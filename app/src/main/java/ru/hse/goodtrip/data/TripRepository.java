@@ -225,11 +225,12 @@ public class TripRepository extends AbstractRepository {
     List<City> cities = new ArrayList<>();
     List<CompletableFuture<Void>> futures = new ArrayList<>();
     for (ru.hse.goodtrip.data.model.trips.City cityVisitResponse : visit.getVisitedCities()) {
-      futures.add(getCoordinates(cityVisitResponse.getName()).thenAcceptAsync(point -> {
-        synchronized (cities) {
-          cities.add(new City(cityVisitResponse.getName(), point.getX(), point.getY()));
-        }
-      }));
+      futures.add(getCoordinates(countryVisit.getCountry() + " " + cityVisitResponse.getName())
+          .thenAcceptAsync(point -> {
+            synchronized (cities) {
+              cities.add(new City(cityVisitResponse.getName(), point.getX(), point.getY()));
+            }
+          }));
     }
     for (CompletableFuture<Void> future : futures) {
       future.join();
