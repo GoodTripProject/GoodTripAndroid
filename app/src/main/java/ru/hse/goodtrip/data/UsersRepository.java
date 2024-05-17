@@ -77,6 +77,7 @@ public class UsersRepository extends AbstractRepository {
         login(username, password);
       }
     }, 4, 4, TimeUnit.MINUTES);
+    executor.shutdown();
   }
 
   /**

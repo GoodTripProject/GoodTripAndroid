@@ -151,6 +151,7 @@ public class FeedFragment extends Fragment {
             }, 1000
         );
       });
+      executor.shutdown();
       if (feedAdapter.getItemCount() == 0) {
         binding.emptyList.setVisibility(View.VISIBLE);
       } else {
