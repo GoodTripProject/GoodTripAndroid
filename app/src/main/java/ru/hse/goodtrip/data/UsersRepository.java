@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import lombok.Setter;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
@@ -27,9 +26,6 @@ public class UsersRepository extends AbstractRepository {
   private final LoginService loginService;
 
   public User user = null;
-  @Setter
-  private String userToken;
-
 
   private UsersRepository() {
     super();
@@ -62,7 +58,7 @@ public class UsersRepository extends AbstractRepository {
   }
 
   public void logout() {
-    //TODO
+    user = null;
   }
 
   /**

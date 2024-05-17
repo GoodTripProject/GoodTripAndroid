@@ -3,6 +3,7 @@ package ru.hse.goodtrip.ui.profile;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileBinding;
+import ru.hse.goodtrip.room.RoomImplementation;
 
 public class ProfileFragment extends Fragment {
 
@@ -61,16 +63,35 @@ public class ProfileFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     setUserInfo();
+    setButtonClickListeners();
+  }
+
+  private void setButtonClickListeners() {
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());
+    binding.logoutButton.setOnClickListener(v -> logoutFromAccount());
   }
 
-  public void setUserInfo() {
+  private void logoutFromAccount() {
+    new AlertDialog.Builder(getContext())
+        .setTitle("Log out")
+        .setMessage("Do you really want to log out?")
+        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+          if (RoomImplementation.getInstance().isUserLoggedIn()) {
+            RoomImplementation.getInstance().logOutUser();
+            UsersRepository.getInstance().logout();
+          }
+          ((MainActivity) requireActivity()).getNavigationGraph().navigateToLogin();
+        })
+        .setNegativeButton(android.R.string.no, null).show();
+  }
+
+  private void setUserInfo() {
     if (user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
     } else {
-      setImageByUrl(binding.profileImage,
+      setImageByUrl(binding.profileImage, // TODO:
           "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg");
     }
     binding.fullnameView.setText(user.getDisplayName());

@@ -49,15 +49,15 @@
       android:textColor="@color/black" />
 
     <LinearLayout
-      android:layout_gravity="center_horizontal"
+      android:layout_gravity="center"
       android:id="@+id/linearLayout"
       android:layout_width="match_parent"
-      android:layout_height="300dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
       android:orientation="vertical">
 
       <LinearLayout
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -84,27 +84,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/settingsButton"
-          android:layout_width="300dp"
-          android:padding="20dp"
-          android:layout_height="wrap_content"
-          android:background="@drawable/button"
-          android:text="@string/Settings"
-          android:textColor="@color/white" />
-        <ImageView
-          android:layout_marginStart="10dp"
-          android:layout_gravity="center_vertical"
-          android:layout_width="40dp"
-          android:layout_height="40dp"
-          android:src="@drawable/baseline_build_24"/>
-      </LinearLayout>
-      <LinearLayout
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.AppCompatButton
           android:id="@+id/myTripsButton"
           android:layout_width="300dp"
           android:padding="20dp"
@@ -119,6 +98,29 @@
           android:layout_width="40dp"
           android:layout_height="40dp"
           android:src="@drawable/ic_map"/>
+      </LinearLayout>
+      <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+        <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/logoutButton"
+          android:layout_width="300dp"
+          android:padding="20dp"
+          android:layout_gravity="center_horizontal"
+          android:layout_height="wrap_content"
+          android:background="@drawable/google_sign_up_button"
+          android:text="@string/log_out"
+          android:textColor="@color/black" />
+        <ImageView
+          android:layout_marginStart="10dp"
+          android:layout_gravity="center_vertical"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:src="@drawable/baseline_exit_to_app_24"/>
       </LinearLayout>
 
 
