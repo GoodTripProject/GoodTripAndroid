@@ -41,8 +41,8 @@ public class PlaceRequest {
     zoo
   }
 
-
-  private String location;
+  private double lng;
+  private double lat;
   private int radius;
   @Nullable
   private String rankBy;
