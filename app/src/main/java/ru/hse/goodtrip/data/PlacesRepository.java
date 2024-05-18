@@ -1,9 +1,12 @@
 package ru.hse.goodtrip.data;
 
 import androidx.annotation.Nullable;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import org.locationtech.jts.geom.Point;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
@@ -68,8 +71,14 @@ public class PlacesRepository extends AbstractRepository {
     getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
     }));
     return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
-      if (result instanceof List) {
-        List<PlaceResponse> response = ((List<PlaceResponse>) result);
+      if (result.isSuccess()) {
+        List<LinkedHashMap<Object,Object>> bareResponse = (List<LinkedHashMap<Object,Object>>)
+            (((Result.Success<?>) result).getData());
+        ObjectMapper mapper = new ObjectMapper();
+        List<PlaceResponse> response = bareResponse
+            .stream()
+            .map(map -> mapper.convertValue(map,PlaceResponse.class))
+            .collect(Collectors.toList());
         return new Result.Success<>(response);
       }
       return new Result.Error<>(new Exception(result.toString()));
