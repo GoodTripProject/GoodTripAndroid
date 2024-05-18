@@ -30,6 +30,7 @@ import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Trip;
+import ru.hse.goodtrip.network.trips.model.TripState;
 
 public class MapsFragment extends Fragment {
 
@@ -87,6 +88,10 @@ public class MapsFragment extends Fragment {
     mapsViewModel.refreshMarks();
 
     for (Trip trip : mapsViewModel.getMarks()) {
+      if (trip.getTripState() != TripState.PUBLISHED) {
+        continue;
+      }
+
       Log.d("asd", "зашел");
       if (trip.getCountries().size() > 0) {
         PolylineOptions path = new PolylineOptions();
