@@ -1,11 +1,27 @@
 package ru.hse.goodtrip.ui.places;
 
-import android.content.Context;
 import androidx.lifecycle.ViewModel;
+import java.util.Collections;
 import java.util.List;
-import ru.hse.goodtrip.MainActivity;
+import lombok.Getter;
+import ru.hse.goodtrip.data.PlacesRepository;
+import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.network.places.model.PlaceResponse;
 
 public class PlacesViewModel extends ViewModel {
 
+  @Getter
+  private List<PlaceResponse> responses = Collections.emptyList();
+  private final PlacesRepository repository = PlacesRepository.getInstance();
+
+  public void updatePlaces(double latitude, double longitude, Runnable update) {
+    repository.getNearPlaces(latitude, longitude, 1000,
+            null, null, UsersRepository.getInstance().user.getToken())
+        .thenAcceptAsync(result -> {
+          if (result.isSuccess()) {
+            responses = ((Result.Success<List<PlaceResponse>>) result).getData();
+          }
+        }).thenRunAsync(update);
+  }
 }
