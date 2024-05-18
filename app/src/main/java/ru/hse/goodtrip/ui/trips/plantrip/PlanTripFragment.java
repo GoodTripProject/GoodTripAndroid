@@ -60,8 +60,8 @@ public class PlanTripFragment extends Fragment {
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    final EditText arrivalDateEditText = binding.arrivalDateEditText;
-    final EditText departureDateEditText = binding.departureDateEditText;
+    final TextView arrivalDateEditText = binding.arrivalDateEditText;
+    final TextView departureDateEditText = binding.departureDateEditText;
     final Button saveButton = binding.saveButton;
     final ImageButton addCountry = binding.addCountry;
     DialogAddNewDestinationFragment dialog = new DialogAddNewDestinationFragment();
@@ -145,7 +145,7 @@ public class PlanTripFragment extends Fragment {
    *
    * @param view current view
    */
-  private void selectDate(View view, EditText toSet) {
+  private void selectDate(View view, TextView toSet) {
     DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
         (datePicker, year, month, day) -> {
           String date = formatDate(day) + "." + formatDate(month) + "." + year;
@@ -160,10 +160,16 @@ public class PlanTripFragment extends Fragment {
     getChildFragmentManager().executePendingTransactions();
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
-    dialog.getDialog().getWindow().setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
+    Objects.requireNonNull(dialog.requireDialog().getWindow())
+        .setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
     setupAddCountryDialog(dialog);
   }
 
+  /**
+   * Save planned trip.
+   *
+   * @param v current view.
+   */
   private void saveTrip(View v) {
     planTripViewModel.createTrip(binding.travelNameEditText.getText().toString(),
         binding.departureDateEditText.getText().toString(),

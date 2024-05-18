@@ -37,6 +37,33 @@ public class PlanTripViewModel extends ViewModel {
   private final MutableLiveData<PlanTripFormState> planTripFormState = new MutableLiveData<>();
   List<CountryVisit> countries = new ArrayList<>();
 
+  /**
+   * Countries from whole world.
+   *
+   * @return list of countries
+   * @see <a
+   * href="https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os"/>
+   */
+  public static List<String> getCountriesList() {
+    Locale[] locales = Locale.getAvailableLocales();
+    ArrayList<String> countries = new ArrayList<>();
+    for (Locale locale : locales) {
+      String country = locale.getDisplayCountry();
+      if (!country.trim().isEmpty() && !countries.contains(country)) {
+        countries.add(country);
+      }
+    }
+    Collections.sort(countries);
+    return countries;
+  }
+
+  /**
+   * Parse date.
+   *
+   * @param dateString date.
+   * @return date parsed.
+   * @throws DateTimeException if couldn't parse date.
+   */
   private Date parseDate(String dateString) throws DateTimeException {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     return new Date(
@@ -96,8 +123,13 @@ public class PlanTripViewModel extends ViewModel {
     }
   }
 
+  /**
+   * Check if date format is dd.mm.yyyy.
+   *
+   * @param dateString
+   * @return
+   */
   private boolean isDateNotValid(String dateString) {
-    // check date format is dd.mm.yyyy
     try {
       parseDate(dateString);
     } catch (DateTimeException e) {
@@ -118,26 +150,6 @@ public class PlanTripViewModel extends ViewModel {
     } catch (NumberFormatException nfe) {
       return true;
     }
-  }
-
-  /**
-   * Countries from whole world.
-   *
-   * @return list of countries
-   * @see <a
-   * href="https://stackoverflow.com/questions/9760341/retrieve-a-list-of-countries-from-the-android-os"/>
-   */
-  public static List<String> getCountriesList() {
-    Locale[] locales = Locale.getAvailableLocales();
-    ArrayList<String> countries = new ArrayList<>();
-    for (Locale locale : locales) {
-      String country = locale.getDisplayCountry();
-      if (!country.trim().isEmpty() && !countries.contains(country)) {
-        countries.add(country);
-      }
-    }
-    Collections.sort(countries);
-    return countries;
   }
 
   /**
