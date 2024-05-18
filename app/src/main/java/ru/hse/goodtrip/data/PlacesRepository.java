@@ -60,11 +60,22 @@ public class PlacesRepository extends AbstractRepository {
         });
   }
 
+  /**
+   * Get places nearby.
+   *
+   * @param lat    latitude.
+   * @param lng    longitude.
+   * @param radius radius in meters.
+   * @param rankBy rank.
+   * @param type   type of places.
+   * @param token  Jwt token.
+   * @return CompletableFuture.
+   */
   @SuppressWarnings("unchecked")
-  public CompletableFuture<Result<List<PlaceResponse>>> getNearPlaces(double lat,
+  public CompletableFuture<Result<List<PlaceResponse>>> getPlacesNearby(double lat,
       double lng,
-  int radius, @Nullable String rankBy,
-   @Nullable PlacesTypes type, String token) {
+      int radius, @Nullable String rankBy,
+      @Nullable PlacesTypes type, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
         new PlaceRequest(lng, lat, radius, rankBy, type), getWrappedToken(token));
@@ -72,12 +83,12 @@ public class PlacesRepository extends AbstractRepository {
     }));
     return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
       if (result.isSuccess()) {
-        List<LinkedHashMap<Object,Object>> bareResponse = (List<LinkedHashMap<Object,Object>>)
+        List<LinkedHashMap<Object, Object>> bareResponse = (List<LinkedHashMap<Object, Object>>)
             (((Result.Success<?>) result).getData());
         ObjectMapper mapper = new ObjectMapper();
         List<PlaceResponse> response = bareResponse
             .stream()
-            .map(map -> mapper.convertValue(map,PlaceResponse.class))
+            .map(map -> mapper.convertValue(map, PlaceResponse.class))
             .collect(Collectors.toList());
         return new Result.Success<>(response);
       }

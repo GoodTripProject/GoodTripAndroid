@@ -15,8 +15,15 @@ public class PlacesViewModel extends ViewModel {
   private List<PlaceResponse> responses = Collections.emptyList();
   private final PlacesRepository repository = PlacesRepository.getInstance();
 
+  /**
+   * Update places.
+   *
+   * @param latitude  latitude.
+   * @param longitude longitude.
+   * @param update    runnable to run after getting places.
+   */
   public void updatePlaces(double latitude, double longitude, Runnable update) {
-    repository.getNearPlaces(latitude, longitude, 1000,
+    repository.getPlacesNearby(latitude, longitude, 1000,
             null, null, UsersRepository.getInstance().user.getToken())
         .thenAcceptAsync(result -> {
           if (result.isSuccess()) {

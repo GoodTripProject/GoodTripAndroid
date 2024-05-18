@@ -98,8 +98,7 @@ public class PlacesFragment extends Fragment {
   private void getNearsPlaces() {
     checkLocationPermission();
     fusedLocationClient.getLastLocation()
-        .addOnSuccessListener(requireActivity(), location ->
-        {
+        .addOnSuccessListener(requireActivity(), location -> {
           if (location != null) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
