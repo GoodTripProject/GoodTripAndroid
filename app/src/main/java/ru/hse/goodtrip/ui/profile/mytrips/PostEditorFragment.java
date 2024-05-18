@@ -229,7 +229,9 @@ public class PostEditorFragment extends Fragment {
     closeButton.setOnClickListener(v -> dialog.dismiss());
   }
 
-
+  /**
+   * Load route view.
+   */
   private void loadRoute() {
     for (CountryVisit country : trip.getCountries()) {
       List<String> cities = new ArrayList<>();
@@ -240,6 +242,9 @@ public class PostEditorFragment extends Fragment {
     }
   }
 
+  /**
+   * Load notes view.
+   */
   private void loadNotes() {
     for (Note note : trip.getNotes()) {
       addNoteView(note.getHeadline(), note.getNote(), note.getPhotoUrl(),
@@ -247,6 +252,11 @@ public class PostEditorFragment extends Fragment {
     }
   }
 
+  /**
+   * Publish trip.
+   *
+   * @param view current view
+   */
   private void newPost(View view) {
     new AlertDialog.Builder(getContext())
         .setTitle("Post trip")
@@ -270,6 +280,12 @@ public class PostEditorFragment extends Fragment {
         });
   }
 
+  /**
+   * Add country view in route layout.
+   *
+   * @param country country
+   * @param cities  cities in country
+   */
   private void addCountryView(String country, List<String> cities) {
     View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
@@ -291,6 +307,14 @@ public class PostEditorFragment extends Fragment {
     binding.route.addView(countryView);
   }
 
+  /**
+   * Add note into notes layout.
+   *
+   * @param noteHeadline note headline
+   * @param noteText     note as is
+   * @param photo        photo url
+   * @param place        place name
+   */
   private void addNoteView(String noteHeadline, String noteText, String photo, String place) {
     ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
     noteBinding.noteHeadline.setText(noteHeadline);
