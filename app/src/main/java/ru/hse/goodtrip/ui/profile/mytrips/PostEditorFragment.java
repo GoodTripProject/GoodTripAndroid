@@ -191,8 +191,8 @@ public class PostEditorFragment extends Fragment {
 
 
   private void loadRoute() {
-    List<String> cities = new ArrayList<>();
     for (CountryVisit country : trip.getCountries()) {
+      List<String> cities = new ArrayList<>();
       for (City city : country.getVisitedCities()) {
         cities.add(city.getName());
       }
