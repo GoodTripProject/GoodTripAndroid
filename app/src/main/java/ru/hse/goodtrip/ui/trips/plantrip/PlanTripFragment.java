@@ -60,16 +60,16 @@ public class PlanTripFragment extends Fragment {
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    final EditText arrivalDateEditText = binding.arrivalDateEditText;
-    final EditText departureDateEditText = binding.departureDateEditText;
+    final TextView arrivalDateEditText = binding.arrivalDateEditText;
+    final TextView departureDateEditText = binding.departureDateEditText;
     final Button saveButton = binding.saveButton;
     final ImageButton addCountry = binding.addCountry;
     DialogAddNewDestinationFragment dialog = new DialogAddNewDestinationFragment();
     addCountry.setOnClickListener(v -> showAddNewDestinationDialog(dialog));
 
     saveButton.setOnClickListener(this::saveTrip);
-    departureDateEditText.setOnClickListener(this::selectDepartureDate);
-    arrivalDateEditText.setOnClickListener(this::selectArrivalDate);
+    departureDateEditText.setOnClickListener(v -> selectDate(v, departureDateEditText));
+    arrivalDateEditText.setOnClickListener(v -> selectDate(v, arrivalDateEditText));
   }
 
   private void addCountryView(String country, List<String> cities) {
@@ -126,21 +126,30 @@ public class PlanTripFragment extends Fragment {
     });
   }
 
-  private void selectDepartureDate(View view) {
-    DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
-        (datePicker, year, month, day) -> {
-          String date = day + "." + month + "." + year;
-          binding.departureDateEditText.setText(date);
-        }, 2024, 4, 11);
-
-    datePickerDialog.show();
+  /**
+   * Adds leading zero in string performance if needed.
+   *
+   * @param date date
+   * @return formatted string
+   */
+  private String formatDate(int date) {
+    String formatted = String.valueOf(date);
+    if (formatted.length() < 2) {
+      formatted = "0" + formatted;
+    }
+    return formatted;
   }
 
-  private void selectArrivalDate(View view) {
+  /**
+   * Shows calendar dialog window for selecting date.
+   *
+   * @param view current view
+   */
+  private void selectDate(View view, TextView toSet) {
     DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
         (datePicker, year, month, day) -> {
-          String date = day + "." + month + "." + year;
-          binding.arrivalDateEditText.setText(date);
+          String date = formatDate(day) + "." + formatDate(month) + "." + year;
+          toSet.setText(date);
         }, 2024, 4, 11);
 
     datePickerDialog.show();
@@ -151,10 +160,16 @@ public class PlanTripFragment extends Fragment {
     getChildFragmentManager().executePendingTransactions();
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
-    dialog.getDialog().getWindow().setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
+    Objects.requireNonNull(dialog.requireDialog().getWindow())
+        .setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
     setupAddCountryDialog(dialog);
   }
 
+  /**
+   * Save planned trip.
+   *
+   * @param v current view.
+   */
   private void saveTrip(View v) {
     planTripViewModel.createTrip(binding.travelNameEditText.getText().toString(),
         binding.departureDateEditText.getText().toString(),

@@ -4,6 +4,7 @@ import static android.view.View.GONE;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -100,16 +101,57 @@ public class PostEditorFragment extends Fragment {
       binding.postTitle.setText(trip.getTitle());
       loadRoute();
       loadNotes();
+      setUpButtonClickListeners();
     }
+  }
 
+  private void setUpButtonClickListeners() {
     AddNewDestinationDialogFragment addNewDestinationDialogFragment = new AddNewDestinationDialogFragment();
     binding.addNewCountry.setOnClickListener(
         v -> showAddNewDestinationDialog(addNewDestinationDialogFragment));
 
     AddNewNoteDialogFragment newNoteDialogFragment = new AddNewNoteDialogFragment();
     binding.addNewNote.setOnClickListener(v -> showAddNewNoteDialog(newNoteDialogFragment));
-
     binding.postButton.setOnClickListener(this::newPost);
+
+    binding.editModeButton.setOnClickListener(v -> switchEditMode(true));
+    binding.saveChangesButton.setOnClickListener(v -> saveChanges());
+  }
+
+  private void saveChanges() {
+    new AlertDialog.Builder(getContext())
+        .setTitle("Save changes")
+        .setMessage("Are you sure?")
+        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+          trip.setTitle(binding.postTitle.getText().toString());
+          trip.setMoneyInUsd(Integer.parseInt(binding.budgetLabel.getText().toString()));
+
+          postEditorViewModel.setTrip(trip);
+          postEditorViewModel.saveTrip();
+          switchEditMode(false);
+        })
+        .setNegativeButton(android.R.string.no, null).show();
+  }
+
+  private void switchEditMode(boolean isEditModeOn) {
+    int newVisibility = isEditModeOn ? View.VISIBLE : View.GONE;
+
+    int currentVisibility = (newVisibility == View.GONE) ? View.VISIBLE : View.GONE;
+    binding.editModeLayout.setVisibility(currentVisibility);
+    binding.postButton.setVisibility(currentVisibility);
+
+    binding.editBudgetButton.setVisibility(newVisibility);
+    binding.notesEditButton.setVisibility(newVisibility);
+    binding.routeEditButton.setVisibility(newVisibility);
+    binding.editTitleButton.setVisibility(newVisibility);
+    binding.saveChangesButton.setVisibility(newVisibility);
+
+    binding.postTitle.setFocusable(isEditModeOn);
+    binding.postTitle.setFocusableInTouchMode(isEditModeOn);
+    binding.postTitle.setClickable(isEditModeOn);
+    binding.budgetLabel.setFocusable(isEditModeOn);
+    binding.budgetLabel.setFocusableInTouchMode(isEditModeOn);
+    binding.budgetLabel.setClickable(isEditModeOn);
   }
 
   private void showAddNewNoteDialog(AddNewNoteDialogFragment newNoteDialogFragment) {
@@ -184,12 +226,12 @@ public class PostEditorFragment extends Fragment {
       citiesLayout.refreshDrawableState();
     });
 
-    closeButton.setOnClickListener(v -> {
-      dialog.dismiss();
-    });
+    closeButton.setOnClickListener(v -> dialog.dismiss());
   }
 
-
+  /**
+   * Load route view.
+   */
   private void loadRoute() {
     for (CountryVisit country : trip.getCountries()) {
       List<String> cities = new ArrayList<>();
@@ -200,27 +242,31 @@ public class PostEditorFragment extends Fragment {
     }
   }
 
+  /**
+   * Load notes view.
+   */
   private void loadNotes() {
-    LinearLayout notes = binding.notes;
     for (Note note : trip.getNotes()) {
-      ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
-      noteBinding.noteHeadline.setText(note.getHeadline());
-      if (note.getPhotoUrl() != null && !note.getPhotoUrl().trim().isEmpty()) {
-        setImageByUrl(noteBinding.noteImageView, note.getPhotoUrl());
-      } else {
-        noteBinding.imageContainer.setVisibility(GONE);
-      }
-      noteBinding.noteText.setText(note.getNote());
-      noteBinding.placeName.setText(note.getPlace().getName());
-
-      notes.addView(noteBinding.getRoot());
+      addNoteView(note.getHeadline(), note.getNote(), note.getPhotoUrl(),
+          note.getPlace().getName());
     }
   }
 
+  /**
+   * Publish trip.
+   *
+   * @param view current view
+   */
   private void newPost(View view) {
-    postEditorViewModel.postTrip();
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
-    ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+    new AlertDialog.Builder(getContext())
+        .setTitle("Post trip")
+        .setMessage("Are you sure?")
+        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+          postEditorViewModel.postTrip();
+          ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+          ((MainActivity) requireActivity()).getNavigationGraph().navigateUp();
+        })
+        .setNegativeButton(android.R.string.no, null).show();
   }
 
   private void uploadImageFromGallery() {
@@ -234,6 +280,12 @@ public class PostEditorFragment extends Fragment {
         });
   }
 
+  /**
+   * Add country view in route layout.
+   *
+   * @param country country
+   * @param cities  cities in country
+   */
   private void addCountryView(String country, List<String> cities) {
     View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
@@ -255,14 +307,20 @@ public class PostEditorFragment extends Fragment {
     binding.route.addView(countryView);
   }
 
+  /**
+   * Add note into notes layout.
+   *
+   * @param noteHeadline note headline
+   * @param noteText     note as is
+   * @param photo        photo url
+   * @param place        place name
+   */
   private void addNoteView(String noteHeadline, String noteText, String photo, String place) {
     ItemNoteBinding noteBinding = ItemNoteBinding.inflate(getLayoutInflater());
     noteBinding.noteHeadline.setText(noteHeadline);
-    if (noteHeadline.trim().isEmpty() || noteText.trim().isEmpty() || place.trim().isEmpty()) {
-      return;
-    }
-//    setImageByUrl(noteBinding.noteImageView, null);
-    if (photo == null) {
+    if (photo != null && !photo.trim().isEmpty()) {
+      setImageByUrl(noteBinding.noteImageView, photo);
+    } else {
       noteBinding.imageContainer.setVisibility(GONE);
     }
     noteBinding.noteText.setText(noteText);

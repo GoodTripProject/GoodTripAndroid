@@ -24,10 +24,9 @@ import ru.hse.goodtrip.network.trips.model.TripState;
 @Setter
 public class PostEditorViewModel extends ViewModel {
 
+  String photo;
   private TripRepository tripRepository = TripRepository.getInstance();
   private Trip trip;
-
-  String photo;
 
   /**
    * Post and save trip.
@@ -67,7 +66,6 @@ public class PostEditorViewModel extends ViewModel {
   public void addNote(String noteHeadline, String noteText, String place, String photo) {
     trip.getNotes().add(new Note(noteHeadline, noteText, photo,
         new City(place, new Coordinates(0, 0), new Country("", new Coordinates(0, 0)))));
-
   }
 
   public List<String> getCountries() {
