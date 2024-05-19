@@ -1,9 +1,12 @@
 package ru.hse.goodtrip.data;
 
 import androidx.annotation.Nullable;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import org.locationtech.jts.geom.Point;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
@@ -57,19 +60,36 @@ public class PlacesRepository extends AbstractRepository {
         });
   }
 
+  /**
+   * Get places nearby.
+   *
+   * @param lat    latitude.
+   * @param lng    longitude.
+   * @param radius radius in meters.
+   * @param rankBy rank.
+   * @param type   type of places.
+   * @param token  Jwt token.
+   * @return CompletableFuture.
+   */
   @SuppressWarnings("unchecked")
-  public CompletableFuture<Result<List<PlaceResponse>>> getNearPlaces(double lat,
+  public CompletableFuture<Result<List<PlaceResponse>>> getPlacesNearby(double lat,
       double lng,
-  int radius, @Nullable String rankBy,
-   @Nullable PlacesTypes type, String token) {
+      int radius, @Nullable String rankBy,
+      @Nullable PlacesTypes type, String token) {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
         new PlaceRequest(lng, lat, radius, rankBy, type), getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
     }));
     return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
-      if (result instanceof List) {
-        List<PlaceResponse> response = ((List<PlaceResponse>) result);
+      if (result.isSuccess()) {
+        List<LinkedHashMap<Object, Object>> bareResponse = (List<LinkedHashMap<Object, Object>>)
+            (((Result.Success<?>) result).getData());
+        ObjectMapper mapper = new ObjectMapper();
+        List<PlaceResponse> response = bareResponse
+            .stream()
+            .map(map -> mapper.convertValue(map, PlaceResponse.class))
+            .collect(Collectors.toList());
         return new Result.Success<>(response);
       }
       return new Result.Error<>(new Exception(result.toString()));

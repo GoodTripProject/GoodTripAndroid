@@ -6,6 +6,7 @@ import android.Manifest;
 import android.Manifest.permission;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import java.util.ArrayList;
 import java.util.List;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.databinding.FragmentPlacesBinding;
@@ -32,7 +32,6 @@ public class PlacesFragment extends Fragment {
   private PlacesViewModel placesViewModel;
   private FragmentPlacesBinding binding;
 
-  private static PlaceResponse place = new PlaceResponse("yevpatoriya", 10, 10, null, 5, "10");
   private List<PlaceResponse> places;
 
   @Override
@@ -82,6 +81,8 @@ public class PlacesFragment extends Fragment {
       )
       ) {
         requestLocationPermission();
+      } else {
+        requestLocationPermission();
       }
     }
   }
@@ -99,19 +100,16 @@ public class PlacesFragment extends Fragment {
     fusedLocationClient.getLastLocation()
         .addOnSuccessListener(requireActivity(), location -> {
           if (location != null) {
-
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-            //TODO: get places from API
 
-            places = new ArrayList<>();
-            places.add(place);
-            places.add(place);
-
-            renderPlaces();
+            placesViewModel.updatePlaces(latitude, longitude, () -> {
+              places = placesViewModel.getResponses();
+              Handler handler = new Handler(requireActivity().getMainLooper());
+              handler.post(this::renderPlaces);
+            });
           }
-        }).addOnFailureListener(requireActivity(), location -> {
-          Log.d("places", "=(");
-        });
+
+        }).addOnFailureListener(requireActivity(), location -> Log.d("places", "=("));
   }
 }
