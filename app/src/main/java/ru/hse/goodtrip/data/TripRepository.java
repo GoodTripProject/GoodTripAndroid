@@ -27,7 +27,6 @@ import ru.hse.goodtrip.network.trips.model.CityVisit;
 import ru.hse.goodtrip.network.trips.model.CountryVisit;
 import ru.hse.goodtrip.network.trips.model.Note;
 import ru.hse.goodtrip.network.trips.model.Trip;
-import ru.hse.goodtrip.network.trips.model.TripState;
 import ru.hse.goodtrip.network.trips.model.TripView;
 
 public class TripRepository extends AbstractRepository {
