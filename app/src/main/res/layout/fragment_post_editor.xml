@@ -16,12 +16,35 @@
       android:layout_width="match_parent"
       android:orientation="vertical">
 
-      <ImageView
-        android:id="@+id/postImageView"
-        android:layout_width="fill_parent"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/kazantip" />
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <TextView
+          android:id="@+id/postImagePhotoUrl"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:visibility="gone"
+          android:text=""/>
+        <ImageView
+          android:id="@+id/postImageView"
+          android:layout_width="fill_parent"
+          android:layout_height="250dp"
+          android:scaleType="centerCrop"
+          android:src="@drawable/kazantip" />
+
+        <ImageView
+          android:visibility="gone"
+          android:id="@+id/pickImageButton"
+          android:layout_marginEnd="5dp"
+          android:layout_marginBottom="5dp"
+          android:background="@drawable/white_shaped_background"
+          android:layout_width="70dp"
+          android:layout_height="70dp"
+          android:src="@drawable/baseline_add_photo_alternate_24"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentEnd="true" />
+      </RelativeLayout>
 
       <RelativeLayout
         android:layout_width="match_parent"

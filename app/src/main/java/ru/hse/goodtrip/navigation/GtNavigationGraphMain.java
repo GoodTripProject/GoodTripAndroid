@@ -62,7 +62,6 @@ public class GtNavigationGraphMain extends NavHostFragment {
   }
 
   public void navigateToSignUp() {
-    Log.d("SignUpFragment", "clicked!");
     navController.navigate(R.id.navigation_sign_up);
   }
 

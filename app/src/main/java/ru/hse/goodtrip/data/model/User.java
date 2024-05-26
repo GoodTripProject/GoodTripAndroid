@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.data.model;
 
+import java.io.Serializable;
 import java.net.URL;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
 
   private final int id;
   private final String handle;
