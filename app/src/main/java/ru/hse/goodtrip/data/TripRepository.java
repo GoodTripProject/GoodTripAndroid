@@ -27,6 +27,7 @@ import ru.hse.goodtrip.network.trips.model.CityVisit;
 import ru.hse.goodtrip.network.trips.model.CountryVisit;
 import ru.hse.goodtrip.network.trips.model.Note;
 import ru.hse.goodtrip.network.trips.model.Trip;
+import ru.hse.goodtrip.network.trips.model.TripState;
 import ru.hse.goodtrip.network.trips.model.TripView;
 
 public class TripRepository extends AbstractRepository {
@@ -81,7 +82,7 @@ public class TripRepository extends AbstractRepository {
             .atZone(ZoneId.systemDefault()).toLocalDate(),
         tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
         new HashSet<>(), UsersRepository.getInstance()
-        .getLoggedUser(), tripResponse.getId());
+        .getLoggedUser(), tripResponse.getId(), tripResponse.getState());
     List<ru.hse.goodtrip.data.model.trips.CountryVisit>
         countryVisits = getCountryVisitsFromCountryVisitResponse(
         tripResponse.getVisits());

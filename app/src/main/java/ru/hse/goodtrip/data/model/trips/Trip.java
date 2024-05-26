@@ -47,7 +47,7 @@ public class Trip implements Serializable {
       LocalDate endTripDate, LocalDate timeOfPublication,
       @Nullable String mainPhotoUrl,
       int moneyInUsd, Set<ShowPlace> interestingPlacesToVisit,
-      User user, Integer tripId) {
+      User user, Integer tripId, TripState state) {
     this.title = title;
     this.countries = countries;
     this.startTripDate = startTripDate;
@@ -57,7 +57,7 @@ public class Trip implements Serializable {
     this.moneyInUsd = moneyInUsd;
     this.interestingPlacesToVisit = interestingPlacesToVisit;
     this.user = user;
-    this.tripState = ru.hse.goodtrip.network.trips.model.TripState.PLANNED;
+    this.tripState = state;
     this.tripId = tripId;
   }
 }

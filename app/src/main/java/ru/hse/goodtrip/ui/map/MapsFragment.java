@@ -88,12 +88,12 @@ public class MapsFragment extends Fragment {
     mapsViewModel.refreshMarks();
 
     for (Trip trip : mapsViewModel.getMarks()) {
-      if (trip.getTripState() != TripState.PUBLISHED) {
+      if (trip.getTripState().equals(TripState.PUBLISHED)) {
         continue;
       }
 
       Log.d("asd", "зашел");
-      if (trip.getCountries().size() > 0) {
+      if (!trip.getCountries().isEmpty()) {
         PolylineOptions path = new PolylineOptions();
         for (CountryVisit country : trip.getCountries()) {
           for (City city : country.getVisitedCities()) {
