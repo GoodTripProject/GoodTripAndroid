@@ -6,8 +6,10 @@ import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,9 +30,12 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.Setter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.City;
+import ru.hse.goodtrip.data.model.trips.Coordinates;
+import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
@@ -44,15 +50,45 @@ import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
  */
 public class PostEditorFragment extends Fragment {
 
+  private static final String TAG = "PostEditor";
   FragmentPostEditorBinding binding;
   Trip trip;
   PostEditorViewModel postEditorViewModel;
-  private final ActivityResultLauncher<Intent> pickMedia = registerForActivityResult(
+  @Setter
+  String currentNoteImageUrl;
+  @Setter
+  ImageView currentNoteImageView;
+  /**
+   * Starts intent that upload image from Camera or from Gallery. see
+   * {@link #uploadPostImageFromGallery()}.
+   */
+  ActivityResultLauncher<Intent> pickPostImage = registerForActivityResult(
       new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
-            postEditorViewModel.setPhoto(data.getData().toString());
+            String newPhoto = data.getData().toString();
+            setImageByUrl(binding.postImageView, newPhoto);
+            Log.d(TAG, newPhoto);
+            trip.setMainPhotoUrl(newPhoto);
+          }
+        }
+      });
+
+  /**
+   * Starts intent that upload image from Camera or from Gallery. see
+   * {@link #uploadNoteImageFromGallery()}.
+   */
+  ActivityResultLauncher<Intent> pickNoteImage = registerForActivityResult(
+      new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+          Intent data = result.getData();
+          if (data != null && data.getData() != null) {
+            String newPhoto = data.getData().toString();
+            setCurrentNoteImageUrl(newPhoto);
+            setImageByUrl(currentNoteImageView, newPhoto);
+            currentNoteImageView.setVisibility(View.VISIBLE);
+            Log.d(TAG, newPhoto);
           }
         }
       });
@@ -116,8 +152,12 @@ public class PostEditorFragment extends Fragment {
 
     binding.editModeButton.setOnClickListener(v -> switchEditMode(true));
     binding.saveChangesButton.setOnClickListener(v -> saveChanges());
+    binding.pickImageButton.setOnClickListener(v -> uploadPostImageFromGallery());
   }
 
+  /**
+   * Saves trip changes.
+   */
   private void saveChanges() {
     new AlertDialog.Builder(getContext())
         .setTitle("Save changes")
@@ -133,6 +173,11 @@ public class PostEditorFragment extends Fragment {
         .setNegativeButton(android.R.string.no, null).show();
   }
 
+  /**
+   * Switching UI to EditMode.
+   *
+   * @param isEditModeOn is edit mode on.
+   */
   private void switchEditMode(boolean isEditModeOn) {
     int newVisibility = isEditModeOn ? View.VISIBLE : View.GONE;
 
@@ -145,6 +190,7 @@ public class PostEditorFragment extends Fragment {
     binding.routeEditButton.setVisibility(newVisibility);
     binding.editTitleButton.setVisibility(newVisibility);
     binding.saveChangesButton.setVisibility(newVisibility);
+    binding.pickImageButton.setVisibility(newVisibility);
 
     binding.postTitle.setFocusable(isEditModeOn);
     binding.postTitle.setFocusableInTouchMode(isEditModeOn);
@@ -154,33 +200,63 @@ public class PostEditorFragment extends Fragment {
     binding.budgetLabel.setClickable(isEditModeOn);
   }
 
+  /**
+   * Shows AddNewNoteDialog window.
+   *
+   * @param newNoteDialogFragment current dialog.
+   */
   private void showAddNewNoteDialog(AddNewNoteDialogFragment newNoteDialogFragment) {
     newNoteDialogFragment.show(getChildFragmentManager(), "dialog..."); // TODO
     getChildFragmentManager().executePendingTransactions();
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
     newNoteDialogFragment.getDialog().getWindow()
-        .setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
+        .setLayout((8 * width) / 9, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     setupAddNoteDialog(newNoteDialogFragment);
+    newNoteDialogFragment.getDialog().getWindow()
+        .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
   }
 
+  /**
+   * Setup AddNewNoteDialogFragment fields.
+   *
+   * @param newNoteDialogFragment current dialog.
+   */
   private void setupAddNoteDialog(AddNewNoteDialogFragment newNoteDialogFragment) {
     final Button addNote = newNoteDialogFragment.binding.popupAddNote;
     final ImageButton closeButton = newNoteDialogFragment.binding.closeButton;
+    final ImageView pickImageButton = newNoteDialogFragment.binding.noteImagePicker;
+    final ImageView noteImageView = newNoteDialogFragment.binding.noteImageView;
+    final TextView notePhotoUrl = newNoteDialogFragment.binding.photoUrl;
+    pickImageButton.setOnClickListener(v -> {
+      setCurrentNoteImageView(noteImageView);
+      uploadNoteImageFromGallery();
+      notePhotoUrl.setText(currentNoteImageUrl);
+    });
     addNote.setOnClickListener(v -> {
       String headline = newNoteDialogFragment.binding.noteHeadlineEditText.getText().toString();
       String text = newNoteDialogFragment.binding.noteTextEditText.getText().toString();
       String place = newNoteDialogFragment.binding.notePlaceEditText.getText().toString();
 
-      // TODO
-      postEditorViewModel.addNote(headline, text, place, postEditorViewModel.getPhoto());
-      addNoteView(headline, text, postEditorViewModel.getPhoto(), place);
+      String newNotePhotoUrl = currentNoteImageUrl;
+      addNote(headline, text, place, newNotePhotoUrl);
+      addNoteView(headline, text, newNotePhotoUrl, place);
       newNoteDialogFragment.dismiss();
     });
     closeButton.setOnClickListener(v -> newNoteDialogFragment.dismiss());
   }
 
+  public void addNote(String noteHeadline, String noteText, String place, String photo) {
+    trip.getNotes().add(new Note(noteHeadline, noteText, photo,
+        new City(place, new Coordinates(0, 0), new Country("", new Coordinates(0, 0)))));
+  }
+
+  /**
+   * Setup AddNewDestinationDialogFragment fields and AddCountryDialog.
+   *
+   * @param addNewDestinationDialogFragment current dialog.
+   */
   private void showAddNewDestinationDialog(
       AddNewDestinationDialogFragment addNewDestinationDialogFragment) {
     addNewDestinationDialogFragment.show(getChildFragmentManager(), "dialog..."); // TODO
@@ -190,8 +266,17 @@ public class PostEditorFragment extends Fragment {
     addNewDestinationDialogFragment.getDialog().getWindow()
         .setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
     setupAddCountryDialog(addNewDestinationDialogFragment);
+
+    addNewDestinationDialogFragment.getDialog().getWindow()
+        .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
   }
 
+  /**
+   * Setup AddCountryDialog fields.
+   *
+   * @param dialog current dialog.
+   */
   private void setupAddCountryDialog(AddNewDestinationDialogFragment dialog) {
     final AutoCompleteTextView autoCompleteTextViewCountries = dialog.binding.enterCountryName;
     ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
@@ -211,7 +296,7 @@ public class PostEditorFragment extends Fragment {
             ((TextView) (citiesLayout.getChildAt(index)).findViewById(
                 R.id.enter_city_name)).getText().toString());
       }
-      postEditorViewModel.addCountry(country, cities);
+      addCountry(country, cities);
       addCountryView(country, cities);
       dialog.dismiss();
     });
@@ -230,7 +315,23 @@ public class PostEditorFragment extends Fragment {
   }
 
   /**
-   * Load route view.
+   * add country to trip.
+   *
+   * @param countryName country name.
+   * @param citiesName  name of cities.
+   */
+  public void addCountry(String countryName, List<String> citiesName) {
+    Country country = new Country(countryName, new Coordinates(0, 0));
+    List<City> cities = new ArrayList<>();
+    for (String cityName : citiesName) {
+      cities.add(new City(cityName, new Coordinates(0, 0), country));
+    }
+    CountryVisit countryVisit = new CountryVisit(country, cities);
+    trip.getCountries().add(countryVisit);
+  }
+
+  /**
+   * Render route view.
    */
   private void loadRoute() {
     for (CountryVisit country : trip.getCountries()) {
@@ -243,7 +344,7 @@ public class PostEditorFragment extends Fragment {
   }
 
   /**
-   * Load notes view.
+   * Render notes view.
    */
   private void loadNotes() {
     for (Note note : trip.getNotes()) {
@@ -269,13 +370,34 @@ public class PostEditorFragment extends Fragment {
         .setNegativeButton(android.R.string.no, null).show();
   }
 
-  private void uploadImageFromGallery() {
+  /**
+   * Starts intent that upload image by Camera or opens Gallery. Gets URI of image, stores it in
+   * {@link #trip}. Image is uploaded in postImageView by
+   * {@link ru.hse.goodtrip.ui.trips.feed.utils.Utils#setImageByUrl(ImageView, String)}
+   */
+  private void uploadPostImageFromGallery() {
     ImagePicker.with(this)
         .cropSquare()
         .compress(180)
         .maxResultSize(180, 180)
         .createIntent(intent -> {
-          pickMedia.launch(intent);
+          pickPostImage.launch(intent);
+          return null;
+        });
+  }
+
+  /**
+   * Starts intent that upload image by Camera or opens Gallery. Gets URI of image, stores it in
+   * {@link #currentNoteImageUrl}. Image is uploaded in {@link #currentNoteImageView} by
+   * {@link ru.hse.goodtrip.ui.trips.feed.utils.Utils#setImageByUrl(ImageView, String)}
+   */
+  private void uploadNoteImageFromGallery() {
+    ImagePicker.with(this)
+        .cropSquare()
+        .compress(180)
+        .maxResultSize(180, 180)
+        .createIntent(intent -> {
+          pickNoteImage.launch(intent);
           return null;
         });
   }

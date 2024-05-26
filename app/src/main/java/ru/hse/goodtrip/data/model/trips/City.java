@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.data.model.trips;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class City extends AbstractPlace {
+public class City extends AbstractPlace implements Serializable {
 
   Country country;
 

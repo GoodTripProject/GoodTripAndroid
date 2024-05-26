@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.data.model.trips;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class Note {
+public class Note implements Serializable {
 
   private String headline;
   private String note;
