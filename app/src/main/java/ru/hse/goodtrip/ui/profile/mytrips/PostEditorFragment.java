@@ -6,8 +6,11 @@ import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -71,10 +75,10 @@ public class PostEditorFragment extends Fragment {
             setImageByUrl(binding.postImageView, newPhoto);
             Log.d(TAG, newPhoto);
             trip.setMainPhotoUrl(newPhoto);
+            uploadImageToFirebase(data.getData());
           }
         }
       });
-
   /**
    * Starts intent that upload image from Camera or from Gallery. see
    * {@link #uploadNoteImageFromGallery()}.
@@ -92,6 +96,16 @@ public class PostEditorFragment extends Fragment {
           }
         }
       });
+
+  public void uploadImageToFirebase(Uri localPhotoUrl) {
+    try {
+      Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),
+          localPhotoUrl);
+      // do anything you want
+    } catch (IOException e) {
+      // TODO: ??
+    }
+  }
 
   @Override
   public void onResume() {
