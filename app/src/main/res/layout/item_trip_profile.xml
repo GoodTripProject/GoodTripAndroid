@@ -26,6 +26,20 @@
       app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+      android:background="@drawable/button"
+      android:id="@+id/tripState"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:text="state"
+      android:padding="10dp"
+      android:textSize="17sp"
+      android:textColor="@color/white"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/tripTitle"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
       android:id="@+id/tripDuration"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

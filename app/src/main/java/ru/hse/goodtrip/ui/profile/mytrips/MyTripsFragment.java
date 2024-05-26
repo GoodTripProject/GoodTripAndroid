@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
+import static ru.hse.goodtrip.network.trips.model.TripState.PUBLISHED;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentMyTripsBinding;
 import ru.hse.goodtrip.databinding.ItemTripProfileBinding;
+import ru.hse.goodtrip.network.trips.model.TripState;
 
 /**
  * MyTripsFragment.
@@ -42,6 +44,25 @@ public class MyTripsFragment extends Fragment {
     return binding.getRoot();
   }
 
+  /**
+   * From TripState to String.
+   *
+   * @param state trip state.
+   * @return trip state in string.
+   */
+  private String stateToString(TripState state) {
+    switch (state) {
+      case PLANNED:
+        return "Planned";
+      case PUBLISHED:
+        return "Published";
+      case IN_PROCESS:
+        return "IN_PROCESS";
+      default:
+        return null;
+    }
+  }
+
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     LinearLayout trips = binding.trips;
@@ -49,14 +70,20 @@ public class MyTripsFragment extends Fragment {
       ItemTripProfileBinding tripProfileBinding = ItemTripProfileBinding.inflate(
           getLayoutInflater());
       tripProfileBinding.tripTitle.setText(trip.getTitle());
-
+      tripProfileBinding.tripState.setText(stateToString(trip.getTripState()));
       tripProfileBinding.tripDuration.setText(
-          getDuration(trip.getStartTripDate(), trip.getEndTripDate(), "dd.MM.yyyy"));
+          getDuration(trip.getStartTripDate(), trip.getEndTripDate(), "dd.MM"));
       tripProfileBinding.tripCard.setOnClickListener(
-          v -> ((MainActivity) requireActivity()).getNavigationGraph()
-              .navigateToPostEditorPage(trip));
+          v -> {
+            if (trip.getTripState().equals(PUBLISHED)) {
+              ((MainActivity) requireActivity()).getNavigationGraph()
+                  .navigateToPostPageExternal(trip);
+            } else {
+              ((MainActivity) requireActivity()).getNavigationGraph()
+                  .navigateToPostEditorPage(trip);
+            }
+          });
       trips.addView(tripProfileBinding.getRoot());
     }
   }
-
 }

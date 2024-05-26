@@ -81,7 +81,8 @@ public class MapsFragment extends Fragment {
 
     Trip trip = (Trip) marker.getTag();
     if (trip != null) {
-      ((MainActivity) requireActivity()).getNavigationGraph().navigateToPostPageFromMap(trip);
+      ((MainActivity) requireActivity()).getNavigationGraph()
+          .navigateToPostPageExternal(trip);
     }
   }
 
