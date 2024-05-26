@@ -81,7 +81,7 @@ public class TripRepository extends AbstractRepository {
             .atZone(ZoneId.systemDefault()).toLocalDate(),
         tripResponse.getMainPhotoUrl(), tripResponse.getMoneyInUsd(),
         new HashSet<>(), UsersRepository.getInstance()
-        .getLoggedUser(), tripResponse.getId());
+        .getLoggedUser(), tripResponse.getId(), tripResponse.getState());
     List<ru.hse.goodtrip.data.model.trips.CountryVisit>
         countryVisits = getCountryVisitsFromCountryVisitResponse(
         tripResponse.getVisits());

@@ -5,6 +5,8 @@ import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.City;
@@ -45,8 +49,7 @@ public class MapsFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater,
-      @Nullable ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_maps, container, false);
   }
@@ -54,14 +57,13 @@ public class MapsFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    SupportMapFragment mapFragment =
-        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+    SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(
+        R.id.map);
     if (mapFragment != null) {
       mapFragment.getMapAsync(callback);
     }
 
-    mapsViewModel =
-        new ViewModelProvider(this).get(MapsViewModel.class);
+    mapsViewModel = new ViewModelProvider(this).get(MapsViewModel.class);
   }
 
   private boolean markerClickListener(Marker m) {
@@ -85,33 +87,38 @@ public class MapsFragment extends Fragment {
   }
 
   private void showTripPaths(GoogleMap googleMap) {
-    mapsViewModel.refreshMarks();
-
-    for (Trip trip : mapsViewModel.getMarks()) {
-      if (trip.getTripState() != TripState.PUBLISHED) {
-        continue;
-      }
-
-      Log.d("asd", "зашел");
-      if (trip.getCountries().size() > 0) {
-        PolylineOptions path = new PolylineOptions();
-        for (CountryVisit country : trip.getCountries()) {
-          for (City city : country.getVisitedCities()) {
-            LatLng marker = new LatLng(city.getCoordinates().getLatitude(),
-                city.getCoordinates().getLongitude());
-            Marker mark = googleMap.addMarker(
-                new MarkerOptions().position(marker).title(trip.getTitle()));
-            assert mark != null; //TODO: ??
-
-            mark.setTag(trip);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-            path.add(marker);
-          }
+    ExecutorService service = Executors.newSingleThreadExecutor();
+    service.submit(() -> {
+      mapsViewModel.refreshMarks();
+      for (Trip trip : mapsViewModel.getMarks()) {
+        if (!trip.getTripState().equals(TripState.PUBLISHED)) {
+          continue;
         }
-        path.color(Color.RED).width(5);
-        googleMap.addPolyline(path);
+
+        Log.d("asd", "зашел");
+        Handler handler = Handler.createAsync(Looper.getMainLooper());
+        handler.post(() -> {
+          if (!trip.getCountries().isEmpty()) {
+            PolylineOptions path = new PolylineOptions();
+            for (CountryVisit country : trip.getCountries()) {
+              for (City city : country.getVisitedCities()) {
+                LatLng marker = new LatLng(city.getCoordinates().getLatitude(),
+                    city.getCoordinates().getLongitude());
+                Marker mark = googleMap.addMarker(
+                    new MarkerOptions().position(marker).title(trip.getTitle()));
+                assert mark != null; //TODO: ??
+
+                mark.setTag(trip);
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+                path.add(marker);
+              }
+            }
+            path.color(Color.RED).width(5);
+            googleMap.addPolyline(path);
+          }
+        });
       }
-    }
+    });
   }
 
   class CustomInfoWindowAdapter implements InfoWindowAdapter {
