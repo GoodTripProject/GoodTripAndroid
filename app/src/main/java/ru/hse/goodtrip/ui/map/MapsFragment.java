@@ -91,7 +91,7 @@ public class MapsFragment extends Fragment {
     service.submit(() -> {
       mapsViewModel.refreshMarks();
       for (Trip trip : mapsViewModel.getMarks()) {
-        if (trip.getTripState().equals(TripState.PUBLISHED)) {
+        if (!trip.getTripState().equals(TripState.PUBLISHED)) {
           continue;
         }
 
