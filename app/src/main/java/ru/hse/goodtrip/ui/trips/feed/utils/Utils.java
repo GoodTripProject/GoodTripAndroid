@@ -4,8 +4,10 @@ import android.net.Uri;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import retrofit2.http.Url;
 
 /**
  * Utils class.
@@ -64,6 +66,22 @@ public class Utils {
     if (photoUrl != null && !photoUrl.trim().isEmpty()) {
       Glide.with(imageView.getContext())
           .load(Uri.parse(photoUrl))
+          .into(imageView);
+    } else {
+      Glide.with(imageView.getContext()).clear(imageView);
+    }
+  }
+
+  /**
+   * Load image into imageView by URL and nothing if error occurred
+   *
+   * @param imageView where photo should be displayed
+   * @param photoUrl  photo url
+   */
+  public static void setImageByUrl(ImageView imageView, @Nullable URL photoUrl) {
+    if (photoUrl != null && !photoUrl.toString().trim().isEmpty()) {
+      Glide.with(imageView.getContext())
+          .load(photoUrl)
           .into(imageView);
     } else {
       Glide.with(imageView.getContext()).clear(imageView);
