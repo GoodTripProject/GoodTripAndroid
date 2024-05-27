@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +29,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +43,7 @@ import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentPostEditorBinding;
 import ru.hse.goodtrip.databinding.ItemNoteBinding;
+import ru.hse.goodtrip.network.firebase.FirebaseUtils;
 import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewDestinationDialogFragment;
 import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewNoteDialogFragment;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
@@ -72,10 +71,16 @@ public class PostEditorFragment extends Fragment {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
             String newPhoto = data.getData().toString();
-            setImageByUrl(binding.postImageView, newPhoto);
-            Log.d(TAG, newPhoto);
-            trip.setMainPhotoUrl(newPhoto);
-            uploadImageToFirebase(data.getData());
+            Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
+                data.getData());
+            FirebaseUtils.uploadImageToFirebase(
+                bitmap,
+                (uri) -> {
+                  trip.setMainPhotoUrl(uri.toString());
+                  setImageByUrl(binding.postImageView, newPhoto);
+                  Log.d(TAG, newPhoto);
+                  trip.setMainPhotoUrl(newPhoto);
+                });
           }
         }
       });
@@ -93,19 +98,11 @@ public class PostEditorFragment extends Fragment {
             setImageByUrl(currentNoteImageView, newPhoto);
             currentNoteImageView.setVisibility(View.VISIBLE);
             Log.d(TAG, newPhoto);
+            // TODO
           }
         }
       });
 
-  public void uploadImageToFirebase(Uri localPhotoUrl) {
-    try {
-      Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),
-          localPhotoUrl);
-      // do anything you want
-    } catch (IOException e) {
-      // TODO: ??
-    }
-  }
 
   @Override
   public void onResume() {
@@ -254,7 +251,16 @@ public class PostEditorFragment extends Fragment {
       String place = newNoteDialogFragment.binding.notePlaceEditText.getText().toString();
 
       String newNotePhotoUrl = currentNoteImageUrl;
-      addNote(headline, text, place, newNotePhotoUrl);
+      if (newNotePhotoUrl != null) {
+        Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
+            Uri.parse(currentNoteImageUrl));
+        FirebaseUtils.uploadImageToFirebase(
+            bitmap,
+            (uri) -> addNote(headline, text, place, uri.toString())
+        );
+      } else {
+        addNote(headline, text, place, newNotePhotoUrl);
+      }
       addNoteView(headline, text, newNotePhotoUrl, place);
       newNoteDialogFragment.dismiss();
     });
