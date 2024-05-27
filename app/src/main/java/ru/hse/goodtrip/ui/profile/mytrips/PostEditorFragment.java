@@ -30,13 +30,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.common.hash.Hashing;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Consumer;
 import lombok.Setter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
@@ -72,10 +82,13 @@ public class PostEditorFragment extends Fragment {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
             String newPhoto = data.getData().toString();
-            setImageByUrl(binding.postImageView, newPhoto);
-            Log.d(TAG, newPhoto);
-            trip.setMainPhotoUrl(newPhoto);
-            uploadImageToFirebase(data.getData());
+
+            uploadImageToFirebase(data.getData(), (uri) -> {
+              trip.setMainPhotoUrl(uri.toString());
+              setImageByUrl(binding.postImageView, newPhoto);
+              Log.d(TAG, newPhoto);
+              trip.setMainPhotoUrl(newPhoto);
+            });
           }
         }
       });
@@ -93,17 +106,44 @@ public class PostEditorFragment extends Fragment {
             setImageByUrl(currentNoteImageView, newPhoto);
             currentNoteImageView.setVisibility(View.VISIBLE);
             Log.d(TAG, newPhoto);
+            // TODO
           }
         }
       });
 
-  public void uploadImageToFirebase(Uri localPhotoUrl) {
+  public void uploadImageToFirebase(Uri localPhotoUrl,
+      Consumer<Uri> setImageUrlAfterUploading) {
     try {
       Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),
           localPhotoUrl);
-      // do anything you want
-    } catch (IOException e) {
-      // TODO: ??
+
+      String filename = Hashing.sha256().hashString(
+              UsersRepository.getInstance().user.getDisplayName()
+                  + UUID.randomUUID()
+                  + trip.getTitle()
+                  + trip.getTripId()
+                  + trip.hashCode()
+                  + Arrays.hashCode(bitmap.getNinePatchChunk()), StandardCharsets.UTF_8)
+          .toString();
+      StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(
+          filename);
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+      Log.d(this.getClass().getSimpleName(), filename);
+      UploadTask uploadTask = storageRef.putBytes(baos.toByteArray());
+      uploadTask.continueWithTask(task -> {
+        if (!task.isSuccessful()) {
+          throw Objects.requireNonNull(task.getException());
+        }
+        return storageRef.getDownloadUrl();
+      }).addOnCompleteListener(task -> {
+        if (task.isSuccessful()) {
+          setImageUrlAfterUploading.accept(task.getResult());
+        } else {
+          Log.d(getClass().getSimpleName(), "Task uploading is not successful");
+        }
+      });
+    } catch (IOException ignored) {
     }
   }
 
@@ -147,7 +187,7 @@ public class PostEditorFragment extends Fragment {
     if (trip != null) {
       postEditorViewModel.setTrip(trip);
       setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
-      binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
+      binding.budgetLabel.setText(trip.getMoneyInUsd());
       binding.postTitle.setText(trip.getTitle());
       loadRoute();
       loadNotes();
