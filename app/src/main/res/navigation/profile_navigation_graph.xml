@@ -14,9 +14,18 @@
       app:destination="@id/navigation_my_trips" />
   </fragment>
   <fragment
-    tools:layout="@layout/fragment_friends"
-    android:id="@+id/navigation_friends"
-    android:name="ru.hse.goodtrip.ui.profile.friends.FriendsFragment" />
+    tools:layout="@layout/fragment_following"
+    android:id="@+id/navigation_following"
+    android:name="ru.hse.goodtrip.ui.profile.following.FollowingFragment" />
+  <fragment
+    tools:layout="@layout/fragment_profile_following"
+    android:id="@+id/navigation_profile_following"
+    android:name="ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment" />
+  <fragment
+    tools:layout="@layout/fragment_maps_following"
+    android:id="@+id/navigation_map_following"
+    android:name="ru.hse.goodtrip.ui.map.MapsFollowingFragment" />
+
   <fragment
     tools:layout="@layout/fragment_my_trips"
     android:id="@+id/navigation_my_trips"
