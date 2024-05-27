@@ -5,7 +5,10 @@ import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +19,49 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileBinding;
+import ru.hse.goodtrip.network.firebase.FirebaseUtils;
 import ru.hse.goodtrip.room.RoomImplementation;
 
 public class ProfileFragment extends Fragment {
 
+  UsersRepository repository = UsersRepository.getInstance();
   private ProfileViewModel profileViewModel;
   private FragmentProfileBinding binding;
+  private User user;
   private final ActivityResultLauncher<Intent> pickMedia = registerForActivityResult(
       new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
+            Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
+                Uri.parse(data.getData().toString()));
+            if (bitmap != null) {
+              FirebaseUtils.uploadImageToFirebase(
+                  bitmap,
+                  (uri) -> {
+                    repository.updatePhoto(user.getId(), uri.toString(),
+                        UsersRepository.getInstance().user.getToken());
+                    try {
+                      user.setMainPhotoUrl(new URL(uri.toString()));
+                    } catch (MalformedURLException e) {
+                      Log.d(this.getClass().getSimpleName(),
+                          Objects.requireNonNull(e.getLocalizedMessage()));
+                    }
+                  }
+              );
+            }
             setImageByUrl(binding.profileImage, data.getData().toString());
             UsersRepository.changeUserMainPhoto(data.getData());
           }
         }
       });
-  private User user;
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater,
