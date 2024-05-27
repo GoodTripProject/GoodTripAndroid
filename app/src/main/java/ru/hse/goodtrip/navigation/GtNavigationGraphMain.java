@@ -1,7 +1,6 @@
 package ru.hse.goodtrip.navigation;
 
 import android.os.Bundle;
-import android.util.Log;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -10,9 +9,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
+import ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
+
+/*
+TODO: JavaDocs
+*/
 
 /**
  * Main application navigation fragment.
@@ -70,6 +75,17 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.main_navigation_graph);
   }
 
+  /**
+   * Opens ProfileFollowingFragment with provided user.
+   *
+   * @param following user to show.
+   */
+  public void navigateToFollowingMap(User following) {
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(ProfileFollowingFragment.USER_ARG, following);
+    navController.navigate(R.id.navigation_map_following, bundle);
+  }
+
   public void navigateToPostPageExternal(Trip trip) {
     activity.getNavigationGraph().navigateToMainGraph();
     activity.getNavigationGraph().navigateToPostPage(trip);
@@ -77,6 +93,27 @@ public class GtNavigationGraphMain extends NavHostFragment {
 
   public void navigateToMyTrips() {
     navController.navigate(R.id.navigation_my_trips);
+  }
+
+  /**
+   * Opens FollowingFragment.
+   */
+  public void navigateToFollowing() {
+    navController.navigate(R.id.navigation_following);
+  }
+
+  /**
+   * Opens ProfileFollowingFragment with provided user.
+   *
+   * @param following user to show.
+   */
+  public void navigateToFollowingProfilePage(User following) {
+    activity.getSupportActionBar().hide();
+
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(ProfileFollowingFragment.USER_ARG, following);
+
+    navController.navigate(R.id.navigation_profile_following, bundle);
   }
 
   /**
@@ -103,10 +140,16 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.navigation_post_editor, bundle);
   }
 
+  /**
+   * Navigate to previous fragment in current graph.
+   */
   public void navigateUp() {
     navController.navigateUp();
   }
 
+  /**
+   * Opens PlanTripFragment.
+   */
   public void navigateToPlanTrip() {
     navController.navigate(R.id.navigation_plan_trip);
   }

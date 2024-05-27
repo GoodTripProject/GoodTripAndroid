@@ -22,6 +22,14 @@ public class FollowingFragment extends Fragment {
   private FragmentFollowingBinding binding;
 
   @Override
+  public void onResume() {
+    super.onResume();
+    ((MainActivity) requireActivity()).getSupportActionBar().show();
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+  }
+
+  @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     followingViewModel =
