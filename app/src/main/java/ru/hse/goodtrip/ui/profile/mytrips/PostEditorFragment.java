@@ -187,7 +187,7 @@ public class PostEditorFragment extends Fragment {
     if (trip != null) {
       postEditorViewModel.setTrip(trip);
       setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
-      binding.budgetLabel.setText(trip.getMoneyInUsd());
+      binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
       binding.postTitle.setText(trip.getTitle());
       loadRoute();
       loadNotes();
@@ -294,7 +294,12 @@ public class PostEditorFragment extends Fragment {
       String place = newNoteDialogFragment.binding.notePlaceEditText.getText().toString();
 
       String newNotePhotoUrl = currentNoteImageUrl;
-      addNote(headline, text, place, newNotePhotoUrl);
+      if (newNotePhotoUrl != null) {
+        uploadImageToFirebase(Uri.parse(currentNoteImageUrl),
+            (uri) -> addNote(headline, text, place, uri.toString()));
+      } else {
+        addNote(headline, text, place, newNotePhotoUrl);
+      }
       addNoteView(headline, text, newNotePhotoUrl, place);
       newNoteDialogFragment.dismiss();
     });
