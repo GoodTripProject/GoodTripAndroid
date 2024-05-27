@@ -65,6 +65,12 @@ public class MyTripsFragment extends Fragment {
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    renderTrips();
+  }
+
+  private void renderTrips() {
     LinearLayout trips = binding.trips;
     for (Trip trip : TripRepository.getInstance().getUserTrips()) {
       ItemTripProfileBinding tripProfileBinding = ItemTripProfileBinding.inflate(

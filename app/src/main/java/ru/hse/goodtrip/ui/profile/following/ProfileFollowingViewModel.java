@@ -1,7 +1,13 @@
 package ru.hse.goodtrip.ui.profile.following;
 
 import androidx.lifecycle.ViewModel;
+import lombok.Getter;
+import lombok.Setter;
+import ru.hse.goodtrip.data.model.User;
 
 public class ProfileFollowingViewModel extends ViewModel {
-  // TODO: Implement the ViewModel
+
+  @Getter
+  @Setter
+  private User user;
 }

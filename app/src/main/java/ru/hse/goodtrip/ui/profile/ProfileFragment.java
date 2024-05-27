@@ -92,6 +92,8 @@ public class ProfileFragment extends Fragment {
   }
 
   private void setButtonClickListeners() {
+    binding.followingButton.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToFollowing());
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());

@@ -1,34 +1,68 @@
 package ru.hse.goodtrip.ui.profile.following;
 
-import androidx.lifecycle.ViewModelProvider;
+import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
+
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import ru.hse.goodtrip.R;
+import android.widget.Button;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.data.model.User;
+import ru.hse.goodtrip.databinding.FragmentProfileFollowingBinding;
 
 public class ProfileFollowingFragment extends Fragment {
 
-  private ProfileFollowingViewModel mViewModel;
+  public final static String USER_ARG = "user";
+  private ProfileFollowingViewModel profileFollowingViewModel;
+  private FragmentProfileFollowingBinding binding;
+  private User user;
 
-  public static ProfileFollowingFragment newInstance() {
-    return new ProfileFollowingFragment();
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater,
+      ViewGroup container, Bundle savedInstanceState) {
+    profileFollowingViewModel =
+        new ViewModelProvider(this).get(ProfileFollowingViewModel.class);
+    binding = FragmentProfileFollowingBinding.inflate(inflater, container, false);
+    return binding.getRoot();
   }
 
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_profile_following, container, false);
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    Bundle args = getArguments();
+    if (args != null) {
+      this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
+      profileFollowingViewModel.setUser(user);
+    }
+    setUserInfo();
+    setButtonClickListeners();
+  }
+
+  private void setButtonClickListeners() {
+    final Button showMapButton = binding.showMapButton;
+    showMapButton.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToFollowingMap(user));
+  }
+
+  private void setUserInfo() {
+    if (user.getMainPhotoUrl() != null) {
+      setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
+    } else {
+      setImageByUrl(binding.profileImage, // TODO:
+          "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg");
+    }
+    binding.displayName.setText(user.getDisplayName());
+    binding.handler.setText("@".concat(user.getHandle()));
   }
 
   @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    mViewModel = new ViewModelProvider(this).get(ProfileFollowingViewModel.class);
-    // TODO: Use the ViewModel
+  public void onDestroyView() {
+    super.onDestroyView();
+    binding = null;
   }
-
 }
