@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,23 +29,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.common.hash.Hashing;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.function.Consumer;
 import lombok.Setter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
-import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
@@ -55,6 +43,7 @@ import ru.hse.goodtrip.data.model.trips.Note;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FragmentPostEditorBinding;
 import ru.hse.goodtrip.databinding.ItemNoteBinding;
+import ru.hse.goodtrip.network.firebase.FirebaseUtils;
 import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewDestinationDialogFragment;
 import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewNoteDialogFragment;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
@@ -82,13 +71,17 @@ public class PostEditorFragment extends Fragment {
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
             String newPhoto = data.getData().toString();
-
-            uploadImageToFirebase(data.getData(), (uri) -> {
-              trip.setMainPhotoUrl(uri.toString());
-              setImageByUrl(binding.postImageView, newPhoto);
-              Log.d(TAG, newPhoto);
-              trip.setMainPhotoUrl(newPhoto);
-            });
+            Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
+                data.getData());
+            FirebaseUtils.uploadImageToFirebase(
+                trip,
+                bitmap,
+                (uri) -> {
+                  trip.setMainPhotoUrl(uri.toString());
+                  setImageByUrl(binding.postImageView, newPhoto);
+                  Log.d(TAG, newPhoto);
+                  trip.setMainPhotoUrl(newPhoto);
+                });
           }
         }
       });
@@ -111,41 +104,6 @@ public class PostEditorFragment extends Fragment {
         }
       });
 
-  public void uploadImageToFirebase(Uri localPhotoUrl,
-      Consumer<Uri> setImageUrlAfterUploading) {
-    try {
-      Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),
-          localPhotoUrl);
-
-      String filename = Hashing.sha256().hashString(
-              UsersRepository.getInstance().user.getDisplayName()
-                  + UUID.randomUUID()
-                  + trip.getTitle()
-                  + trip.getTripId()
-                  + trip.hashCode()
-                  + Arrays.hashCode(bitmap.getNinePatchChunk()), StandardCharsets.UTF_8)
-          .toString();
-      StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(
-          filename);
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-      Log.d(this.getClass().getSimpleName(), filename);
-      UploadTask uploadTask = storageRef.putBytes(baos.toByteArray());
-      uploadTask.continueWithTask(task -> {
-        if (!task.isSuccessful()) {
-          throw Objects.requireNonNull(task.getException());
-        }
-        return storageRef.getDownloadUrl();
-      }).addOnCompleteListener(task -> {
-        if (task.isSuccessful()) {
-          setImageUrlAfterUploading.accept(task.getResult());
-        } else {
-          Log.d(getClass().getSimpleName(), "Task uploading is not successful");
-        }
-      });
-    } catch (IOException ignored) {
-    }
-  }
 
   @Override
   public void onResume() {
@@ -295,8 +253,13 @@ public class PostEditorFragment extends Fragment {
 
       String newNotePhotoUrl = currentNoteImageUrl;
       if (newNotePhotoUrl != null) {
-        uploadImageToFirebase(Uri.parse(currentNoteImageUrl),
-            (uri) -> addNote(headline, text, place, uri.toString()));
+        Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
+            Uri.parse(currentNoteImageUrl));
+        FirebaseUtils.uploadImageToFirebase(
+            trip,
+            bitmap,
+            (uri) -> addNote(headline, text, place, uri.toString())
+        );
       } else {
         addNote(headline, text, place, newNotePhotoUrl);
       }
