@@ -74,7 +74,6 @@ public class PostEditorFragment extends Fragment {
             Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
                 data.getData());
             FirebaseUtils.uploadImageToFirebase(
-                trip,
                 bitmap,
                 (uri) -> {
                   trip.setMainPhotoUrl(uri.toString());
@@ -256,7 +255,6 @@ public class PostEditorFragment extends Fragment {
         Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
             Uri.parse(currentNoteImageUrl));
         FirebaseUtils.uploadImageToFirebase(
-            trip,
             bitmap,
             (uri) -> addNote(headline, text, place, uri.toString())
         );

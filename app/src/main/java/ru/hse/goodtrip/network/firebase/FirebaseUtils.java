@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import ru.hse.goodtrip.data.UsersRepository;
-import ru.hse.goodtrip.data.model.trips.Trip;
 
 public class FirebaseUtils {
 
@@ -42,18 +41,17 @@ public class FirebaseUtils {
   /**
    * Upload image to Firebase database.
    *
-   * @param trip                      Trip, which image is saving
    * @param bitmap                    Bitmap of photo.
    * @param setImageUrlAfterUploading Consumer, which called in a callback.
    */
-  static public void uploadImageToFirebase(Trip trip, Bitmap bitmap,
+  static public void uploadImageToFirebase(Bitmap bitmap,
       Consumer<Uri> setImageUrlAfterUploading) {
     String filename = Hashing.sha256().hashString(
             UsersRepository.getInstance().user.getDisplayName()
+                + UsersRepository.getInstance().user.getToken()
+                + UsersRepository.getInstance().user.getHandle()
+                + UsersRepository.getInstance().user.hashCode()
                 + UUID.randomUUID()
-                + trip.getTitle()
-                + trip.getTripId()
-                + trip.hashCode()
                 + Arrays.hashCode(bitmap.getNinePatchChunk()), StandardCharsets.UTF_8)
         .toString();
     StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(
