@@ -106,6 +106,13 @@ public class UsersRepository extends AbstractRepository {
     });
   }
 
+  /**
+   * Update photo.
+   *
+   * @param userId User id.
+   * @param uri    Uri of photo.
+   * @param token  Jwt token.
+   */
   public void updatePhoto(int userId, String uri, String token) {
     final ResultHolder<String> resultOfUpdatingPhoto = new ResultHolder<>();
     Call<String> loginServiceCall = loginService.updateUserPhoto(userId, new UrlHandler(uri),

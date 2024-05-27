@@ -8,6 +8,9 @@ import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.navigation.GtNavigationGraphMain;
 import ru.hse.goodtrip.network.NetworkManager;
 
+/**
+ * Main Activity of app.
+ */
 @Getter
 public class MainActivity extends AppCompatActivity {
 

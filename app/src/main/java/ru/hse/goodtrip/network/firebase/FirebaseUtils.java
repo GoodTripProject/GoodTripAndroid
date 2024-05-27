@@ -18,6 +18,9 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import ru.hse.goodtrip.data.UsersRepository;
 
+/**
+ * Utils to work with Firebase.
+ */
 public class FirebaseUtils {
 
 
@@ -28,7 +31,7 @@ public class FirebaseUtils {
    * @param localPhotoUrl   Url of photo at local storage.
    * @return Bitmap of photo.
    */
-  static public Bitmap serializeImage(ContentResolver contentResolver, Uri localPhotoUrl) {
+  public static Bitmap serializeImage(ContentResolver contentResolver, Uri localPhotoUrl) {
     try {
       return MediaStore.Images.Media.getBitmap(contentResolver,
           localPhotoUrl);
@@ -44,7 +47,7 @@ public class FirebaseUtils {
    * @param bitmap                    Bitmap of photo.
    * @param setImageUrlAfterUploading Consumer, which called in a callback.
    */
-  static public void uploadImageToFirebase(Bitmap bitmap,
+  public static void uploadImageToFirebase(Bitmap bitmap,
       Consumer<Uri> setImageUrlAfterUploading) {
     String filename = Hashing.sha256().hashString(
             UsersRepository.getInstance().user.getDisplayName()
