@@ -14,6 +14,7 @@ import ru.hse.goodtrip.network.authentication.LoginService;
 import ru.hse.goodtrip.network.authentication.model.AuthenticationResponse;
 import ru.hse.goodtrip.network.authentication.model.AuthorizationRequest;
 import ru.hse.goodtrip.network.authentication.model.RegisterRequest;
+import ru.hse.goodtrip.network.authentication.model.UrlHandler;
 
 /**
  * Class that requests authentication and user information from the remote data source and maintains
@@ -105,6 +106,16 @@ public class UsersRepository extends AbstractRepository {
     });
   }
 
+  public void updatePhoto(int userId, String uri, String token) {
+    final ResultHolder<String> resultOfUpdatingPhoto = new ResultHolder<>();
+    Call<String> loginServiceCall = loginService.updateUserPhoto(userId, new UrlHandler(uri),
+        getWrappedToken(token));
+    loginServiceCall.enqueue(
+        getCallback(resultOfUpdatingPhoto, "Updating photo failed",
+            (result) -> {
+            }));
+  }
+
   /**
    * Sign up user.
    *
@@ -133,5 +144,7 @@ public class UsersRepository extends AbstractRepository {
         updatingToken(username, password);
       }
     });
+
+
   }
 }

@@ -12,9 +12,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class User implements Serializable {
 
-  private final int id;
-  private final String handle;
-  private final String displayName;
-  private final URL mainPhotoUrl;
-  private final String token;
+  private int id;
+  private String handle;
+  private String displayName;
+  private URL mainPhotoUrl;
+  private String token;
 }
