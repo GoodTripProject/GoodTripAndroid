@@ -1,133 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/profile"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:background="@color/white"
-  tools:context=".ui.profile.ProfileFragment">
-
-  <LinearLayout
+  android:orientation="vertical">
+  <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <de.hdodenhof.circleimageview.CircleImageView
-      android:id="@+id/profileImage"
-      android:layout_gravity="center_horizontal"
-      android:layout_marginTop="50dp"
-      android:layout_width="200dp"
-      android:layout_height="200dp"
-      android:contentDescription="@string/profileImg"
-      android:src="@drawable/baseline_account_circle_24"
-      app:civ_border_color="#9D9D9D"
-      app:civ_border_width="2dp"
-      app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.24"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-      android:padding="20dp"
-      android:layout_gravity="center_horizontal"
-      android:id="@+id/fullnameView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/fullName"
-      android:textSize="40sp"
-      android:textStyle="bold"
-      android:textColor="@color/black" />
-
-    <TextView
-      android:layout_gravity="center_horizontal"
-      android:id="@+id/handleView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/userHandle"
-      android:textSize="25sp"
-      android:textColor="@color/black" />
-
+    android:layout_height="500dp">
     <LinearLayout
-      android:layout_gravity="center"
-      android:id="@+id/linearLayout"
+      android:background="@drawable/gradientbackground"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
+      android:layout_height="410dp"
       android:orientation="vertical">
-
-      <LinearLayout
+      <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:contentDescription="@string/profileImg"
+        android:src="@drawable/baseline_account_circle_24"
+        app:civ_border_color="#9D9D9D"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+      <TextView
+        android:id="@+id/fullnameView"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/friendsButton"
-          android:layout_width="300dp"
-          android:padding="20dp"
-          android:layout_height="wrap_content"
-          android:background="@drawable/button"
-          android:text="@string/Friends"
-          android:textColor="@color/white" />
-        <ImageView
-          android:layout_marginStart="10dp"
-          android:layout_width="40dp"
-          android:layout_gravity="center_vertical"
-          android:layout_height="40dp"
-          android:src="@drawable/baseline_contact_phone_24"/>
-      </LinearLayout>
-
-      <LinearLayout
+        android:text="Maxim Shtein"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:textSize="30sp" />
+      <TextView
+        android:id="@+id/handleView"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/myTripsButton"
-          android:layout_width="300dp"
-          android:padding="20dp"
-          android:layout_gravity="center_horizontal"
-          android:layout_height="wrap_content"
-          android:background="@drawable/button"
-          android:text="@string/my_trips"
-          android:textColor="@color/white" />
-        <ImageView
-          android:layout_marginStart="10dp"
-          android:layout_gravity="center_vertical"
-          android:layout_width="40dp"
-          android:layout_height="40dp"
-          android:src="@drawable/ic_map"/>
-      </LinearLayout>
-      <LinearLayout
+        android:textColor="@color/white"
+        android:text="\@handle"
+        android:textSize="20sp" />
+      <TextView
+        android:id="@+id/displayName"
+        android:visibility="gone"
+        android:background="@drawable/white_shaped_background"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dp">
-        <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/logoutButton"
-          android:layout_width="300dp"
-          android:padding="20dp"
-          android:layout_gravity="center_horizontal"
-          android:layout_height="wrap_content"
-          android:background="@drawable/google_sign_up_button"
-          android:text="@string/log_out"
-          android:textColor="@color/black" />
-        <ImageView
-          android:layout_marginStart="10dp"
-          android:layout_gravity="center_vertical"
-          android:layout_width="40dp"
-          android:layout_height="40dp"
-          android:src="@drawable/baseline_exit_to_app_24"/>
-      </LinearLayout>
-
+        android:text="Follow"
+        android:padding="15dp"
+        android:textColor="@color/light_orange"
+        android:textStyle="bold"
+        android:textSize="25sp" />
 
     </LinearLayout>
+    <androidx.cardview.widget.CardView
+      app:cardCornerRadius="25dp"
+      app:cardElevation="10dp"
+      android:layout_width="400dp"
+      android:layout_height="120dp"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="350dp">
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3">
+        <LinearLayout
+          android:gravity="center"
+          android:orientation="vertical"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="match_parent">
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trips"
+            android:textSize="25sp" />
+          <TextView
+            android:id="@+id/tripsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="125"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:textColor="@color/light_orange" />
+        </LinearLayout>
+        <LinearLayout
+          android:gravity="center"
+          android:orientation="vertical"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="match_parent">
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Followers"
+            android:textSize="25sp" />
+          <TextView
+            android:id="@+id/followersCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1205"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:textColor="@color/light_orange" />
 
+        </LinearLayout>
+        <LinearLayout
+          android:gravity="center"
+          android:orientation="vertical"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="match_parent">
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Following"
+            android:textSize="25sp" />
+          <TextView
+            android:id="@+id/followingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="360"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:textColor="@color/light_orange" />
+
+        </LinearLayout>
+      </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+  </RelativeLayout>
+
+  <LinearLayout
+    android:layout_gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/myTripsButton"
+      android:layout_width="300dp"
+      android:padding="20dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_height="wrap_content"
+      android:background="@drawable/button"
+      android:text="@string/my_trips"
+      android:textColor="@color/white" />
+    <ImageView
+      android:layout_marginStart="10dp"
+      android:layout_gravity="center_vertical"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:src="@drawable/ic_map"/>
+  </LinearLayout>
+  <LinearLayout
+    android:layout_marginTop="10dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/followingButton"
+      android:layout_width="300dp"
+      android:padding="20dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_height="wrap_content"
+      android:background="@drawable/button"
+      android:text="Following"
+      android:textColor="@color/white" />
+    <ImageView
+      android:layout_marginStart="10dp"
+      android:layout_gravity="center_vertical"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:src="@drawable/baseline_account_circle_24"/>
+  </LinearLayout>
+  <LinearLayout
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="30dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20dp">
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/logoutButton"
+      android:layout_width="300dp"
+      android:padding="20dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_height="wrap_content"
+      android:background="@drawable/google_sign_up_button"
+      android:text="@string/log_out"
+      android:textColor="@color/black" />
+    <ImageView
+      android:layout_marginStart="10dp"
+      android:layout_gravity="center_vertical"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:src="@drawable/baseline_exit_to_app_24"/>
   </LinearLayout>
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
