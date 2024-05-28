@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_marginTop="?attr/actionBarSize"
+  android:padding="16dp">
+
+  <TextView
+    android:id="@+id/tv_search_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Find user"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="20dp" />
+
+  <EditText
+    android:id="@+id/enterHandle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Enter handle"
+    android:inputType="text"
+    android:layout_below="@id/tv_search_title"
+    android:layout_marginBottom="20dp"
+    android:padding="10dp"
+    android:background="@drawable/edit_text_background" />
+
+  <Button
+    android:id="@+id/searchButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Find"
+    android:layout_below="@id/enterHandle"
+    android:background="@drawable/button"
+    android:textColor="@android:color/white"
+    android:padding="10dp" />
+
+</RelativeLayout>
