@@ -24,14 +24,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
+import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.network.trips.model.TripState;
+import ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment;
 
-public class MapsFragment extends Fragment {
+/**
+ * MapsFollowingFragment that displays a map of Following user.
+ */
+public class MapsFollowingFragment extends Fragment {
 
-  MapsViewModel mapsViewModel;
+  private MapsFollowingViewModel mapsFollowingViewModel;
   private final OnMapReadyCallback callback = googleMap -> {
     showTripPaths(googleMap);
     CustomInfoWindowAdapter customInfoWindowAdapter = new CustomInfoWindowAdapter(
@@ -40,6 +45,15 @@ public class MapsFragment extends Fragment {
     googleMap.setOnMarkerClickListener(customInfoWindowAdapter::markerClickListener);
     googleMap.setOnInfoWindowClickListener(customInfoWindowAdapter::infoWindowClickListener);
   };
+  private User user;
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    ((MainActivity) requireActivity()).getSupportActionBar().show();
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+  }
 
   @Nullable
   @Override
@@ -56,15 +70,20 @@ public class MapsFragment extends Fragment {
     if (mapFragment != null) {
       mapFragment.getMapAsync(callback);
     }
+    mapsFollowingViewModel = new ViewModelProvider(this).get(MapsFollowingViewModel.class);
 
-    mapsViewModel = new ViewModelProvider(this).get(MapsViewModel.class);
+    Bundle args = getArguments();
+    if (args != null) {
+      this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
+      mapsFollowingViewModel.setUser(user);
+    }
   }
 
   private void showTripPaths(GoogleMap googleMap) {
     ExecutorService service = Executors.newSingleThreadExecutor();
     service.submit(() -> {
-      mapsViewModel.refreshMarks();
-      for (Trip trip : mapsViewModel.getMarks()) {
+      mapsFollowingViewModel.refreshMarks();
+      for (Trip trip : mapsFollowingViewModel.getMarks()) {
         if (!trip.getTripState().equals(TripState.PUBLISHED)) {
           continue;
         }

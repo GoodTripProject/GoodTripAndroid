@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -13,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 public class Utils {
 
   /**
-   * Load image into imageView by URL and load defaultImageId if errors occurred
+   * Load image into imageView by URL and load defaultImageId if errors occurred.
    *
    * @param imageView      where photo should be displayed
    * @param photoUrl       photo url
@@ -33,7 +34,7 @@ public class Utils {
   }
 
   /**
-   * Load cropped image into imageView by URL and load defaultImageId if errors occurred
+   * Load cropped image into imageView by URL and load defaultImageId if errors occurred.
    *
    * @param imageView      where photo should be displayed
    * @param photoUrl       photo url
@@ -55,7 +56,7 @@ public class Utils {
 
 
   /**
-   * Load image into imageView by URL and nothing if error occurred
+   * Load image into imageView by URL and nothing if error occurred.
    *
    * @param imageView where photo should be displayed
    * @param photoUrl  photo url
@@ -64,6 +65,22 @@ public class Utils {
     if (photoUrl != null && !photoUrl.trim().isEmpty()) {
       Glide.with(imageView.getContext())
           .load(Uri.parse(photoUrl))
+          .into(imageView);
+    } else {
+      Glide.with(imageView.getContext()).clear(imageView);
+    }
+  }
+
+  /**
+   * Load image into imageView by URL and nothing if error occurred.
+   *
+   * @param imageView where photo should be displayed
+   * @param photoUrl  photo url
+   */
+  public static void setImageByUrl(ImageView imageView, @Nullable URL photoUrl) {
+    if (photoUrl != null && !photoUrl.toString().trim().isEmpty()) {
+      Glide.with(imageView.getContext())
+          .load(photoUrl)
           .into(imageView);
     } else {
       Glide.with(imageView.getContext()).clear(imageView);

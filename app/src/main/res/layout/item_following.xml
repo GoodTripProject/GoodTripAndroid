@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  app:cardBackgroundColor="@color/white"
+  app:cardCornerRadius="20dp"
+  android:layout_margin="2dp"
+  app:cardElevation="2dp"
+  android:id="@+id/userCard"
+  app:cardUseCompatPadding="true"
+  android:layout_height="wrap_content">
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:padding="10dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+      <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/profileImg"
+        android:src="@drawable/kazantip"
+        app:civ_border_color="#9D9D9D"
+        app:civ_border_width="2dp" />
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+          android:id="@+id/displayName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Name"
+          android:padding="10dp"
+          android:textSize="17sp"
+          android:textColor="@color/black"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+          android:id="@+id/handle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="\@handle"
+          android:padding="10dp"
+          android:textSize="17sp"
+          android:textColor="@color/black"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      </LinearLayout>
+    </LinearLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
