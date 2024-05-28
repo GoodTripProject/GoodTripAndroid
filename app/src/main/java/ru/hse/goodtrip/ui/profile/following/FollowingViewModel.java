@@ -7,6 +7,9 @@ import lombok.Getter;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 
+/**
+ * FollowingViewModel.
+ */
 public class FollowingViewModel extends ViewModel {
 
   @Getter

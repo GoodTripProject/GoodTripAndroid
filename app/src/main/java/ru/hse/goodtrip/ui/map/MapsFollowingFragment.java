@@ -31,6 +31,9 @@ import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.network.trips.model.TripState;
 import ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment;
 
+/**
+ * MapsFollowingFragment that displays a map of Following user.
+ */
 public class MapsFollowingFragment extends Fragment {
 
   private MapsFollowingViewModel mapsFollowingViewModel;

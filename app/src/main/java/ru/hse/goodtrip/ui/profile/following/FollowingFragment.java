@@ -16,6 +16,9 @@ import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentFollowingBinding;
 import ru.hse.goodtrip.databinding.ItemFollowingBinding;
 
+/**
+ * FollowingFragment that displays a Following profile page.
+ */
 public class FollowingFragment extends Fragment {
 
   private FollowingViewModel followingViewModel;

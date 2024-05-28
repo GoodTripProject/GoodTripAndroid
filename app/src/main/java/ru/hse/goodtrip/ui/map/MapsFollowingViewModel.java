@@ -9,6 +9,9 @@ import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.Trip;
 
+/**
+ * MapsFollowingViewModel.
+ */
 @Getter
 @Setter
 public class MapsFollowingViewModel extends ViewModel {
@@ -20,11 +23,5 @@ public class MapsFollowingViewModel extends ViewModel {
     marks = TripRepository.getInstance().getUserTrips();
 
     // TODO: get trips of user
-//    try {
-//      TripRepository.getInstance().getUserTrips(UsersRepository.getInstance().user.getId(),
-//          UsersRepository.getInstance().user.getToken()).get();
-//    } catch (ExecutionException | InterruptedException ignored) {
-//    }
-//    marks = TripRepository.getInstance().getUserTrips();
   }
 }

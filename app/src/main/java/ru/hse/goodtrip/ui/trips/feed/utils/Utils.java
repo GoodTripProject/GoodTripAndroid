@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import retrofit2.http.Url;
 
 /**
  * Utils class.
@@ -15,7 +14,7 @@ import retrofit2.http.Url;
 public class Utils {
 
   /**
-   * Load image into imageView by URL and load defaultImageId if errors occurred
+   * Load image into imageView by URL and load defaultImageId if errors occurred.
    *
    * @param imageView      where photo should be displayed
    * @param photoUrl       photo url
@@ -35,7 +34,7 @@ public class Utils {
   }
 
   /**
-   * Load cropped image into imageView by URL and load defaultImageId if errors occurred
+   * Load cropped image into imageView by URL and load defaultImageId if errors occurred.
    *
    * @param imageView      where photo should be displayed
    * @param photoUrl       photo url
@@ -57,7 +56,7 @@ public class Utils {
 
 
   /**
-   * Load image into imageView by URL and nothing if error occurred
+   * Load image into imageView by URL and nothing if error occurred.
    *
    * @param imageView where photo should be displayed
    * @param photoUrl  photo url
@@ -73,7 +72,7 @@ public class Utils {
   }
 
   /**
-   * Load image into imageView by URL and nothing if error occurred
+   * Load image into imageView by URL and nothing if error occurred.
    *
    * @param imageView where photo should be displayed
    * @param photoUrl  photo url
