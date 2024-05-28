@@ -22,6 +22,10 @@
     android:id="@+id/navigation_profile_following"
     android:name="ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment" />
   <fragment
+    tools:layout="@layout/fragment_add_following"
+    android:id="@+id/navigation_add_following"
+    android:name="ru.hse.goodtrip.ui.profile.following.AddFollowingFragment" />
+  <fragment
     tools:layout="@layout/fragment_maps_following"
     android:id="@+id/navigation_map_following"
     android:name="ru.hse.goodtrip.ui.map.MapsFollowingFragment" />

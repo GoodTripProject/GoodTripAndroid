@@ -19,6 +19,13 @@
       android:gravity="center"
       android:orientation="vertical"
       android:layout_height="wrap_content">
+      <Button
+        android:id="@+id/addFollowingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="Find user"
+        />
 
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>

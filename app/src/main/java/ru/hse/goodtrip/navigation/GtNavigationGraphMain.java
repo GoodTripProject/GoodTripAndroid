@@ -91,6 +91,10 @@ public class GtNavigationGraphMain extends NavHostFragment {
     activity.getNavigationGraph().navigateToPostPage(trip);
   }
 
+  public void navigateToAddFollowing() {
+    navController.navigate(R.id.navigation_add_following);
+  }
+
   public void navigateToMyTrips() {
     navController.navigate(R.id.navigation_my_trips);
   }

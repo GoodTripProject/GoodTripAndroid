@@ -43,6 +43,12 @@ public class FollowingFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     renderFollowing();
+    setButtonClickListeners();
+  }
+
+  private void setButtonClickListeners() {
+    binding.addFollowingButton.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToAddFollowing());
   }
 
   private void renderFollowing() {
