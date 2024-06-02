@@ -36,4 +36,7 @@ public interface CommunicationService {
   Call<List<User>> getSubscriptions(@Query("userId") int userId,
       @Header("Authorization") String authorization);
 
+  @GET("/communication/user")
+  Call<User> getUserByHandle(@Query("handle") String handle,
+      @Header("Authorization") String authorization);
 }

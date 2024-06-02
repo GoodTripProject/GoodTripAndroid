@@ -122,6 +122,15 @@ public class CommunicationRepository extends AbstractRepository {
     return getCompletableFuture(resultHolder);
   }
 
+  public CompletableFuture<Result<User>> getUserByHandle(String handle, String token){
+    ResultHolder<User> resultHolder = new ResultHolder<>();
+    Call<User> getUserByHandle = communicationService.getUserByHandle(handle,
+        getWrappedToken(token));
+    getUserByHandle.enqueue(getCallback(resultHolder,
+        "Cannot get user by handle", (result) -> {
+        }));
+    return getCompletableFuture(resultHolder);
+  }
   public static CommunicationRepository getInstance() {
     if (instance == null) {
       instance = new CommunicationRepository();
