@@ -1,14 +1,34 @@
 package ru.hse.goodtrip.ui.profile.following;
 
 import androidx.lifecycle.ViewModel;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.function.Consumer;
+import ru.hse.goodtrip.data.CommunicationRepository;
 import ru.hse.goodtrip.data.UsersRepository;
+import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 
 public class AddFollowingViewModel extends ViewModel {
 
-  public User findUser(String handleToFind) {
-    // TODO
+  CommunicationRepository communicationRepository = CommunicationRepository.getInstance();
 
-    return UsersRepository.getInstance().getLoggedUser();
+  public void findUser(String handleToFind, Consumer<User> workAfter) {
+    communicationRepository.getUserByHandle(handleToFind,
+            UsersRepository.getInstance().user.getHandle())
+        .thenApplyAsync((result) -> {
+          if (result.isSuccess()) {
+            ru.hse.goodtrip.network.social.entities.User networkUser =
+                ((Result.Success<ru.hse.goodtrip.network.social.entities.User>) result).getData();
+            try {
+              return new User(networkUser.getId(), networkUser.getHandle(),
+                  networkUser.getName() + " " + networkUser.getSurname(),
+                  new URL(networkUser.getImageLink()), "");
+            } catch (MalformedURLException ignored) {
+            }
+          }
+          return null;
+        })
+        .thenAccept(workAfter);
   }
 }

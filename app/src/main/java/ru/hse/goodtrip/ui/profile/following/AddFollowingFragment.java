@@ -46,16 +46,20 @@ public class AddFollowingFragment extends Fragment {
   private void setButtonClickListener() {
     binding.searchButton.setOnClickListener(v -> {
       String handleToFind = binding.enterHandle.getText().toString();
-      User user = addFollowingViewModel.findUser(handleToFind);
-      if (user != null) {
-        ((MainActivity) requireActivity()).getNavigationGraph()
-            .navigateToFollowingProfilePage(user);
-      } else {
-        Toast.makeText(
-            getContext().getApplicationContext(),
-            "User was not found: ".concat(handleToFind),
-            Toast.LENGTH_LONG).show();
-      }
+      addFollowingViewModel.findUser(handleToFind, (user) ->
+          handleFindedUser(user, handleToFind));
     });
+  }
+
+  private void handleFindedUser(User user, String handleToFind) {
+    if (user != null) {
+      ((MainActivity) requireActivity()).getNavigationGraph()
+          .navigateToFollowingProfilePage(user);
+    } else {
+      Toast.makeText(
+          getContext().getApplicationContext(),
+          "User was not found: ".concat(handleToFind),
+          Toast.LENGTH_LONG).show();
+    }
   }
 }
