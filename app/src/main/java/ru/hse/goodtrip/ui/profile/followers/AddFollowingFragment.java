@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentAddFollowingBinding;
@@ -23,9 +22,9 @@ public class AddFollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().show();
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
   }
 
   @Override
@@ -58,7 +57,7 @@ public class AddFollowingFragment extends Fragment {
           .navigateToFollowingProfilePage(user);
     } else {
       Toast.makeText(
-          requireContext().getApplicationContext(),
+          getContext().getApplicationContext(),
           "User was not found: ".concat(handleToFind),
           Toast.LENGTH_LONG).show();
     }
