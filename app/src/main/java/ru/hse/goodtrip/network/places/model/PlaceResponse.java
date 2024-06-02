@@ -17,7 +17,7 @@ public class PlaceResponse {
 
   private double lng;
 
-  private String icon;
+  private String photo;
 
   private int rating;
 
