@@ -3,6 +3,8 @@ package ru.hse.goodtrip.ui.profile.following;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentFollowingBinding;
@@ -27,9 +30,9 @@ public class FollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
   }
 
   @Override
@@ -45,13 +48,18 @@ public class FollowingFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    renderFollowing();
+    updateFollowing();
     setButtonClickListeners();
   }
 
   private void setButtonClickListeners() {
     binding.addFollowingButton.setOnClickListener(
         v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToAddFollowing());
+  }
+
+  private void updateFollowing() {
+    followingViewModel.updateUsers(
+        () -> new Handler(Looper.getMainLooper()).post(this::renderFollowing));
   }
 
   private void renderFollowing() {
@@ -61,7 +69,7 @@ public class FollowingFragment extends Fragment {
           getLayoutInflater());
       followingBinding.displayName.setText(user.getDisplayName());
       followingBinding.handle.setText(user.getHandle());
-      setImageByUrl(followingBinding.profileImage, user.getMainPhotoUrl());
+      setImageByUrl(followingBinding.profileImage, user.getMainPhotoUrl().toString());
 
       followingBinding.userCard.setOnClickListener(
           v -> ((MainActivity) requireActivity()).getNavigationGraph()
