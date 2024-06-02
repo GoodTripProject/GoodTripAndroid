@@ -45,7 +45,7 @@ public class PlacesRepository extends AbstractRepository {
     Call<Object> getTripCall = placesService.getCoordinates(
         placeName, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder,
-        "Note with this id not exists", (result) -> {
+        "Cannot get place coordinate", (result) -> {
         }));
     return getCompletableFuture(resultHolder)
         .thenApplyAsync(result -> {
@@ -79,7 +79,7 @@ public class PlacesRepository extends AbstractRepository {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
         new PlaceRequest(lng, lat, radius, rankBy, type), getWrappedToken(token));
-    getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
+    getTripCall.enqueue(getCallback(resultHolder, "Cannot get places nearby", (result) -> {
     }));
     return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
       if (result.isSuccess()) {

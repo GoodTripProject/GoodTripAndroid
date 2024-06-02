@@ -147,19 +147,15 @@ public class TripRepository extends AbstractRepository {
       List<Note> noteResponses) {
     List<ru.hse.goodtrip.data.model.trips.Note> notes = new ArrayList<>();
     for (Note noteResponse : noteResponses) {
-      getCoordinates(noteResponse.getGooglePlaceId()).thenAcceptAsync(point -> {
-        synchronized (notes) {
-          notes.add(
-              new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(),
-                  noteResponse.getText(),
-                  noteResponse.getPhotoUrl(),
-                  new Country(noteResponse.getGooglePlaceId(),
-                      new Coordinates(point.getX(), point.getY())
-                  )
+      notes.add(
+          new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(),
+              noteResponse.getText(),
+              noteResponse.getPhotoUrl(),
+              new Country(noteResponse.getGooglePlaceId(),
+                  new Coordinates(0, 0)
               )
-          );
-        }
-      });
+          )
+      );
     }
     return notes;
   }
