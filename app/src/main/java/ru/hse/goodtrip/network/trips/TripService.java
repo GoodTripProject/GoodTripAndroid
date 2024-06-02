@@ -58,7 +58,7 @@ public interface TripService {
   Call<String> updateTrip(@Query("userId") Integer userId, @Body Trip trip,
       @Header("Authorization") String authorization);
 
-  @GET("/trip/get_authors_trips")
+  @GET("/trip/authors_trips")
   Call<List<TripView>> getAuthorsTrips(@Query("userId") Integer userId,
       @Query("start") Integer start, @Header("Authorization") String authorization);
 
