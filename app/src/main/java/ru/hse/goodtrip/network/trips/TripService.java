@@ -62,4 +62,7 @@ public interface TripService {
   Call<List<TripView>> getAuthorsTrips(@Query("userId") Integer userId,
       @Query("start") Integer start, @Header("Authorization") String authorization);
 
+  @GET("/trip/author_trips")
+  Call<List<Trip>> getAuthorTrips(@Query("handle") String handle,
+      @Header("Authorization") String authorization);
 }
