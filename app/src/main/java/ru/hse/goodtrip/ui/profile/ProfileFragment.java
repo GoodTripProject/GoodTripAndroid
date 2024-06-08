@@ -28,6 +28,7 @@ import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileBinding;
 import ru.hse.goodtrip.network.firebase.FirebaseUtils;
 import ru.hse.goodtrip.room.RoomImplementation;
+import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 
 public class ProfileFragment extends Fragment {
 
@@ -92,8 +93,13 @@ public class ProfileFragment extends Fragment {
   }
 
   private void setButtonClickListeners() {
-    binding.followingButton.setOnClickListener(
-        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToFollowing());
+    binding.showFollowing.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph()
+            .navigateToFollowing(PAGE_TYPE.FOLLOWING));
+
+    binding.showFollowers.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph()
+            .navigateToFollowing(PAGE_TYPE.FOLLOWERS));
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());

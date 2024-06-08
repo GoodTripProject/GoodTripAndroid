@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.profile.following;
+package ru.hse.goodtrip.ui.profile.followers;
 
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
@@ -7,20 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileFollowingBinding;
 
 public class ProfileFollowingFragment extends Fragment {
 
   public final static String USER_ARG = "user";
+  public final static String PAGE_TYPE_ARG = "page_type";
+
   private ProfileFollowingViewModel profileFollowingViewModel;
   private FragmentProfileFollowingBinding binding;
   private User user;
+
+  private boolean isFollowing;
 
   @Override
   public void onResume() {
@@ -47,14 +53,57 @@ public class ProfileFollowingFragment extends Fragment {
       this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
       profileFollowingViewModel.setUser(user);
     }
+
+    isFollowing = UsersRepository.getInstance().getFollowing().contains(user);
+
+    setupFollowButton();
     setUserInfo();
     setButtonClickListeners();
   }
 
+  private void setupFollowButton() {
+    TextView followButton = binding.follow;
+    TextView followedButton = binding.followed;
+
+    followButton.setOnClickListener(this::followUser);
+    followedButton.setOnClickListener(this::unfollowUser);
+
+    switchFollow(this.isFollowing);
+  }
+
+  private void switchFollow(boolean isFollowing) {
+    this.isFollowing = isFollowing;
+
+    TextView followButton = binding.follow;
+    TextView followedButton = binding.followed;
+
+    if (isFollowing) {
+      followButton.setVisibility(View.GONE);
+      followedButton.setVisibility(View.VISIBLE);
+    } else {
+      followButton.setVisibility(View.VISIBLE);
+      followedButton.setVisibility(View.GONE);
+    }
+  }
+
+  private void followUser(View v) {
+    switchFollow(true);
+
+    // some follow logic (user in field) goes here
+  }
+
+  private void unfollowUser(View v) {
+    switchFollow(false);
+
+    // some unfollow logic (user in field) goes here
+  }
+
   private void setButtonClickListeners() {
     final Button showMapButton = binding.showMapButton;
+
     showMapButton.setOnClickListener(
-        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToFollowingMap(user));
+        v -> ((MainActivity) requireActivity()).getNavigationGraph()
+            .navigateToFollowingMap(user));
   }
 
   private void setUserInfo() {

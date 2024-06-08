@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.profile.following;
+package ru.hse.goodtrip.ui.profile.followers;
 
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
@@ -17,5 +17,16 @@ public class FollowingViewModel extends ViewModel {
 
   FollowingViewModel() {
     users.add(UsersRepository.getInstance().getLoggedUser());
+  }
+
+  public List<User> getFollowers() {
+//// TODO: SHOULD BE: List<User> followers = UsersRepository.getInstance().getFollowers();
+    return users;
+  }
+
+  public List<User> getFollowing() {
+    //// TODO: SHOULD BE: List<User> followers = UsersRepository.getInstance().getFollowing();
+
+    return users;
   }
 }
