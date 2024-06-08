@@ -4,7 +4,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  tools:context=".ui.profile.following.FollowingFragment">
+  tools:context=".ui.profile.followers.FollowingFragment">
   <androidx.core.widget.NestedScrollView
     android:layout_marginTop="?attr/actionBarSize"
     app:layout_constraintStart_toStartOf="parent"

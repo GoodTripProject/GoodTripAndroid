@@ -96,6 +96,7 @@
             android:textColor="@color/light_orange" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/showFollowers"
           android:gravity="center"
           android:orientation="vertical"
           android:layout_width="0dp"
@@ -118,6 +119,7 @@
 
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/showFollowing"
           android:gravity="center"
           android:orientation="vertical"
           android:layout_width="0dp"
@@ -163,30 +165,9 @@
       android:layout_gravity="center_vertical"
       android:layout_width="40dp"
       android:layout_height="40dp"
-      android:src="@drawable/ic_map"/>
+      android:src="@drawable/ic_map" />
   </LinearLayout>
-  <LinearLayout
-    android:layout_marginTop="10dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/followingButton"
-      android:layout_width="300dp"
-      android:padding="20dp"
-      android:layout_gravity="center_horizontal"
-      android:layout_height="wrap_content"
-      android:background="@drawable/button"
-      android:text="Following"
-      android:textColor="@color/white" />
-    <ImageView
-      android:layout_marginStart="10dp"
-      android:layout_gravity="center_vertical"
-      android:layout_width="40dp"
-      android:layout_height="40dp"
-      android:src="@drawable/baseline_account_circle_24"/>
-  </LinearLayout>
+
   <LinearLayout
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="30dp"
@@ -208,7 +189,7 @@
       android:layout_gravity="center_vertical"
       android:layout_width="40dp"
       android:layout_height="40dp"
-      android:src="@drawable/baseline_exit_to_app_24"/>
+      android:src="@drawable/baseline_exit_to_app_24" />
   </LinearLayout>
 
 </LinearLayout>
