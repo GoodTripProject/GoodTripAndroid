@@ -50,12 +50,14 @@ public class RoomImplementationTest {
   public void testSetLoggedUser() {
     String name = "testUser";
     String password = "testPassword";
+    UserEntity testUser = TestUtil.createUser(name, password);
+
     roomImplementation.setLoggedUser(name, password);
 
     UserEntity user = roomImplementation.getLoggedUser();
     assertNotNull(user);
-    assertEquals(name, user.name);
-    assertEquals(password, user.password);
+    assertEquals(user.name, testUser.name);
+    assertEquals(user.password, testUser.password);
 
     assertTrue(roomImplementation.isUserLoggedIn());
   }

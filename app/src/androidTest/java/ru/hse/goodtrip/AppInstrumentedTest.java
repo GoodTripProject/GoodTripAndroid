@@ -9,11 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class AppInstrumentedTest {
 
   @Test
   public void useAppContext() {
-    // Context of the app under test.
     Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     assertEquals("ru.hse.goodtrip", appContext.getPackageName());
   }
