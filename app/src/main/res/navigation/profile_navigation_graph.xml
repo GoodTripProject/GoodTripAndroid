@@ -16,15 +16,15 @@
   <fragment
     tools:layout="@layout/fragment_following"
     android:id="@+id/navigation_following"
-    android:name="ru.hse.goodtrip.ui.profile.following.FollowingFragment" />
+    android:name="ru.hse.goodtrip.ui.profile.followers.FollowingFragment" />
   <fragment
     tools:layout="@layout/fragment_profile_following"
     android:id="@+id/navigation_profile_following"
-    android:name="ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment" />
+    android:name="ru.hse.goodtrip.ui.profile.followers.ProfileFollowingFragment" />
   <fragment
     tools:layout="@layout/fragment_add_following"
     android:id="@+id/navigation_add_following"
-    android:name="ru.hse.goodtrip.ui.profile.following.AddFollowingFragment" />
+    android:name="ru.hse.goodtrip.ui.profile.followers.AddFollowingFragment" />
   <fragment
     tools:layout="@layout/fragment_maps_following"
     android:id="@+id/navigation_map_following"

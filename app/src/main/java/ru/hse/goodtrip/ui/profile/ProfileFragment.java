@@ -28,6 +28,7 @@ import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileBinding;
 import ru.hse.goodtrip.network.firebase.FirebaseUtils;
 import ru.hse.goodtrip.room.RoomImplementation;
+import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 
 public class ProfileFragment extends Fragment {
 
@@ -92,8 +93,17 @@ public class ProfileFragment extends Fragment {
   }
 
   private void setButtonClickListeners() {
-    binding.followingButton.setOnClickListener(
-        v -> ((MainActivity) requireActivity()).getNavigationGraph().navigateToFollowing());
+    binding.showFollowing.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph()
+            .navigateToFollowing(UsersRepository.getInstance().getLoggedUser(),
+                UsersRepository.getInstance().getFollowing(),
+                PAGE_TYPE.FOLLOWING)); // TODO: STEP ONE
+
+    binding.showFollowers.setOnClickListener(
+        v -> ((MainActivity) requireActivity()).getNavigationGraph()
+            .navigateToFollowing(UsersRepository.getInstance().getLoggedUser(),
+                UsersRepository.getInstance().getFollowers(),
+                PAGE_TYPE.FOLLOWERS)); // TODO: STEP ONE
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());
@@ -123,6 +133,9 @@ public class ProfileFragment extends Fragment {
     }
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
+
+    binding.followersCount.setText(UsersRepository.getInstance().getFollowers().size());
+    binding.followingCount.setText(UsersRepository.getInstance().getFollowing().size());
   }
 
   @Override
