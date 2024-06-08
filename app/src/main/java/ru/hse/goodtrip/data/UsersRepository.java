@@ -1,10 +1,12 @@
 package ru.hse.goodtrip.data;
 
 import android.net.Uri;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import lombok.Getter;
 import retrofit2.Call;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.ResultHolder;
@@ -28,10 +30,15 @@ public class UsersRepository extends AbstractRepository {
 
   public User user = null;
 
+  @Getter
+  private ArrayList<User> followers = new ArrayList<>(); // TODO
+
+  @Getter
+  private ArrayList<User> following = new ArrayList<>(); // TODO
+
   private UsersRepository() {
     super();
     this.loginService = NetworkManager.getInstance().getInstanceOfService(LoginService.class);
-
   }
 
   /**
