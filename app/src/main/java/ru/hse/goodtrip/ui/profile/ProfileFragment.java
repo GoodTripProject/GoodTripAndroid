@@ -95,11 +95,15 @@ public class ProfileFragment extends Fragment {
   private void setButtonClickListeners() {
     binding.showFollowing.setOnClickListener(
         v -> ((MainActivity) requireActivity()).getNavigationGraph()
-            .navigateToFollowing(PAGE_TYPE.FOLLOWING));
+            .navigateToFollowing(UsersRepository.getInstance().getLoggedUser(),
+                UsersRepository.getInstance().getFollowing(),
+                PAGE_TYPE.FOLLOWING)); // TODO: STEP ONE
 
     binding.showFollowers.setOnClickListener(
         v -> ((MainActivity) requireActivity()).getNavigationGraph()
-            .navigateToFollowing(PAGE_TYPE.FOLLOWERS));
+            .navigateToFollowing(UsersRepository.getInstance().getLoggedUser(),
+                UsersRepository.getInstance().getFollowers(),
+                PAGE_TYPE.FOLLOWERS)); // TODO: STEP ONE
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());
@@ -129,6 +133,9 @@ public class ProfileFragment extends Fragment {
     }
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
+
+    binding.followersCount.setText(UsersRepository.getInstance().getFollowers().size());
+    binding.followingCount.setText(UsersRepository.getInstance().getFollowing().size());
   }
 
   @Override
