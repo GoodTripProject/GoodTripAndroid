@@ -1,7 +1,6 @@
 package ru.hse.goodtrip.ui.trips.feed;
 
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDateFormatted;
-import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrlCropped;
 
