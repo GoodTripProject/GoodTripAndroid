@@ -20,6 +20,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
+import org.mindrot.jbcrypt.BCrypt;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
@@ -47,8 +48,10 @@ public class AuthViewModel extends ViewModel {
    * @param password password
    */
   public void login(String username, String password) {
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.login(username,
-        password);
+        hashedPassword);
     runExecutorToWaitResult(result,
         () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
   }
@@ -83,8 +86,10 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.signUp(username,
-        password, handle,
+        hashedPassword, handle,
         surname, name);
     runExecutorToWaitResult(result,
         () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
