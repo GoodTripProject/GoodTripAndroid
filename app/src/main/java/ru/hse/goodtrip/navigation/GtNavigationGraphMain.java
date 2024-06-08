@@ -7,6 +7,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import java.util.ArrayList;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.User;
@@ -103,8 +104,10 @@ public class GtNavigationGraphMain extends NavHostFragment {
   /**
    * Opens FollowingFragment.
    */
-  public void navigateToFollowing(PAGE_TYPE pageType) {
+  public void navigateToFollowing(User user, ArrayList<User> follows, PAGE_TYPE pageType) {
     Bundle bundle = new Bundle();
+    bundle.putSerializable(ProfileFollowingFragment.USER_ARG, user);
+    bundle.putSerializable(ProfileFollowingFragment.FOLLOWS_ARG, follows);
     bundle.putSerializable(ProfileFollowingFragment.PAGE_TYPE_ARG, pageType);
 
     navController.navigate(R.id.navigation_following, bundle);

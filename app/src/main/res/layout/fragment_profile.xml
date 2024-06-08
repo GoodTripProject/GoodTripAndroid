@@ -73,28 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="3">
-        <LinearLayout
-          android:gravity="center"
-          android:orientation="vertical"
-          android:layout_width="0dp"
-          android:layout_weight="1"
-          android:layout_height="match_parent">
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trips"
-            android:textSize="25sp" />
-          <TextView
-            android:id="@+id/tripsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="125"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:paddingTop="10dp"
-            android:textColor="@color/light_orange" />
-        </LinearLayout>
+        android:weightSum="2">
         <LinearLayout
           android:id="@+id/showFollowers"
           android:gravity="center"
