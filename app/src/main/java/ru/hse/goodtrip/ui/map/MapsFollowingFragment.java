@@ -29,7 +29,7 @@ import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.network.trips.model.TripState;
-import ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment;
+import ru.hse.goodtrip.ui.profile.followers.ProfileFollowingFragment;
 
 /**
  * MapsFollowingFragment that displays a map of Following user.

@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.profile.following;
+package ru.hse.goodtrip.ui.profile.followers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.profile.following;
+package ru.hse.goodtrip.ui.profile.followers;
 
 import androidx.lifecycle.ViewModel;
 import java.net.MalformedURLException;
