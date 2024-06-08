@@ -12,7 +12,8 @@ import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
-import ru.hse.goodtrip.ui.profile.following.ProfileFollowingFragment;
+import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
+import ru.hse.goodtrip.ui.profile.followers.ProfileFollowingFragment;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
 
 /*
@@ -102,8 +103,11 @@ public class GtNavigationGraphMain extends NavHostFragment {
   /**
    * Opens FollowingFragment.
    */
-  public void navigateToFollowing() {
-    navController.navigate(R.id.navigation_following);
+  public void navigateToFollowing(PAGE_TYPE pageType) {
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(ProfileFollowingFragment.PAGE_TYPE_ARG, pageType);
+
+    navController.navigate(R.id.navigation_following, bundle);
   }
 
   /**
