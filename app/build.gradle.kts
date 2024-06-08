@@ -91,6 +91,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.10.0")
     implementation("com.squareup.retrofit2:converter-jackson:2.1.0")
     implementation("org.locationtech.jts:jts-core:1.19.0")
+    implementation("org.mindrot:jbcrypt:0.4")
     implementation("org.postgis:postgis-jdbc:1.3.3") {
         exclude(group = "org.postgis", module = "postgis-stubs")
     }
