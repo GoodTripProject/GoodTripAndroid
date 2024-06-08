@@ -85,11 +85,6 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
     binding.titleText.setText(trip.getTitle());
     binding.profileNameText.setText(trip.getDisplayName());
-    binding.tripDuration.setText(
-        getDuration(
-            trip.getDepartureDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            trip.getArrivalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            dateFormat));
     binding.dateOfPublication.setText(getDateFormatted(trip.getPublicationTimestamp().toInstant()
         .atZone(ZoneId.systemDefault()).toLocalDate(), dateFormat));
     binding.countriesText.setText(countries);
@@ -122,8 +117,6 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
   @Override
   public void onClick(View v) {
-    // TODO: what if `v` is not post?
-
     TripView postClicked = (TripView) v.getTag();
 
     MainActivity activity = (MainActivity) v.getContext();
