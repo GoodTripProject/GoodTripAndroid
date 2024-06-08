@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileFollowingBinding;
 import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
@@ -56,9 +57,9 @@ public class ProfileFollowingFragment extends Fragment {
       this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
       profileFollowingViewModel.setUser(user);
     }
+    isFollowing = UsersRepository.getInstance().getFollowing().contains(user);
 
     profileFollowingViewModel.refreshFollow();
-    isFollowing = profileFollowingViewModel.getFollowing().contains(user);
 
     setupFollowButton();
     setUserInfo();
