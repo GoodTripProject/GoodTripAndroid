@@ -4,7 +4,6 @@ import static ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE.F
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import java.util.ArrayList;
 import java.util.List;
 import ru.hse.goodtrip.MainActivity;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentFollowingBinding;
 import ru.hse.goodtrip.databinding.ItemFollowingBinding;
@@ -27,6 +28,7 @@ public class FollowingFragment extends Fragment {
   private FollowingViewModel followingViewModel;
   private FragmentFollowingBinding binding;
   private PAGE_TYPE pageType;
+  private User user;
 
   @Override
   public void onResume() {
@@ -52,9 +54,9 @@ public class FollowingFragment extends Fragment {
     Bundle args = getArguments();
     if (args != null) {
       this.pageType = (PAGE_TYPE) args.get(ProfileFollowingFragment.PAGE_TYPE_ARG);
-      if (pageType != null) {
-        Log.d("ASD", pageType.toString());
-      }
+      this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
+      followingViewModel.setUsers((ArrayList<User>) args.get(ProfileFollowingFragment.FOLLOWS_ARG));
+      followingViewModel.setUser(user);
     }
 
     renderFollowing();
@@ -62,7 +64,7 @@ public class FollowingFragment extends Fragment {
   }
 
   private void setButtonClickListeners() {
-    if (pageType == FOLLOWING) {
+    if (pageType == FOLLOWING && user == UsersRepository.getInstance().getLoggedUser()) {
       binding.addFollowingButton.setVisibility(View.VISIBLE);
 
       binding.addFollowingButton.setOnClickListener(
@@ -75,23 +77,18 @@ public class FollowingFragment extends Fragment {
   private void renderFollowing() {
     LinearLayout users = binding.following;
 
-    List<User> usersToShow;
-    if (pageType == PAGE_TYPE.FOLLOWERS) {
-      usersToShow = followingViewModel.getFollowers();
-    } else {
-      usersToShow = followingViewModel.getFollowing();
-    }
+    List<User> usersToShow = followingViewModel.getUsers();
 
-    for (User user : usersToShow) {
+    for (User follow : usersToShow) {
       ItemFollowingBinding followingBinding = ItemFollowingBinding.inflate(
           getLayoutInflater());
-      followingBinding.displayName.setText(user.getDisplayName());
-      followingBinding.handle.setText(user.getHandle());
-      setImageByUrl(followingBinding.profileImage, user.getMainPhotoUrl());
+      followingBinding.displayName.setText(follow.getDisplayName());
+      followingBinding.handle.setText(follow.getHandle());
+      setImageByUrl(followingBinding.profileImage, follow.getMainPhotoUrl());
 
       followingBinding.userCard.setOnClickListener(
           v -> ((MainActivity) requireActivity()).getNavigationGraph()
-              .navigateToFollowingProfilePage(user));
+              .navigateToFollowingProfilePage(follow)); // TODO: STEP TWO
 
       users.addView(followingBinding.getRoot());
     }
