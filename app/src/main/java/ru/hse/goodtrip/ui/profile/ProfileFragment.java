@@ -34,6 +34,7 @@ import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 public class ProfileFragment extends Fragment {
 
   UsersRepository repository = UsersRepository.getInstance();
+  @SuppressWarnings("FieldCanBeLocal")
   private ProfileViewModel profileViewModel;
   private FragmentProfileBinding binding;
   private User user;
