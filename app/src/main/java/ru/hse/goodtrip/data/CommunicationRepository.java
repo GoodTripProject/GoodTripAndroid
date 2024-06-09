@@ -22,6 +22,11 @@ public class CommunicationRepository extends AbstractRepository {
         .getInstanceOfService(CommunicationService.class);
   }
 
+  /**
+   * Get instance of CommunicationRepository singleton.
+   *
+   * @return returns instance of CommunicationRepository class.
+   */
   public static CommunicationRepository getInstance() {
     if (instance == null) {
       instance = new CommunicationRepository();
@@ -96,6 +101,13 @@ public class CommunicationRepository extends AbstractRepository {
     return getCompletableFuture(resultHolder);
   }
 
+  /**
+   * Get User by handle.
+   *
+   * @param handle handle of requested user.
+   * @param token  Jwt token.
+   * @return Completable Future of network User class
+   */
   public CompletableFuture<Result<User>> getUserByHandle(String handle, String token) {
     ResultHolder<User> resultHolder = new ResultHolder<>();
     Call<User> getUserByHandle = communicationService.getUserByHandle(handle,

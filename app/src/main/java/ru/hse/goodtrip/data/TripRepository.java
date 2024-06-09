@@ -340,6 +340,13 @@ public class TripRepository extends AbstractRepository {
     return getCompletableFuture(resultHolder);
   }
 
+  /**
+   * Gets all published trips of author.
+   *
+   * @param handle Handle of requested user.
+   * @param token  Jwt token.
+   * @return Completable Future of trips of user.
+   */
   public CompletableFuture<Result<List<Trip>>> getAuthorTrips(String handle, String token) {
     ResultHolder<List<Trip>> resultHolder = new ResultHolder<>();
     Call<List<Trip>> updateTripCall = tripService.getAuthorTrips(handle,

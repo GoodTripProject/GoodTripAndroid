@@ -1,8 +1,10 @@
 package ru.hse.goodtrip.ui.map;
 
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +34,9 @@ public class MapsFollowingViewModel extends ViewModel {
         marks = TripRepository.getTripsFromTripResponses(
             ((Result.Success<List<ru.hse.goodtrip.network.trips.model.Trip>>) trips).getData());
       }
-    } catch (ExecutionException | InterruptedException ignored) {
+    } catch (ExecutionException | InterruptedException e) {
+      Log.d(this.getClass().getSimpleName(), Objects.requireNonNull(
+          e.getLocalizedMessage()));
     }
 
   }
