@@ -1,4 +1,4 @@
-package ru.hse.goodtrip.ui.profile.following;
+package ru.hse.goodtrip.ui.profile.followers;
 
 import static ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE.FOLLOWING;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
@@ -28,7 +27,7 @@ import ru.hse.goodtrip.databinding.ItemFollowingBinding;
  */
 public class FollowingFragment extends Fragment {
 
-  private FollowingViewModel followingViewModel;
+  private ru.hse.goodtrip.ui.profile.followers.FollowingViewModel followingViewModel;
   private FragmentFollowingBinding binding;
   private PAGE_TYPE pageType;
   private User user;
@@ -37,8 +36,10 @@ public class FollowingFragment extends Fragment {
   public void onResume() {
     super.onResume();
     Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayShowHomeEnabled(true);
   }
 
   @Override
@@ -52,9 +53,9 @@ public class FollowingFragment extends Fragment {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    updateFollowing();
     Bundle args = getArguments();
     if (args != null) {
       this.pageType = (PAGE_TYPE) args.get(ProfileFollowingFragment.PAGE_TYPE_ARG);
@@ -79,8 +80,13 @@ public class FollowingFragment extends Fragment {
   }
 
   private void updateFollowing() {
-    followingViewModel.updateUsers(
-        () -> new Handler(Looper.getMainLooper()).post(this::renderFollowing));
+    if (pageType.equals(PAGE_TYPE.FOLLOWERS)) {
+      followingViewModel.updateFollowersUsers(
+          () -> new Handler(Looper.getMainLooper()).post(this::renderFollowing));
+    } else {
+      followingViewModel.updateFollowingUsers(
+          () -> new Handler(Looper.getMainLooper()).post(this::renderFollowing));
+    }
   }
 
   private void renderFollowing() {
