@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlaceResponse {
+
   private String name;
 
   private double lat;
 
   private double lng;
 
-  private String icon;
+  private String photo;
 
   private int rating;
 

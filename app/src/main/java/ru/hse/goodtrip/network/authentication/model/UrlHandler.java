@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UrlHandler {
+
   private String url;
 }

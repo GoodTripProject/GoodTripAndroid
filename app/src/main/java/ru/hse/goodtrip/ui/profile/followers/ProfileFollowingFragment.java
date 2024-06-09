@@ -2,7 +2,10 @@ package ru.hse.goodtrip.ui.profile.followers;
 
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
@@ -35,9 +39,11 @@ public class ProfileFollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayShowHomeEnabled(true);
   }
 
   @Override
@@ -58,8 +64,8 @@ public class ProfileFollowingFragment extends Fragment {
       profileFollowingViewModel.setUser(user);
     }
     isFollowing = UsersRepository.getInstance().getFollowing().contains(user);
-
-    profileFollowingViewModel.refreshFollow();
+    Handler handler = Handler.createAsync(Looper.getMainLooper());
+    profileFollowingViewModel.refreshFollow(() -> handler.post(this::setUserInfo));
 
     setupFollowButton();
     setUserInfo();
@@ -93,14 +99,12 @@ public class ProfileFollowingFragment extends Fragment {
 
   private void followUser(View v) {
     switchFollow(true);
-
-    // TODO: some follow logic (user in field) goes here
+    profileFollowingViewModel.follow(user);
   }
 
   private void unfollowUser(View v) {
     switchFollow(false);
-
-    // TODO: some unfollow logic (user in field) goes here
+    profileFollowingViewModel.unfollow(user);
   }
 
   private void setButtonClickListeners() {
@@ -123,6 +127,7 @@ public class ProfileFollowingFragment extends Fragment {
                 PAGE_TYPE.FOLLOWING));
   }
 
+  @SuppressLint("SetTextI18n")
   private void setUserInfo() {
     if (user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
@@ -133,8 +138,10 @@ public class ProfileFollowingFragment extends Fragment {
     binding.displayName.setText(user.getDisplayName());
     binding.handler.setText("@".concat(user.getHandle()));
 
-    binding.followersCount.setText(profileFollowingViewModel.getFollowers().size());
-    binding.followingCount.setText(profileFollowingViewModel.getFollowing().size());
+    binding.followersCount.setText(
+        Integer.toString(profileFollowingViewModel.getFollowers().size()));
+    binding.followingCount.setText(
+        Integer.toString(profileFollowingViewModel.getFollowing().size()));
   }
 
   @Override

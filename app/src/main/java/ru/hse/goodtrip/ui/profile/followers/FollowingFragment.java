@@ -4,6 +4,8 @@ import static ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE.F
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
@@ -25,7 +27,7 @@ import ru.hse.goodtrip.databinding.ItemFollowingBinding;
  */
 public class FollowingFragment extends Fragment {
 
-  private FollowingViewModel followingViewModel;
+  private ru.hse.goodtrip.ui.profile.followers.FollowingViewModel followingViewModel;
   private FragmentFollowingBinding binding;
   private PAGE_TYPE pageType;
   private User user;
@@ -33,9 +35,11 @@ public class FollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayShowHomeEnabled(true);
   }
 
   @Override
@@ -49,6 +53,7 @@ public class FollowingFragment extends Fragment {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     Bundle args = getArguments();
@@ -56,10 +61,9 @@ public class FollowingFragment extends Fragment {
       this.pageType = (PAGE_TYPE) args.get(ProfileFollowingFragment.PAGE_TYPE_ARG);
       this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
       followingViewModel.setUsers((ArrayList<User>) args.get(ProfileFollowingFragment.FOLLOWS_ARG));
-      followingViewModel.setUser(user);
     }
 
-    renderFollowing();
+    updateFollowing();
     setButtonClickListeners();
   }
 
@@ -74,12 +78,20 @@ public class FollowingFragment extends Fragment {
     }
   }
 
+  private void updateFollowing() {
+    if (pageType.equals(PAGE_TYPE.FOLLOWERS)) {
+      followingViewModel.updateFollowersUsers(
+          () -> new Handler(Looper.getMainLooper()).post(this::renderFollowing));
+    } else {
+      followingViewModel.updateFollowingUsers(
+          () -> new Handler(Looper.getMainLooper()).post(this::renderFollowing));
+    }
+  }
+
   private void renderFollowing() {
     LinearLayout users = binding.following;
 
-    List<User> usersToShow = followingViewModel.getUsers();
-
-    for (User follow : usersToShow) {
+    for (User follow : followingViewModel.getUsers()) {
       ItemFollowingBinding followingBinding = ItemFollowingBinding.inflate(
           getLayoutInflater());
       followingBinding.displayName.setText(follow.getDisplayName());

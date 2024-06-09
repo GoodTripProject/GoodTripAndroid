@@ -11,9 +11,9 @@ import ru.hse.goodtrip.network.places.model.PlaceResponse;
 
 public class PlacesViewModel extends ViewModel {
 
+  private final PlacesRepository repository = PlacesRepository.getInstance();
   @Getter
   private List<PlaceResponse> responses = Collections.emptyList();
-  private final PlacesRepository repository = PlacesRepository.getInstance();
 
   /**
    * Update places.

@@ -2,6 +2,7 @@ package ru.hse.goodtrip.ui.profile;
 
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 public class ProfileFragment extends Fragment {
 
   UsersRepository repository = UsersRepository.getInstance();
+  @SuppressWarnings("FieldCanBeLocal")
   private ProfileViewModel profileViewModel;
   private FragmentProfileBinding binding;
   private User user;
@@ -59,7 +61,6 @@ public class ProfileFragment extends Fragment {
               );
             }
             setImageByUrl(binding.profileImage, data.getData().toString());
-            UsersRepository.changeUserMainPhoto(data.getData());
           }
         }
       });
@@ -124,6 +125,7 @@ public class ProfileFragment extends Fragment {
         .setNegativeButton(android.R.string.no, null).show();
   }
 
+  @SuppressLint("SetTextI18n")
   private void setUserInfo() {
     if (user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
@@ -134,8 +136,11 @@ public class ProfileFragment extends Fragment {
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
 
-    binding.followersCount.setText(UsersRepository.getInstance().getFollowers().size());
-    binding.followingCount.setText(UsersRepository.getInstance().getFollowing().size());
+    binding.followersCount.setText(
+        Integer.toString(UsersRepository.getInstance().getFollowers().size()));
+    binding.followingCount.setText(
+        Integer.toString(UsersRepository.getInstance().getFollowing().size()));
+
   }
 
   @Override

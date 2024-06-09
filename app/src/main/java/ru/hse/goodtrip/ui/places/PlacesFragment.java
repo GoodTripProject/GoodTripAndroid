@@ -58,7 +58,7 @@ public class PlacesFragment extends Fragment {
       placeBinding.placeName.setText(place.getName());
       placeBinding.placeRating.setText(String.valueOf(place.getRating()));
       placeBinding.distance.setText("100m"); // TODO
-      setImageByUrl(placeBinding.placePhoto, place.getIcon(), R.drawable.kazantip);
+      setImageByUrl(placeBinding.placePhoto, place.getPhoto(), R.drawable.kazantip);
 
       placesLayout.addView(placeBinding.getRoot());
     }
