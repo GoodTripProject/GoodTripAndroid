@@ -13,6 +13,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlaceRequest {
 
+  private double lng;
+  private double lat;
+  private int radius;
+  @Nullable
+  private String rankBy;
+  @Nullable
+  private PlacesTypes type;
+
   /**
    * Types of places.
    */
@@ -40,13 +48,5 @@ public class PlaceRequest {
     tourist_attraction,
     zoo
   }
-
-  private double lng;
-  private double lat;
-  private int radius;
-  @Nullable
-  private String rankBy;
-  @Nullable
-  private PlacesTypes type;
 }
 

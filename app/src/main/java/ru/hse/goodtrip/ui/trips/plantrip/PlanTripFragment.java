@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.ui.trips.plantrip;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -10,7 +11,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,16 +37,18 @@ public class PlanTripFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayShowHomeEnabled(true);
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).hide();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
   }
 
@@ -68,18 +70,18 @@ public class PlanTripFragment extends Fragment {
     addCountry.setOnClickListener(v -> showAddNewDestinationDialog(dialog));
 
     saveButton.setOnClickListener(this::saveTrip);
-    departureDateEditText.setOnClickListener(v -> selectDate(v, departureDateEditText));
-    arrivalDateEditText.setOnClickListener(v -> selectDate(v, arrivalDateEditText));
+    departureDateEditText.setOnClickListener(v -> selectDate(departureDateEditText));
+    arrivalDateEditText.setOnClickListener(v -> selectDate(arrivalDateEditText));
   }
 
   private void addCountryView(String country, List<String> cities) {
-    View countryView = LayoutInflater.from(requireContext())
+    @SuppressLint("InflateParams") View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
     TextView countryTitle = countryView.findViewById(R.id.titleCountry);
     countryTitle.setText(country);
     LinearLayout citiesLayout = countryView.findViewById(R.id.cities);
     for (String city : cities) {
-      View cityView = LayoutInflater.from(requireContext())
+      @SuppressLint("InflateParams") View cityView = LayoutInflater.from(requireContext())
           .inflate(R.layout.item_city, null);
       ((TextView) cityView.findViewById(R.id.cityelement)).setText(city);
       citiesLayout.addView(cityView);
@@ -112,7 +114,7 @@ public class PlanTripFragment extends Fragment {
     });
 
     addCity.setOnClickListener(v -> {
-      View view = LayoutInflater.from(requireContext())
+      @SuppressLint("InflateParams") View view = LayoutInflater.from(requireContext())
           .inflate(R.layout.item_add_city, null);
       view.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -121,9 +123,7 @@ public class PlanTripFragment extends Fragment {
       citiesLayout.refreshDrawableState();
     });
 
-    closeButton.setOnClickListener(v -> {
-      dialog.dismiss();
-    });
+    closeButton.setOnClickListener(v -> dialog.dismiss());
   }
 
   /**
@@ -142,10 +142,8 @@ public class PlanTripFragment extends Fragment {
 
   /**
    * Shows calendar dialog window for selecting date.
-   *
-   * @param view current view
    */
-  private void selectDate(View view, TextView toSet) {
+  private void selectDate(TextView toSet) {
     DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.DialogTheme,
         (datePicker, year, month, day) -> {
           String date = formatDate(day) + "." + formatDate(month) + "." + year;

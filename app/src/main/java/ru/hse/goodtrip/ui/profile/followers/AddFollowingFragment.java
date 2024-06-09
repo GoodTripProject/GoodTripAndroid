@@ -24,8 +24,10 @@ public class AddFollowingFragment extends Fragment {
   public void onResume() {
     super.onResume();
     Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayHomeAsUpEnabled(true);
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
+        .setDisplayShowHomeEnabled(true);
   }
 
   @Override

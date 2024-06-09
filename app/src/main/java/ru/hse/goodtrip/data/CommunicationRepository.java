@@ -22,35 +22,11 @@ public class CommunicationRepository extends AbstractRepository {
         .getInstanceOfService(CommunicationService.class);
   }
 
-  /**
-   * Set like to the trip.
-   *
-   * @param userId id of user who is setting like.
-   * @param tripId id of trip which liked
-   * @param token  Jwt token.
-   */
-  public void setLike(int userId, int tripId, String token) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> setLikeCall = communicationService.like(userId, tripId, getWrappedToken(token));
-    setLikeCall.enqueue(getCallback(resultHolder,
-        "Cannot set like to this post", (result) -> {
-        }));
-  }
-
-  /**
-   * Delete like from the trip.
-   *
-   * @param userId id of user who is setting like.
-   * @param tripId id of trip which liked
-   * @param token  Jwt token.
-   */
-  public void deleteLike(int userId, int tripId, String token) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteLikeCall = communicationService.delete_like(userId, tripId,
-        getWrappedToken(token));
-    deleteLikeCall.enqueue(getCallback(resultHolder,
-        "Cannot delete like from this post", (result) -> {
-        }));
+  public static CommunicationRepository getInstance() {
+    if (instance == null) {
+      instance = new CommunicationRepository();
+    }
+    return instance;
   }
 
   /**
@@ -59,15 +35,14 @@ public class CommunicationRepository extends AbstractRepository {
    * @param userId id of user.
    * @param handle handle of author who we want to follow
    * @param token  Jwt token.
-   * @return Completable Future of Result String.
    */
-  public CompletableFuture<Result<String>> follow(int userId, String handle, String token) {
+  public void follow(int userId, String handle, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> followCall = communicationService.follow(userId, handle, getWrappedToken(token));
     followCall.enqueue(getCallback(resultHolder,
         "Cannot follow user", (result) -> {
         }));
-    return getCompletableFuture(resultHolder);
+    getCompletableFuture(resultHolder);
   }
 
   /**
@@ -76,16 +51,15 @@ public class CommunicationRepository extends AbstractRepository {
    * @param userId id of user.
    * @param handle handle of author who we want to follow
    * @param token  Jwt token.
-   * @return Completable Future of Result String.
    */
-  public CompletableFuture<Result<String>> unfollow(int userId, String handle, String token) {
+  public void unfollow(int userId, String handle, String token) {
     ResultHolder<String> resultHolder = new ResultHolder<>();
     Call<String> unfollowCall = communicationService.unfollow(userId, handle,
         getWrappedToken(token));
     unfollowCall.enqueue(getCallback(resultHolder,
         "Cannot unfollow user", (result) -> {
         }));
-    return getCompletableFuture(resultHolder);
+    getCompletableFuture(resultHolder);
   }
 
   /**
@@ -122,7 +96,7 @@ public class CommunicationRepository extends AbstractRepository {
     return getCompletableFuture(resultHolder);
   }
 
-  public CompletableFuture<Result<User>> getUserByHandle(String handle, String token){
+  public CompletableFuture<Result<User>> getUserByHandle(String handle, String token) {
     ResultHolder<User> resultHolder = new ResultHolder<>();
     Call<User> getUserByHandle = communicationService.getUserByHandle(handle,
         getWrappedToken(token));
@@ -130,11 +104,5 @@ public class CommunicationRepository extends AbstractRepository {
         "Cannot get user by handle", (result) -> {
         }));
     return getCompletableFuture(resultHolder);
-  }
-  public static CommunicationRepository getInstance() {
-    if (instance == null) {
-      instance = new CommunicationRepository();
-    }
-    return instance;
   }
 }

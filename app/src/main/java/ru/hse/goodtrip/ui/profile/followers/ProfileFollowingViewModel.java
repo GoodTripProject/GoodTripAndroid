@@ -60,6 +60,7 @@ public class ProfileFollowingViewModel extends ViewModel {
     communicationRepository.follow(UsersRepository.getInstance().user.getId(),
         user.getHandle(), UsersRepository.getInstance().user.getToken());
   }
+
   public void unfollow(User user) {
     communicationRepository.unfollow(UsersRepository.getInstance().user.getId(),
         user.getHandle(), UsersRepository.getInstance().user.getToken());

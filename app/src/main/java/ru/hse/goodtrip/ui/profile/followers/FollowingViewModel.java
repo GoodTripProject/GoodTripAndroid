@@ -11,11 +11,6 @@ import lombok.Setter;
 import ru.hse.goodtrip.data.CommunicationRepository;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
-import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 
 /**
@@ -35,7 +30,8 @@ public class FollowingViewModel extends ViewModel {
             this::updateUsers
         ).thenRunAsync(uiUpdate);
   }
-  private void updateUsers(Result<List<ru.hse.goodtrip.network.social.entities.User>> newUsers){
+
+  private void updateUsers(Result<List<ru.hse.goodtrip.network.social.entities.User>> newUsers) {
     if (newUsers.isSuccess()) {
       users = ((Result.Success<List<ru.hse.goodtrip.network.social.entities.User>>) newUsers).getData()
           .stream().map(networkUser -> {
@@ -49,6 +45,7 @@ public class FollowingViewModel extends ViewModel {
           }).collect(Collectors.toList());
     }
   }
+
   public void updateFollowingUsers(Runnable uiUpdate) {
     communicationRepository.getSubscriptions(UsersRepository.getInstance().user.getId(),
             UsersRepository.getInstance().user.getToken())

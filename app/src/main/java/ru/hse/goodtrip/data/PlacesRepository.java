@@ -31,6 +31,17 @@ public class PlacesRepository extends AbstractRepository {
     placesService = NetworkManager.getInstance().getInstanceOfService(PlacesService.class);
   }
 
+  /**
+   * Get instance of PlacesRepository.
+   *
+   * @return instance of PlacesRepository.
+   */
+  public static PlacesRepository getInstance() {
+    if (instance == null) {
+      instance = new PlacesRepository();
+    }
+    return instance;
+  }
 
   /**
    * Get coordinate of place.
@@ -94,17 +105,5 @@ public class PlacesRepository extends AbstractRepository {
       }
       return new Result.Error<>(new Exception(result.toString()));
     });
-  }
-
-  /**
-   * Get instance of PlacesRepository.
-   *
-   * @return instance of PlacesRepository.
-   */
-  public static PlacesRepository getInstance() {
-    if (instance == null) {
-      instance = new PlacesRepository();
-    }
-    return instance;
   }
 }

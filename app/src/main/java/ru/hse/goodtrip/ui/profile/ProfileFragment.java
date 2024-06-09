@@ -136,8 +136,10 @@ public class ProfileFragment extends Fragment {
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
 
-    binding.followersCount.setText(Integer.toString(UsersRepository.getInstance().getFollowers().size()));
-    binding.followingCount.setText(Integer.toString(UsersRepository.getInstance().getFollowing().size()));
+    binding.followersCount.setText(
+        Integer.toString(UsersRepository.getInstance().getFollowers().size()));
+    binding.followingCount.setText(
+        Integer.toString(UsersRepository.getInstance().getFollowing().size()));
 
   }
 
