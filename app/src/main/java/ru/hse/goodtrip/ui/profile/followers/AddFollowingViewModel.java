@@ -15,7 +15,7 @@ public class AddFollowingViewModel extends ViewModel {
 
   public void findUser(String handleToFind, Consumer<User> workAfter) {
     communicationRepository.getUserByHandle(handleToFind,
-            UsersRepository.getInstance().user.getHandle())
+            UsersRepository.getInstance().user.getToken())
         .thenApplyAsync((result) -> {
           if (result.isSuccess()) {
             ru.hse.goodtrip.network.social.entities.User networkUser =
