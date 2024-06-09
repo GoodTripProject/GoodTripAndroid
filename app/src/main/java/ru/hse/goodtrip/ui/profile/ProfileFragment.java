@@ -138,6 +138,7 @@ public class ProfileFragment extends Fragment {
 
     binding.followersCount.setText(Integer.toString(UsersRepository.getInstance().getFollowers().size()));
     binding.followingCount.setText(Integer.toString(UsersRepository.getInstance().getFollowing().size()));
+
   }
 
   @Override

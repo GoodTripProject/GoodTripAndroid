@@ -11,6 +11,11 @@ import lombok.Setter;
 import ru.hse.goodtrip.data.CommunicationRepository;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 
 /**

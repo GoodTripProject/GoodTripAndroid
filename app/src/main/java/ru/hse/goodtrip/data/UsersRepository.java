@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import android.net.Uri;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,6 +50,7 @@ public class UsersRepository extends AbstractRepository {
     this.loginService = NetworkManager.getInstance().getInstanceOfService(LoginService.class);
     this.communicationService = NetworkManager.getInstance()
         .getInstanceOfService(CommunicationService.class);
+
   }
 
   /**
