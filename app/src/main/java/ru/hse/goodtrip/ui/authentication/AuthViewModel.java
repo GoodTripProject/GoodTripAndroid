@@ -48,10 +48,10 @@ public class AuthViewModel extends ViewModel {
    * @param password password
    */
   public void login(String username, String password) {
-    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+    // String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.login(username,
-        hashedPassword);
+        password);
     runExecutorToWaitResult(result,
         () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
   }
@@ -86,10 +86,10 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+    // String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.signUp(username,
-        hashedPassword, handle,
+        password, handle,
         surname, name);
     runExecutorToWaitResult(result,
         () -> loginResult.setValue(new LoginResult(R.string.login_failed)));
