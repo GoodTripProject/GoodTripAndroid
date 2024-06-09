@@ -55,9 +55,13 @@ public class ProfileFollowingViewModel extends ViewModel {
       Success<List<ru.hse.goodtrip.network.social.entities.User>> newUsers) {
     return newUsers.getData().stream().map(networkUser -> {
       try {
+        URL linkToPhoto = null;
+        if (networkUser.getImageLink() != null) {
+          linkToPhoto = new URL(networkUser.getImageLink());
+        }
         return new User(networkUser.getId(), networkUser.getHandle(),
             networkUser.getName() + " " + networkUser.getSurname(),
-            new URL(networkUser.getImageLink()), "");
+            linkToPhoto, "");
       } catch (MalformedURLException e) {
         Log.e(ProfileFollowingViewModel.class.getSimpleName(),
             Objects.requireNonNull(e.getLocalizedMessage()));
