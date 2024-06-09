@@ -19,6 +19,6 @@ public interface LoginService {
   Call<AuthenticationResponse> register(@Body RegisterRequest request);
 
   @POST("/auth/update_photo")
-  Call<String> updateUserPhoto(@Query("userId") int userId,@Body UrlHandler urlHandler,
+  Call<String> updateUserPhoto(@Query("userId") int userId, @Body UrlHandler urlHandler,
       @Header("Authorization") String authorization);
 }

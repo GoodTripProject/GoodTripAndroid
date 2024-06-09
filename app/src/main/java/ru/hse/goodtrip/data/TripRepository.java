@@ -20,7 +20,6 @@ import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.network.NetworkManager;
 import ru.hse.goodtrip.network.trips.TripService;
 import ru.hse.goodtrip.network.trips.model.AddCountryRequest;
-import ru.hse.goodtrip.network.trips.model.AddNoteRequest;
 import ru.hse.goodtrip.network.trips.model.AddTripRequest;
 import ru.hse.goodtrip.network.trips.model.City;
 import ru.hse.goodtrip.network.trips.model.CityVisit;
@@ -147,19 +146,15 @@ public class TripRepository extends AbstractRepository {
       List<Note> noteResponses) {
     List<ru.hse.goodtrip.data.model.trips.Note> notes = new ArrayList<>();
     for (Note noteResponse : noteResponses) {
-      getCoordinates(noteResponse.getGooglePlaceId()).thenAcceptAsync(point -> {
-        synchronized (notes) {
-          notes.add(
-              new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(),
-                  noteResponse.getText(),
-                  noteResponse.getPhotoUrl(),
-                  new Country(noteResponse.getGooglePlaceId(),
-                      new Coordinates(point.getX(), point.getY())
-                  )
+      notes.add(
+          new ru.hse.goodtrip.data.model.trips.Note(noteResponse.getTitle(),
+              noteResponse.getText(),
+              noteResponse.getPhotoUrl(),
+              new Country(noteResponse.getGooglePlaceId(),
+                  new Coordinates(0, 0)
               )
-          );
-        }
-      });
+          )
+      );
     }
     return notes;
   }
@@ -327,67 +322,6 @@ public class TripRepository extends AbstractRepository {
     return getCompletableFuture(resultHolder);
   }
 
-  /**
-   * Make request to the server to delete trip.
-   *
-   * @param tripId Id of trip.
-   * @param token  Jwt token.
-   * @return CompletableFuture of Result of String which holds result of request.
-   */
-  public CompletableFuture<Result<String>> deleteTrip(Integer tripId, String token) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteTripCall = tripService.deleteTripById(tripId, getWrappedToken(token));
-    deleteTripCall.enqueue(getCallback(resultHolder, "Trip with this id not exists", (result) -> {
-    }));
-    return getCompletableFuture(resultHolder);
-  }
-
-  /**
-   * Make request to the server to get note by id.
-   *
-   * @param noteId Id of note.
-   * @param token  Jwt token.
-   * @return CompletableFuture of Result.
-   */
-  public CompletableFuture<Result<Object>> getNoteById(Integer noteId, String token) {
-    ResultHolder<Object> resultHolder = new ResultHolder<>();
-    Call<Object> getTripCall = tripService.getNoteById(noteId, getWrappedToken(token));
-    getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
-    }));
-    return getCompletableFuture(resultHolder);
-  }
-
-  /**
-   * Make request to the server to delete note by id.
-   *
-   * @param noteId Id of note.
-   * @param token  Jwt token.
-   * @return CompletableFuture of Result.
-   */
-  public CompletableFuture<Result<String>> deleteNoteById(Integer noteId, String token) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteNoteCall = tripService.deleteNoteById(noteId, getWrappedToken(token));
-    deleteNoteCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
-    }));
-    return getCompletableFuture(resultHolder);
-  }
-
-  /**
-   * Make request to the server to add note.
-   *
-   * @param userId         Id of user.
-   * @param token          Jwt token.
-   * @param addNoteRequest AddNoteRequest.
-   * @return CompletableFuture of Result of String which holds result of request.
-   */
-  public CompletableFuture<Result<String>> addNote(Integer userId, String token,
-      AddNoteRequest addNoteRequest) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> addNoteCall = tripService.addNote(userId, addNoteRequest, getWrappedToken(token));
-    addNoteCall.enqueue(getCallback(resultHolder, "User with this id not exist", (result) -> {
-    }));
-    return getCompletableFuture(resultHolder);
-  }
 
   /**
    * Make request to update trip.
@@ -407,39 +341,19 @@ public class TripRepository extends AbstractRepository {
   }
 
   /**
-   * Make request to the server to add country visit.
+   * Gets all published trips of author.
    *
-   * @param tripId            Id of trip.
-   * @param token             Jwt token.
-   * @param addCountryRequest AddCountryRequest.
-   * @return CompletableFuture of Result of String which holds result of request.
+   * @param handle Handle of requested user.
+   * @param token  Jwt token.
+   * @return Completable Future of trips of user.
    */
-  public CompletableFuture<Result<String>> addCountryVisit(Integer tripId, String token,
-      AddCountryRequest addCountryRequest) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> addCountryCall = tripService.addCountryVisit(tripId, addCountryRequest,
+  public CompletableFuture<Result<List<Trip>>> getAuthorTrips(String handle, String token) {
+    ResultHolder<List<Trip>> resultHolder = new ResultHolder<>();
+    Call<List<Trip>> updateTripCall = tripService.getAuthorTrips(handle,
         getWrappedToken(token));
-    addCountryCall.enqueue(getCallback(resultHolder, "Trip with this id not exist", (result) -> {
-    }));
-    return getCompletableFuture(resultHolder);
-  }
-
-  /**
-   * Make request to the server to delete country visit.
-   *
-   * @param countryVisitId Id of trip.
-   * @param token          Jwt token.
-   * @return CompletableFuture of Result of String which holds result of request.
-   */
-  public CompletableFuture<Result<String>> deleteCountryVisit(Integer countryVisitId,
-      String token) {
-    ResultHolder<String> resultHolder = new ResultHolder<>();
-    Call<String> deleteCountryCall = tripService.deleteCountryVisit(countryVisitId,
-        getWrappedToken(token));
-    deleteCountryCall.enqueue(
-        getCallback(resultHolder, "Country with this id not exist", (result) -> {
+    updateTripCall.enqueue(
+        getCallback(resultHolder, "User or trip with this id not exist", (result) -> {
         }));
     return getCompletableFuture(resultHolder);
   }
-
 }

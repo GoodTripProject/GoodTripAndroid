@@ -19,6 +19,22 @@ abstract class AbstractRepository {
   protected static final GeometryFactory factory = new GeometryFactory();
 
 
+  protected AbstractRepository() {
+  }
+
+  /**
+   * Constructs Point from x and y coordinate.
+   *
+   * @param x x coordinate.
+   * @param y y coordinate.
+   * @return Point.
+   */
+  protected static Point createNewPoint(double x, double y) {
+    Point point = factory.createPoint(new CoordinateXY(x, y));
+    point.setSRID(SRID);
+    return point;
+  }
+
   /**
    * Make a callback.
    *
@@ -65,19 +81,6 @@ abstract class AbstractRepository {
   }
 
   /**
-   * Constructs Point from x and y coordinate.
-   *
-   * @param x x coordinate.
-   * @param y y coordinate.
-   * @return Point.
-   */
-  protected static Point createNewPoint(double x, double y) {
-    Point point = factory.createPoint(new CoordinateXY(x, y));
-    point.setSRID(SRID);
-    return point;
-  }
-
-  /**
    * Wraps token.
    *
    * @param token Bare jwt token.
@@ -85,8 +88,5 @@ abstract class AbstractRepository {
    */
   protected String getWrappedToken(String token) {
     return "Bearer " + token;
-  }
-
-  protected AbstractRepository() {
   }
 }

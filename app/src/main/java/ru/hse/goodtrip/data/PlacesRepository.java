@@ -31,6 +31,17 @@ public class PlacesRepository extends AbstractRepository {
     placesService = NetworkManager.getInstance().getInstanceOfService(PlacesService.class);
   }
 
+  /**
+   * Get instance of PlacesRepository.
+   *
+   * @return instance of PlacesRepository.
+   */
+  public static PlacesRepository getInstance() {
+    if (instance == null) {
+      instance = new PlacesRepository();
+    }
+    return instance;
+  }
 
   /**
    * Get coordinate of place.
@@ -45,7 +56,7 @@ public class PlacesRepository extends AbstractRepository {
     Call<Object> getTripCall = placesService.getCoordinates(
         placeName, getWrappedToken(token));
     getTripCall.enqueue(getCallback(resultHolder,
-        "Note with this id not exists", (result) -> {
+        "Cannot get place coordinate", (result) -> {
         }));
     return getCompletableFuture(resultHolder)
         .thenApplyAsync(result -> {
@@ -79,7 +90,7 @@ public class PlacesRepository extends AbstractRepository {
     ResultHolder<Object> resultHolder = new ResultHolder<>();
     Call<Object> getTripCall = placesService.getNearPlaces(
         new PlaceRequest(lng, lat, radius, rankBy, type), getWrappedToken(token));
-    getTripCall.enqueue(getCallback(resultHolder, "Note with this id not exists", (result) -> {
+    getTripCall.enqueue(getCallback(resultHolder, "Cannot get places nearby", (result) -> {
     }));
     return getCompletableFuture(resultHolder).thenApplyAsync(result -> {
       if (result.isSuccess()) {
@@ -94,17 +105,5 @@ public class PlacesRepository extends AbstractRepository {
       }
       return new Result.Error<>(new Exception(result.toString()));
     });
-  }
-
-  /**
-   * Get instance of PlacesRepository.
-   *
-   * @return instance of PlacesRepository.
-   */
-  public static PlacesRepository getInstance() {
-    if (instance == null) {
-      instance = new PlacesRepository();
-    }
-    return instance;
   }
 }

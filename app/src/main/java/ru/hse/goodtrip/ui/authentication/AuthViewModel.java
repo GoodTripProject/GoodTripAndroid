@@ -51,6 +51,7 @@ public class AuthViewModel extends ViewModel {
    * @param password password
    */
   public void login(String username, String password) {
+
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.login(username,
@@ -90,6 +91,7 @@ public class AuthViewModel extends ViewModel {
       String handle) {
     loginDataChanged(username, password);
     String hashedPassword = String.valueOf(sha256().hashString(password, StandardCharsets.UTF_8));
+
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.signUp(username,
         hashedPassword, handle,
         surname, name);

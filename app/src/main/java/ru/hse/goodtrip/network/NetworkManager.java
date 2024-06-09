@@ -10,26 +10,15 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class NetworkManager {
 
   private static volatile NetworkManager instance;
-  private final Retrofit retrofit;
   @Setter
   static private String baseUrl;
+  private final Retrofit retrofit;
 
   private NetworkManager() {
     retrofit = new Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(JacksonConverterFactory.create())
         .build();
-  }
-
-  /**
-   * Creates instance of service.
-   *
-   * @param type interface of retrofit service to create.
-   * @param <T>  type of interface.
-   * @return instance of interface.
-   */
-  public <T> T getInstanceOfService(Class<T> type) {
-    return retrofit.create(type);
   }
 
   /**
@@ -42,5 +31,16 @@ public class NetworkManager {
       instance = new NetworkManager();
     }
     return instance;
+  }
+
+  /**
+   * Creates instance of service.
+   *
+   * @param type interface of retrofit service to create.
+   * @param <T>  type of interface.
+   * @return instance of interface.
+   */
+  public <T> T getInstanceOfService(Class<T> type) {
+    return retrofit.create(type);
   }
 }
