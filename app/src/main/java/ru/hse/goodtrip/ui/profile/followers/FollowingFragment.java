@@ -61,7 +61,6 @@ public class FollowingFragment extends Fragment {
       this.pageType = (PAGE_TYPE) args.get(ProfileFollowingFragment.PAGE_TYPE_ARG);
       this.user = (User) args.get(ProfileFollowingFragment.USER_ARG);
       followingViewModel.setUsers((ArrayList<User>) args.get(ProfileFollowingFragment.FOLLOWS_ARG));
-      followingViewModel.setUser(user);
     }
 
     updateFollowing();

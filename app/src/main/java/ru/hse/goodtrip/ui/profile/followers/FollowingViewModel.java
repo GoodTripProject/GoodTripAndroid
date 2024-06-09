@@ -22,47 +22,33 @@ public class FollowingViewModel extends ViewModel {
   @Getter
   @Setter
   private List<User> users = new ArrayList<>(); // TODO: get following
-  @Setter
-  private User user;
 
   public void updateFollowersUsers(Runnable uiUpdate) {
     communicationRepository.getFollowers(UsersRepository.getInstance().user.getId(),
             UsersRepository.getInstance().user.getToken())
         .thenAcceptAsync(
-            (newUsers) -> {
-              if (newUsers.isSuccess()) {
-                users = ((Result.Success<List<ru.hse.goodtrip.network.social.entities.User>>) newUsers).getData()
-                    .stream().map(networkUser -> {
-                      try {
-                        return new User(networkUser.getId(), networkUser.getHandle(),
-                            networkUser.getName() + " " + networkUser.getSurname(),
-                            new URL(networkUser.getImageLink()), "");
-                      } catch (MalformedURLException ignored) {
-                      }
-                      return null;
-                    }).collect(Collectors.toList());
-              }
-            }
+            this::updateUsers
         ).thenRunAsync(uiUpdate);
+  }
+  private void updateUsers(Result<List<ru.hse.goodtrip.network.social.entities.User>> newUsers){
+    if (newUsers.isSuccess()) {
+      users = ((Result.Success<List<ru.hse.goodtrip.network.social.entities.User>>) newUsers).getData()
+          .stream().map(networkUser -> {
+            try {
+              return new User(networkUser.getId(), networkUser.getHandle(),
+                  networkUser.getName() + " " + networkUser.getSurname(),
+                  new URL(networkUser.getImageLink()), "");
+            } catch (MalformedURLException ignored) {
+            }
+            return null;
+          }).collect(Collectors.toList());
+    }
   }
   public void updateFollowingUsers(Runnable uiUpdate) {
     communicationRepository.getSubscriptions(UsersRepository.getInstance().user.getId(),
             UsersRepository.getInstance().user.getToken())
         .thenAcceptAsync(
-            (newUsers) -> {
-              if (newUsers.isSuccess()) {
-                users = ((Result.Success<List<ru.hse.goodtrip.network.social.entities.User>>) newUsers).getData()
-                    .stream().map(networkUser -> {
-                      try {
-                        return new User(networkUser.getId(), networkUser.getHandle(),
-                            networkUser.getName() + " " + networkUser.getSurname(),
-                            new URL(networkUser.getImageLink()), "");
-                      } catch (MalformedURLException ignored) {
-                      }
-                      return null;
-                    }).collect(Collectors.toList());
-              }
-            }
+            this::updateUsers
         ).thenRunAsync(uiUpdate);
   }
 }
