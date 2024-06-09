@@ -1,8 +1,10 @@
 package ru.hse.goodtrip.ui.profile.followers;
 
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.function.Consumer;
 import ru.hse.goodtrip.data.CommunicationRepository;
 import ru.hse.goodtrip.data.UsersRepository;
@@ -13,6 +15,12 @@ public class AddFollowingViewModel extends ViewModel {
 
   CommunicationRepository communicationRepository = CommunicationRepository.getInstance();
 
+  /**
+   * Find user by handle.
+   *
+   * @param handleToFind handle of User, which is finding.
+   * @param workAfter    function, which accepts User after getting callback.
+   */
   public void findUser(String handleToFind, Consumer<User> workAfter) {
     communicationRepository.getUserByHandle(handleToFind,
             UsersRepository.getInstance().user.getToken())
@@ -24,7 +32,9 @@ public class AddFollowingViewModel extends ViewModel {
               return new User(networkUser.getId(), networkUser.getHandle(),
                   networkUser.getName() + " " + networkUser.getSurname(),
                   new URL(networkUser.getImageLink()), "");
-            } catch (MalformedURLException ignored) {
+            } catch (MalformedURLException e) {
+              Log.d(getClass().getSimpleName(),
+                  Objects.requireNonNull(e.getLocalizedMessage()));
             }
           }
           return null;

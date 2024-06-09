@@ -66,6 +66,11 @@ public class ProfileFollowingViewModel extends ViewModel {
     }).collect(Collectors.toCollection(ArrayList::new));
   }
 
+  /**
+   * Follow user and run network call.
+   *
+   * @param user requested User.
+   */
   public void follow(User user) {
     communicationRepository.follow(
         UsersRepository.getInstance().user.getId(),
@@ -73,6 +78,11 @@ public class ProfileFollowingViewModel extends ViewModel {
         UsersRepository.getInstance().user.getToken());
   }
 
+  /**
+   * Unfollow user and run network call.
+   *
+   * @param user requested User.
+   */
   public void unfollow(User user) {
     communicationRepository.unfollow(
         UsersRepository.getInstance().user.getId(),
