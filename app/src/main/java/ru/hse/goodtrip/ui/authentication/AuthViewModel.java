@@ -23,7 +23,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
-import org.mindrot.jbcrypt.BCrypt;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
@@ -52,8 +51,7 @@ public class AuthViewModel extends ViewModel {
    */
   public void login(String username, String password) {
 
-    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
+    String hashedPassword = String.valueOf(sha256().hashString(password, StandardCharsets.UTF_8));
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.login(username,
         hashedPassword);
     runExecutorToWaitResult(result,

@@ -29,9 +29,13 @@ public class AddFollowingViewModel extends ViewModel {
             ru.hse.goodtrip.network.social.entities.User networkUser =
                 ((Result.Success<ru.hse.goodtrip.network.social.entities.User>) result).getData();
             try {
+              URL linkToPhoto = null;
+              if (networkUser.getImageLink() != null) {
+                linkToPhoto = new URL(networkUser.getImageLink());
+              }
               return new User(networkUser.getId(), networkUser.getHandle(),
                   networkUser.getName() + " " + networkUser.getSurname(),
-                  new URL(networkUser.getImageLink()), "");
+                  linkToPhoto, "");
             } catch (MalformedURLException e) {
               Log.d(getClass().getSimpleName(),
                   Objects.requireNonNull(e.getLocalizedMessage()));
