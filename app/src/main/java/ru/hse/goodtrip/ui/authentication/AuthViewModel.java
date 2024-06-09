@@ -1,5 +1,7 @@
 package ru.hse.goodtrip.ui.authentication;
 
+import static com.google.common.hash.Hashing.sha256;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -18,6 +20,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
 import org.mindrot.jbcrypt.BCrypt;
@@ -87,8 +90,7 @@ public class AuthViewModel extends ViewModel {
   public void signUp(String username, String password, String name, String surname,
       String handle) {
     loginDataChanged(username, password);
-
-    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+    String hashedPassword = String.valueOf(sha256().hashString(password, StandardCharsets.UTF_8));
 
     CompletableFuture<Result<AuthenticationResponse>> result = usersRepository.signUp(username,
         hashedPassword, handle,
