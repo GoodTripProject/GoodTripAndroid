@@ -103,8 +103,8 @@ public class UsersRepository extends AbstractRepository {
     final ResultHolder<List<ru.hse.goodtrip.network.social.entities.User>>
         resultOfGetFollowers = new ResultHolder<>();
     getFollowersCall.enqueue(getCallback(resultOfGetFollowers,
-        "Cannot get followers"
-        , (result) -> this.followers = result.stream()
+        "Cannot get followers",
+        (result) -> this.followers = result.stream()
             .map(this::getUserFromNetworkUser)
             .collect(toCollection(ArrayList::new))));
     Call<List<ru.hse.goodtrip.network.social.entities.User>>
@@ -114,8 +114,8 @@ public class UsersRepository extends AbstractRepository {
     final ResultHolder<List<ru.hse.goodtrip.network.social.entities.User>>
         resultOfGetSubscriptions = new ResultHolder<>();
     getSubscriptions.enqueue(getCallback(resultOfGetSubscriptions,
-        "Cannot get subscriptions"
-        , (result) -> this.following = result.stream()
+        "Cannot get subscriptions",
+        (result) -> this.following = result.stream()
             .map(this::getUserFromNetworkUser)
             .collect(toCollection(ArrayList::new))));
   }
