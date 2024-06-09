@@ -40,18 +40,20 @@ public class FollowingViewModel extends ViewModel {
 
   private void updateUsers(Result<List<ru.hse.goodtrip.network.social.entities.User>> newUsers) {
     if (newUsers.isSuccess()) {
-      users = ((Result.Success<List<ru.hse.goodtrip.network.social.entities.User>>) newUsers).getData()
-          .stream().map(networkUser -> {
-            try {
-              return new User(networkUser.getId(), networkUser.getHandle(),
-                  networkUser.getName() + " " + networkUser.getSurname(),
-                  new URL(networkUser.getImageLink()), "");
-            } catch (MalformedURLException e) {
-              Log.d(this.getClass().getSimpleName(),
-                  Objects.requireNonNull(e.getLocalizedMessage()));
-            }
-            return null;
-          }).collect(Collectors.toList());
+      users =
+          ((Result.Success<List<ru.hse.goodtrip.network.social.entities.User>>) newUsers)
+              .getData()
+              .stream().map(networkUser -> {
+                try {
+                  return new User(networkUser.getId(), networkUser.getHandle(),
+                      networkUser.getName() + " " + networkUser.getSurname(),
+                      new URL(networkUser.getImageLink()), "");
+                } catch (MalformedURLException e) {
+                  Log.d(this.getClass().getSimpleName(),
+                      Objects.requireNonNull(e.getLocalizedMessage()));
+                }
+                return null;
+              }).collect(Collectors.toList());
     }
   }
 
