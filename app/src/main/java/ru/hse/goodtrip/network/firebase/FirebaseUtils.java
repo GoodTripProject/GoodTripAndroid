@@ -60,7 +60,7 @@ public class FirebaseUtils {
     StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(
         filename);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
     Log.d(FirebaseUtils.class.getSimpleName(), filename);
     UploadTask uploadTask = storageRef.putBytes(baos.toByteArray());
     uploadTask.continueWithTask(task -> {
