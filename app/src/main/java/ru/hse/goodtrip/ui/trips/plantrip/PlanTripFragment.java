@@ -177,7 +177,7 @@ public class PlanTripFragment extends Fragment {
         binding.arrivalDateEditText.getText().toString(),
         null, binding.budgetEditText.getText().toString(),
         new HashSet<>(),
-        UsersRepository.getInstance().getLoggedUser()); // TODO
+        UsersRepository.getInstance().getLoggedUser());
     if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
         .isDataValid()) {
       navigateUp();

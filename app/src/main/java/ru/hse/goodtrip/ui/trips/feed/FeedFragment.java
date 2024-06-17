@@ -122,7 +122,8 @@ public class FeedFragment extends Fragment {
               }
             } else { // scrolled down
               if (feedLayoutManager.findLastCompletelyVisibleItemPosition()
-                  == feedAdapter.getItemCount() - 1) {
+                  == feedAdapter.getItemCount() - 1
+                  && feedRecyclerViewHolder.feedAdapter.getItemCount() > 3) {
                 isLoading = true;
                 refreshFeed(true);
               }

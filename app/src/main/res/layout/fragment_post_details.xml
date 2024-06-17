@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.trips.feed.post.PostDetailsFragment">
   <ScrollView
-    android:layout_marginBottom="165dp"
+    android:layout_marginBottom="85dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,8 +30,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textSize="50sp" />
+        android:text="123456789012345678"
+        android:textSize="40sp" />
       <TextView
         android:id="@+id/tripDuration"
         android:layout_gravity="center"

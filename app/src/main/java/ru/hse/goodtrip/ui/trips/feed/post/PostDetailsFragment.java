@@ -5,6 +5,7 @@ import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrlCropped;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,12 +54,13 @@ public class PostDetailsFragment extends Fragment {
     return binding.getRoot();
   }
 
+  @SuppressLint("SetTextI18n")
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     String dateFormat = "dd.MM.yyyy";
 
     setImageByUrlCropped(binding.profileImageView,
-        "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg",
+        trip.getUser().getMainPhotoUrl().toString(),
         R.drawable.baseline_account_circle_24
     );
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
