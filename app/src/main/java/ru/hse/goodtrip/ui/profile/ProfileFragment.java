@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
 
   @SuppressLint("SetTextI18n")
   private void setUserInfo() {
-    if (user.getMainPhotoUrl() != null) {
+    if (UsersRepository.getInstance().user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
     } else {
       setImageByUrl(binding.profileImage, // TODO:

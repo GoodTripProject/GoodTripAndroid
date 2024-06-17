@@ -88,7 +88,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         .atZone(ZoneId.systemDefault()).toLocalDate(), dateFormat));
     binding.countriesText.setText(countries);
     if (trip.getUserMainPhotoUrl() != null) {
-      setImageByUrl(binding.profileImageView, trip.getUserMainPhotoUrl(),
+      setImageByUrlCropped(binding.profileImageView, trip.getUserMainPhotoUrl(),
           R.drawable.baseline_account_circle_24);
     } else {
       setImageByUrlCropped(binding.profileImageView,
