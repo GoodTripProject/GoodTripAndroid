@@ -98,13 +98,13 @@ public class ProfileFragment extends Fragment {
         v -> ((MainActivity) requireActivity()).getNavigationGraph()
             .navigateToFollowing(UsersRepository.getInstance().getLoggedUser(),
                 UsersRepository.getInstance().getFollowing(),
-                PAGE_TYPE.FOLLOWING)); // TODO: STEP ONE
+                PAGE_TYPE.FOLLOWING));
 
     binding.showFollowers.setOnClickListener(
         v -> ((MainActivity) requireActivity()).getNavigationGraph()
             .navigateToFollowing(UsersRepository.getInstance().getLoggedUser(),
                 UsersRepository.getInstance().getFollowers(),
-                PAGE_TYPE.FOLLOWERS)); // TODO: STEP ONE
+                PAGE_TYPE.FOLLOWERS));
     binding.profileImage.setOnClickListener(v -> uploadImageFromGallery());
     binding.myTripsButton.setOnClickListener(v ->
         ((MainActivity) requireActivity()).getNavigationGraph().navigateToMyTrips());
@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
 
   @SuppressLint("SetTextI18n")
   private void setUserInfo() {
-    if (user.getMainPhotoUrl() != null) {
+    if (UsersRepository.getInstance().user.getMainPhotoUrl() != null) {
       setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
     } else {
       setImageByUrl(binding.profileImage, // TODO:
@@ -137,9 +137,9 @@ public class ProfileFragment extends Fragment {
     binding.handleView.setText("@".concat(user.getHandle()));
 
     binding.followersCount.setText(
-        Integer.toString(UsersRepository.getInstance().getFollowers().size()));
+        Integer.toString(UsersRepository.getInstance().getFollowers().size() - 1));
     binding.followingCount.setText(
-        Integer.toString(UsersRepository.getInstance().getFollowing().size()));
+        Integer.toString(UsersRepository.getInstance().getFollowing().size() - 1));
 
   }
 

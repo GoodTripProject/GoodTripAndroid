@@ -20,7 +20,7 @@ class PlanTripFormState {
   private Integer cityError;
   @Nullable
   private Integer moneyError;
-  private boolean isDataValid;
+  private final boolean isDataValid;
 
   PlanTripFormState(@Nullable Integer tripNameError, @Nullable Integer departureDateError,
       @Nullable Integer arrivalDateError, @Nullable Integer countryError,

@@ -51,7 +51,7 @@
           android:id="@+id/countriesText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textSize="20sp"
+          android:textSize="18sp"
           android:textColor="@color/white"
           android:text="@string/countries" />
       </LinearLayout>
@@ -95,7 +95,7 @@
           android:layout_gravity="center_vertical"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="40dp"
+          android:layout_marginStart="60dp"
           android:text="@string/date_of_publication" />
       </LinearLayout>
     </LinearLayout>

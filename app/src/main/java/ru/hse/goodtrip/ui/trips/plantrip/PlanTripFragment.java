@@ -2,6 +2,7 @@ package ru.hse.goodtrip.ui.trips.plantrip;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -159,8 +160,10 @@ public class PlanTripFragment extends Fragment {
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
     Objects.requireNonNull(dialog.requireDialog().getWindow())
-        .setLayout((6 * width) / 7, LayoutParams.WRAP_CONTENT);
+        .setLayout((8 * width) / 9, LayoutParams.WRAP_CONTENT);
     setupAddCountryDialog(dialog);
+    Objects.requireNonNull(dialog.requireDialog().getWindow())
+        .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
   }
 
   /**
@@ -174,7 +177,7 @@ public class PlanTripFragment extends Fragment {
         binding.arrivalDateEditText.getText().toString(),
         null, binding.budgetEditText.getText().toString(),
         new HashSet<>(),
-        UsersRepository.getInstance().getLoggedUser()); // TODO
+        UsersRepository.getInstance().getLoggedUser());
     if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
         .isDataValid()) {
       navigateUp();

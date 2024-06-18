@@ -143,7 +143,7 @@ public class PostEditorFragment extends Fragment {
     }
     if (trip != null) {
       postEditorViewModel.setTrip(trip);
-      setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
+      setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.noimage);
       binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
       binding.postTitle.setText(trip.getTitle());
       loadRoute();

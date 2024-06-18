@@ -14,6 +14,7 @@
       app:destination="@id/navigation_my_trips" />
   </fragment>
   <fragment
+    android:label="Followers"
     tools:layout="@layout/fragment_following"
     android:id="@+id/navigation_following"
     android:name="ru.hse.goodtrip.ui.profile.followers.FollowingFragment" />
@@ -31,10 +32,12 @@
     android:name="ru.hse.goodtrip.ui.map.MapsFollowingFragment" />
 
   <fragment
+    android:label="My trips"
     tools:layout="@layout/fragment_my_trips"
     android:id="@+id/navigation_my_trips"
     android:name="ru.hse.goodtrip.ui.profile.mytrips.MyTripsFragment" />
   <fragment
+    android:label="My trips"
     tools:layout="@layout/fragment_post_editor"
     android:id="@+id/navigation_post_editor"
     android:name="ru.hse.goodtrip.ui.profile.mytrips.PostEditorFragment" />

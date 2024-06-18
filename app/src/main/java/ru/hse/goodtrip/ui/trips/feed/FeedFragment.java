@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
@@ -32,7 +34,7 @@ public class FeedFragment extends Fragment {
 
     if (UsersRepository.getInstance().getLoggedUser() != null
         && feedRecyclerViewHolder.feedAdapter.getItemCount() < 3) {
-      feedRecyclerViewHolder.refreshFeed();
+      feedRecyclerViewHolder.refreshFeed(false);
     }
 
     ((MainActivity) requireActivity()).getSupportActionBar().hide();
@@ -118,13 +120,14 @@ public class FeedFragment extends Fragment {
             if (dy < 0) { // scrolled up
               if (feedLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                 isLoading = true;
-                refreshFeed();
+                refreshFeed(false);
               }
             } else { // scrolled down
               if (feedLayoutManager.findLastCompletelyVisibleItemPosition()
-                  == feedAdapter.getItemCount() - 1) {
+                  == feedAdapter.getItemCount() - 1
+                  && feedRecyclerViewHolder.feedAdapter.getItemCount() > 3) {
                 isLoading = true;
-                //
+                refreshFeed(true);
               }
             }
           }
@@ -135,11 +138,13 @@ public class FeedFragment extends Fragment {
     /**
      * Refresh feed with FeedViewModel.
      */
-    private void refreshFeed() {
+    private void refreshFeed(boolean needToLoadNextPosts) {
       ExecutorService executor = Executors.newCachedThreadPool();
       feedAdapter.showLoadingView();
       executor.execute(() -> {
-        feedViewModel.getTripRepository().resetAuthorTrips();
+        if (!needToLoadNextPosts) {
+          feedViewModel.getTripRepository().resetAuthorTrips();
+        }
         feedViewModel.getAuthorTrips(UsersRepository.getInstance().user.getId(),
             UsersRepository.getInstance().user.getToken());
         feedRecyclerView.postDelayed(() -> {
@@ -163,10 +168,10 @@ public class FeedFragment extends Fragment {
      * Update data with TripsRepository.
      */
     public void loadData() {
-      feedViewModel.getPosts().sort(Comparator.comparing(
-          TripView::getPublicationTimestamp)); //TODO maybe it is incorrect
-      Collections.reverse(feedViewModel.getPosts());
-      feedAdapter.setItems(feedViewModel.getPosts());
+      feedAdapter.setItems(
+          feedViewModel.getPosts().stream().filter(Objects::nonNull).sorted(Comparator.comparing(
+              TripView::getPublicationTimestamp)).collect(Collectors.toList()));
+      Collections.reverse(feedAdapter.getItems());
     }
   }
 }

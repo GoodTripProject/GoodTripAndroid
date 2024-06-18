@@ -18,10 +18,12 @@
     android:id="@+id/navigation_post"
     android:name="ru.hse.goodtrip.ui.trips.feed.post.PostFragment" />
   <fragment
+    android:label="Details"
     tools:layout="@layout/fragment_post_details"
     android:id="@+id/navigation_post_details"
     android:name="ru.hse.goodtrip.ui.trips.feed.post.PostDetailsFragment" />
   <fragment
+    android:label="Notes"
     tools:layout="@layout/fragment_post_notes"
     android:id="@+id/navigation_post_notes"
     android:name="ru.hse.goodtrip.ui.trips.feed.post.PostNotesFragment" />

@@ -14,14 +14,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import lombok.Getter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
+import ru.hse.goodtrip.data.model.User;
+import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.databinding.FeedLoadingViewBinding;
 import ru.hse.goodtrip.databinding.ItemPostTripBinding;
 import ru.hse.goodtrip.network.trips.model.CountryVisit;
@@ -36,6 +42,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   private static final int VIEW_TYPE_ITEM = 0;
   private static final int VIEW_TYPE_LOADING = 1;
   private static final String TAG = "FEED_ADAPTER";
+  @Getter
   List<TripView> items = Collections.emptyList();
 
   @SuppressLint("NotifyDataSetChanged")
@@ -79,16 +86,23 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   private void setPostInfoWithTrip(TripView trip, ItemPostTripBinding binding) {
     String dateFormat = "dd.MM.yyyy";
     StringBuilder countries = new StringBuilder();
-    for (CountryVisit country : trip.getVisits()) {
-      countries.append(country.getCountry());
+    if (trip.getVisits().size() > 1) {
+      for (CountryVisit country : trip.getVisits()) {
+        countries.append(country.getCountry()).append(", ");
+      }
+      countries.deleteCharAt(countries.length() - 1);
+      countries.deleteCharAt(countries.length() - 1);
+    } else {
+      countries = new StringBuilder(trip.getVisits().get(0).getCountry());
     }
+
     binding.titleText.setText(trip.getTitle());
     binding.profileNameText.setText(trip.getDisplayName());
     binding.dateOfPublication.setText(getDateFormatted(trip.getPublicationTimestamp().toInstant()
         .atZone(ZoneId.systemDefault()).toLocalDate(), dateFormat));
     binding.countriesText.setText(countries);
     if (trip.getUserMainPhotoUrl() != null) {
-      setImageByUrl(binding.profileImageView, trip.getUserMainPhotoUrl(),
+      setImageByUrlCropped(binding.profileImageView, trip.getUserMainPhotoUrl(),
           R.drawable.baseline_account_circle_24);
     } else {
       setImageByUrlCropped(binding.profileImageView,
@@ -133,9 +147,16 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
           }
           handler.post(() -> {
             ObjectMapper objectMapper = new ObjectMapper();
-            activity.getNavigationGraph().navigateToPostPage(TripRepository.getTripFromTripResponse(
+            Trip trip = TripRepository.getTripFromTripResponse(
                 objectMapper.convertValue(((Result.Success<?>) fullTrip).getData(),
-                    ru.hse.goodtrip.network.trips.model.Trip.class)));
+                    ru.hse.goodtrip.network.trips.model.Trip.class));
+            try {
+              trip.setUser(new User(0, null, postClicked.getDisplayName(),
+                  new URL(postClicked.getUserMainPhotoUrl()), null));
+            } catch (MalformedURLException e) {
+              Log.d("URL parsing failed", Objects.requireNonNull(e.getLocalizedMessage()));
+            }
+            activity.getNavigationGraph().navigateToPostPage(trip);
           });
         });
   }

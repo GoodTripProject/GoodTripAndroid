@@ -92,6 +92,10 @@ public class FollowingFragment extends Fragment {
     LinearLayout users = binding.following;
 
     for (User follow : followingViewModel.getUsers()) {
+      if (follow.getDisplayName()
+          .equals(UsersRepository.getInstance().getLoggedUser().getDisplayName())) {
+        continue;
+      }
       ItemFollowingBinding followingBinding = ItemFollowingBinding.inflate(
           getLayoutInflater());
       followingBinding.displayName.setText(follow.getDisplayName());
@@ -100,7 +104,7 @@ public class FollowingFragment extends Fragment {
 
       followingBinding.userCard.setOnClickListener(
           v -> ((MainActivity) requireActivity()).getNavigationGraph()
-              .navigateToFollowingProfilePage(follow)); // TODO: STEP TWO
+              .navigateToFollowingProfilePage(follow));
 
       users.addView(followingBinding.getRoot());
     }
