@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentFeedBinding;
@@ -166,10 +168,10 @@ public class FeedFragment extends Fragment {
      * Update data with TripsRepository.
      */
     public void loadData() {
-      feedViewModel.getPosts().sort(Comparator.comparing(
-          TripView::getPublicationTimestamp));
-      Collections.reverse(feedViewModel.getPosts());
-      feedAdapter.setItems(feedViewModel.getPosts());
+      feedAdapter.setItems(
+          feedViewModel.getPosts().stream().filter(Objects::nonNull).sorted(Comparator.comparing(
+              TripView::getPublicationTimestamp)).collect(Collectors.toList()));
+      Collections.reverse(feedAdapter.getItems());
     }
   }
 }

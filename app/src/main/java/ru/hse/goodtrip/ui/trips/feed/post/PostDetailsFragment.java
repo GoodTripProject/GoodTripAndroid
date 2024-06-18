@@ -60,9 +60,11 @@ public class PostDetailsFragment extends Fragment {
     String dateFormat = "dd.MM.yyyy";
 
     setImageByUrlCropped(binding.profileImageView,
-        trip.getUser().getMainPhotoUrl().toString(),
+        (trip.getUser().getMainPhotoUrl() == null ? null
+            : trip.getUser().getMainPhotoUrl().toString()),
         R.drawable.baseline_account_circle_24
     );
+
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
     binding.budgetLabel.setText(Integer.toString(trip.getMoneyInUsd()));
     binding.postTitle.setText(trip.getTitle());

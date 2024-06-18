@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
+import lombok.Getter;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.TripRepository;
@@ -36,6 +37,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   private static final int VIEW_TYPE_ITEM = 0;
   private static final int VIEW_TYPE_LOADING = 1;
   private static final String TAG = "FEED_ADAPTER";
+  @Getter
   List<TripView> items = Collections.emptyList();
 
   @SuppressLint("NotifyDataSetChanged")
@@ -79,9 +81,15 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
   private void setPostInfoWithTrip(TripView trip, ItemPostTripBinding binding) {
     String dateFormat = "dd.MM.yyyy";
     StringBuilder countries = new StringBuilder();
-    for (CountryVisit country : trip.getVisits()) {
-      countries.append(country.getCountry());
+    if (trip.getVisits().size() > 1) {
+      for (CountryVisit country : trip.getVisits()) {
+        countries.append(country.getCountry()).append(",");
+      }
+      countries.deleteCharAt(countries.length() - 1);
+    } else {
+      countries = new StringBuilder(trip.getVisits().get(0).getCountry());
     }
+
     binding.titleText.setText(trip.getTitle());
     binding.profileNameText.setText(trip.getDisplayName());
     binding.dateOfPublication.setText(getDateFormatted(trip.getPublicationTimestamp().toInstant()
