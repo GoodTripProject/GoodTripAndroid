@@ -21,7 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="250dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/kazantip" />
+        android:src="@drawable/noimage" />
 
       <TextView
         android:textStyle="bold"

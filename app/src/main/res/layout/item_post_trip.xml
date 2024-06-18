@@ -95,7 +95,7 @@
           android:layout_gravity="center_vertical"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="70dp"
+          android:layout_marginStart="60dp"
           android:text="@string/date_of_publication" />
       </LinearLayout>
     </LinearLayout>

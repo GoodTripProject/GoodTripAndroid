@@ -33,6 +33,9 @@ public class MapsFollowingViewModel extends ViewModel {
       if (trips.isSuccess()) {
         marks = TripRepository.getTripsFromTripResponses(
             ((Result.Success<List<ru.hse.goodtrip.network.trips.model.Trip>>) trips).getData());
+        for (Trip trip : marks) {
+          trip.setUser(user);
+        }
       }
     } catch (ExecutionException | InterruptedException e) {
       Log.d(this.getClass().getSimpleName(), Objects.requireNonNull(
