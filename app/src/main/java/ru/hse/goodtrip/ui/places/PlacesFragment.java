@@ -25,6 +25,9 @@ import ru.hse.goodtrip.databinding.FragmentPlacesBinding;
 import ru.hse.goodtrip.databinding.ItemPlaceBinding;
 import ru.hse.goodtrip.network.places.model.PlaceResponse;
 
+/**
+ * PlacesFragment.
+ */
 public class PlacesFragment extends Fragment {
 
   private FusedLocationProviderClient fusedLocationClient;
@@ -50,6 +53,9 @@ public class PlacesFragment extends Fragment {
     getNearsPlaces();
   }
 
+  /**
+   * Show places.
+   */
   private void renderPlaces() {
     LinearLayout placesLayout = binding.places;
 
@@ -69,23 +75,21 @@ public class PlacesFragment extends Fragment {
     binding = null;
   }
 
+  /**
+   * Check location permission if isn't granted.
+   */
   private void checkLocationPermission() {
     if (ActivityCompat.checkSelfPermission(requireActivity(), permission.ACCESS_FINE_LOCATION)
         != PackageManager.PERMISSION_GRANTED
         && ActivityCompat.checkSelfPermission(requireActivity(), permission.ACCESS_COARSE_LOCATION)
         != PackageManager.PERMISSION_GRANTED) {
-      if (ActivityCompat.shouldShowRequestPermissionRationale(
-          requireActivity(),
-          Manifest.permission.ACCESS_FINE_LOCATION
-      )
-      ) {
-        requestLocationPermission();
-      } else {
-        requestLocationPermission();
-      }
+      requestLocationPermission();
     }
   }
 
+  /**
+   * Request location permission.
+   */
   private void requestLocationPermission() {
     ActivityCompat.requestPermissions(
         requireActivity(),
@@ -94,6 +98,9 @@ public class PlacesFragment extends Fragment {
     );
   }
 
+  /**
+   * Check location permission and get places nearby with placesViewModel.
+   */
   private void getNearsPlaces() {
     checkLocationPermission();
     fusedLocationClient.getLastLocation()

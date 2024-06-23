@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
@@ -30,6 +29,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.databinding.FragmentPlanTripBinding;
 import ru.hse.goodtrip.ui.trips.plantrip.PlanTripDialogWindows.DialogAddNewDestinationFragment;
 
+/**
+ * PlanTripFragment screen.
+ */
 public class PlanTripFragment extends Fragment {
 
   private PlanTripViewModel planTripViewModel;
@@ -38,11 +40,7 @@ public class PlanTripFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
   }
 
@@ -75,6 +73,12 @@ public class PlanTripFragment extends Fragment {
     arrivalDateEditText.setOnClickListener(v -> selectDate(arrivalDateEditText));
   }
 
+  /**
+   * Adds country view in route.
+   *
+   * @param country country name.
+   * @param cities  list of cities.
+   */
   private void addCountryView(String country, List<String> cities) {
     @SuppressLint("InflateParams") View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
@@ -90,6 +94,11 @@ public class PlanTripFragment extends Fragment {
     binding.route.addView(countryView);
   }
 
+  /**
+   * Show and set up AddCountryDialog window.
+   *
+   * @param dialog dialog window object.
+   */
   private void setupAddCountryDialog(DialogAddNewDestinationFragment dialog) {
     final AutoCompleteTextView autoCompleteTextViewCountries = dialog.binding.enterCountryName;
     ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
@@ -154,8 +163,13 @@ public class PlanTripFragment extends Fragment {
     datePickerDialog.show();
   }
 
+  /**
+   * Show and set up AddNewDestinationDialog window.
+   *
+   * @param dialog dialog window object.
+   */
   private void showAddNewDestinationDialog(DialogAddNewDestinationFragment dialog) {
-    dialog.show(getChildFragmentManager(), "dialog..."); // TODO
+    dialog.show(getChildFragmentManager(), "AddNewDestinationDialog");
     getChildFragmentManager().executePendingTransactions();
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
@@ -176,7 +190,6 @@ public class PlanTripFragment extends Fragment {
         binding.departureDateEditText.getText().toString(),
         binding.arrivalDateEditText.getText().toString(),
         null, binding.budgetEditText.getText().toString(),
-        new HashSet<>(),
         UsersRepository.getInstance().getLoggedUser());
     if (Objects.requireNonNull(planTripViewModel.getPlanTripFormState().getValue())
         .isDataValid()) {

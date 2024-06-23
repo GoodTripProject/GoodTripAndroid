@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+/**
+ * User Entity in Room.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

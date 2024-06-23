@@ -30,6 +30,7 @@ import ru.hse.goodtrip.databinding.FragmentPostDetailsBinding;
  **/
 public class PostDetailsFragment extends Fragment {
 
+  @SuppressLint("SetTextI18n")
   private PostViewModel postViewModel;
   private FragmentPostDetailsBinding binding;
   private Trip trip;
@@ -37,9 +38,7 @@ public class PostDetailsFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
     requireActivity().findViewById(R.id.bottomToolsBarPost).setVisibility(View.VISIBLE);
   }
@@ -84,13 +83,13 @@ public class PostDetailsFragment extends Fragment {
   }
 
   private void addCountryView(String country, List<String> cities) {
-    View countryView = LayoutInflater.from(requireContext())
+    @SuppressLint("InflateParams") View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
     TextView countryTitle = countryView.findViewById(R.id.titleCountry);
     countryTitle.setText(country);
     LinearLayout citiesLayout = countryView.findViewById(R.id.cities);
     for (String city : cities) {
-      View cityView = LayoutInflater.from(requireContext())
+      @SuppressLint("InflateParams") View cityView = LayoutInflater.from(requireContext())
           .inflate(R.layout.item_city, null);
       ((TextView) cityView.findViewById(R.id.cityelement)).setText(city);
       citiesLayout.addView(cityView);

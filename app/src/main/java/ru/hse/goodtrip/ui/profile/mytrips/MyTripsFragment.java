@@ -1,6 +1,5 @@
 package ru.hse.goodtrip.ui.profile.mytrips;
 
-import static ru.hse.goodtrip.network.trips.model.TripState.PUBLISHED;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.TripRepository;
 import ru.hse.goodtrip.data.model.trips.Trip;
@@ -24,22 +22,21 @@ import ru.hse.goodtrip.network.trips.model.TripState;
  */
 public class MyTripsFragment extends Fragment {
 
-  private MyTripsViewModel myTripsViewModel;
+  private static final String PROCESS = "IN_PROCESS";
+  private static final String PLANNED = "Planned";
+  private static final String PUBLISHED = "Published";
   private FragmentMyTripsBinding binding;
 
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
   }
 
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    myTripsViewModel = new ViewModelProvider(this).get(MyTripsViewModel.class);
     binding = FragmentMyTripsBinding.inflate(inflater, container, false);
     return binding.getRoot();
   }
@@ -53,11 +50,11 @@ public class MyTripsFragment extends Fragment {
   private String stateToString(TripState state) {
     switch (state) {
       case PLANNED:
-        return "Planned";
+        return PLANNED;
       case PUBLISHED:
-        return "Published";
+        return PUBLISHED;
       case IN_PROCESS:
-        return "IN_PROCESS";
+        return PROCESS;
       default:
         return null;
     }
@@ -70,6 +67,9 @@ public class MyTripsFragment extends Fragment {
     renderTrips();
   }
 
+  /**
+   * Show trips.
+   */
   private void renderTrips() {
     LinearLayout trips = binding.trips;
     for (Trip trip : TripRepository.getInstance().getUserTrips()) {
@@ -81,7 +81,7 @@ public class MyTripsFragment extends Fragment {
           getDuration(trip.getStartTripDate(), trip.getEndTripDate(), "dd.MM"));
       tripProfileBinding.tripCard.setOnClickListener(
           v -> {
-            if (trip.getTripState().equals(PUBLISHED)) {
+            if (trip.getTripState().equals(TripState.PUBLISHED)) {
               ((MainActivity) requireActivity()).getNavigationGraph()
                   .navigateToPostPageExternal(trip);
             } else {

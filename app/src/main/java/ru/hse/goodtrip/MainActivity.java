@@ -3,6 +3,7 @@ package ru.hse.goodtrip;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.FirebaseApp;
+import java.util.Objects;
 import lombok.Getter;
 import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.navigation.GtNavigationGraphMain;
@@ -34,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
   public boolean onSupportNavigateUp() {
     navigationGraph.navigateUp();
     return true;
+  }
+
+  public void showActionBar() {
+    Objects.requireNonNull(getSupportActionBar()).show();
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setDisplayShowHomeEnabled(true);
   }
 
 }

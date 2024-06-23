@@ -31,9 +31,7 @@ public class PostNotesFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(GONE);
     requireActivity().findViewById(R.id.bottomToolsBarPost).setVisibility(View.VISIBLE);
   }

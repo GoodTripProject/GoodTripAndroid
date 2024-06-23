@@ -16,6 +16,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result.Success;
 import ru.hse.goodtrip.data.model.User;
 
+/**
+ * ProfileFollowingViewModel.
+ */
 @Getter
 @Setter
 public class ProfileFollowingViewModel extends ViewModel {
@@ -24,6 +27,26 @@ public class ProfileFollowingViewModel extends ViewModel {
   private User user;
   private ArrayList<User> followers = new ArrayList<>();
   private ArrayList<User> following = new ArrayList<>();
+
+  @NonNull
+  private static ArrayList<User> getResult(
+      Success<List<ru.hse.goodtrip.network.social.entities.User>> newUsers) {
+    return newUsers.getData().stream().map(networkUser -> {
+      try {
+        URL linkToPhoto = null;
+        if (networkUser.getImageLink() != null) {
+          linkToPhoto = new URL(networkUser.getImageLink());
+        }
+        return new User(networkUser.getId(), networkUser.getHandle(),
+            networkUser.getName() + " " + networkUser.getSurname(),
+            linkToPhoto, "");
+      } catch (MalformedURLException e) {
+        Log.e(ProfileFollowingViewModel.class.getSimpleName(),
+            Objects.requireNonNull(e.getLocalizedMessage()));
+      }
+      return null;
+    }).collect(Collectors.toCollection(ArrayList::new));
+  }
 
   /**
    * Refresh followings of user.
@@ -48,26 +71,6 @@ public class ProfileFollowingViewModel extends ViewModel {
           }
         });
 
-  }
-
-  @NonNull
-  private static ArrayList<User> getResult(
-      Success<List<ru.hse.goodtrip.network.social.entities.User>> newUsers) {
-    return newUsers.getData().stream().map(networkUser -> {
-      try {
-        URL linkToPhoto = null;
-        if (networkUser.getImageLink() != null) {
-          linkToPhoto = new URL(networkUser.getImageLink());
-        }
-        return new User(networkUser.getId(), networkUser.getHandle(),
-            networkUser.getName() + " " + networkUser.getSurname(),
-            linkToPhoto, "");
-      } catch (MalformedURLException e) {
-        Log.e(ProfileFollowingViewModel.class.getSimpleName(),
-            Objects.requireNonNull(e.getLocalizedMessage()));
-      }
-      return null;
-    }).collect(Collectors.toCollection(ArrayList::new));
   }
 
   /**

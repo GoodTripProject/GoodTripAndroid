@@ -9,11 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentAddFollowingBinding;
 
+/**
+ * AddFollowingFragment test.
+ */
 public class AddFollowingFragment extends Fragment {
 
   private AddFollowingViewModel addFollowingViewModel;
@@ -23,11 +25,7 @@ public class AddFollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
   }
 
   @Override
@@ -50,11 +48,17 @@ public class AddFollowingFragment extends Fragment {
     binding.searchButton.setOnClickListener(v -> {
       String handleToFind = binding.enterHandle.getText().toString();
       addFollowingViewModel.findUser(handleToFind, (user) ->
-          handleFindedUser(user, handleToFind));
+          handleFoundUser(user, handleToFind));
     });
   }
 
-  private void handleFindedUser(User user, String handleToFind) {
+  /**
+   * If user is found, then navigates to his profile. Else display error.
+   *
+   * @param user         found user.
+   * @param handleToFind handle.
+   */
+  private void handleFoundUser(User user, String handleToFind) {
     if (user != null) {
       ((MainActivity) requireActivity()).getNavigationGraph()
           .navigateToFollowingProfilePage(user);

@@ -11,6 +11,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.data.model.User;
 
+/**
+ * AddFollowingViewModel.
+ */
 public class AddFollowingViewModel extends ViewModel {
 
   CommunicationRepository communicationRepository = CommunicationRepository.getInstance();

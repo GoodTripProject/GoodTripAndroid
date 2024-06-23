@@ -9,6 +9,9 @@ import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.Result;
 import ru.hse.goodtrip.network.places.model.PlaceResponse;
 
+/**
+ * PlacesViewModel.
+ */
 public class PlacesViewModel extends ViewModel {
 
   private final PlacesRepository repository = PlacesRepository.getInstance();

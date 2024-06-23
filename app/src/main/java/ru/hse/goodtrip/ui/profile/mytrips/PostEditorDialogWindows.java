@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import ru.hse.goodtrip.databinding.FragmentAddNewNoteDialogBinding;
 
+/**
+ * DialogWindows holder used as namespace for PostEditor dialog windows.
+ */
 public class PostEditorDialogWindows {
 
   /**
