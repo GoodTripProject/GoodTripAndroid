@@ -1,5 +1,6 @@
 package ru.hse.goodtrip.room;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import androidx.room.Room;
@@ -13,6 +14,7 @@ public class RoomImplementation extends Application {
 
   private static final String DATABASE_NAME = "GTLocalStorage";
   private static final int USER_KEY = 0;
+  @SuppressLint("StaticFieldLeak")
   private static RoomImplementation instance;
   private LocalStorage localStorage;
 
@@ -22,6 +24,11 @@ public class RoomImplementation extends Application {
     return instance;
   }
 
+  /**
+   * Get logged user from Room if exists.
+   *
+   * @return logged user.
+   */
   public UserEntity getLoggedUser() {
     List<UserEntity> users = getLocalStorage().userDao().getUser();
     if (!users.isEmpty()) {
@@ -30,6 +37,12 @@ public class RoomImplementation extends Application {
     return null;
   }
 
+  /**
+   * Save logged user in Room.
+   *
+   * @param name     name.
+   * @param password hashed password.
+   */
   public void setLoggedUser(String name, String password) {
     if (getLoggedUser() == null) {
       getLocalStorage().userDao().insert(
@@ -40,6 +53,9 @@ public class RoomImplementation extends Application {
     }
   }
 
+  /**
+   * Delete user from Room.
+   */
   public void logOutUser() {
     UserEntity user = getLoggedUser();
     if (user != null) {

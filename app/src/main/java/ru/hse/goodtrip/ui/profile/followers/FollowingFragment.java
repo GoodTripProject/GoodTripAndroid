@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
-import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
@@ -35,11 +34,7 @@ public class FollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
   }
 
   @Override
@@ -78,6 +73,9 @@ public class FollowingFragment extends Fragment {
     }
   }
 
+  /**
+   * Upload following or followers users.
+   */
   private void updateFollowing() {
     if (pageType.equals(PAGE_TYPE.FOLLOWERS)) {
       followingViewModel.updateFollowersUsers(
@@ -88,6 +86,9 @@ public class FollowingFragment extends Fragment {
     }
   }
 
+  /**
+   * Shows following.
+   */
   private void renderFollowing() {
     LinearLayout users = binding.following;
 

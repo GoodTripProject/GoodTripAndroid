@@ -31,6 +31,9 @@ import ru.hse.goodtrip.network.firebase.FirebaseUtils;
 import ru.hse.goodtrip.room.RoomImplementation;
 import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 
+/**
+ * ProfileFragment screen.
+ */
 public class ProfileFragment extends Fragment {
 
   UsersRepository repository = UsersRepository.getInstance();
@@ -38,6 +41,10 @@ public class ProfileFragment extends Fragment {
   private ProfileViewModel profileViewModel;
   private FragmentProfileBinding binding;
   private User user;
+  /**
+   * Launch app intent to upload image from album or from gallery. Then compress and serialize image
+   * and upload it to Firebase. After this, set up new image to profile.
+   */
   private final ActivityResultLauncher<Intent> pickMedia = registerForActivityResult(
       new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
@@ -75,6 +82,10 @@ public class ProfileFragment extends Fragment {
     return binding.getRoot();
   }
 
+  /**
+   * Starts intent that upload image by Camera or opens Gallery. Gets URI of image, then upload it
+   * to Firebase.
+   */
   private void uploadImageFromGallery() {
     ImagePicker.with(this)
         .cropSquare()
@@ -127,12 +138,7 @@ public class ProfileFragment extends Fragment {
 
   @SuppressLint("SetTextI18n")
   private void setUserInfo() {
-    if (UsersRepository.getInstance().user.getMainPhotoUrl() != null) {
-      setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
-    } else {
-      setImageByUrl(binding.profileImage, // TODO:
-          "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg");
-    }
+    setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
     binding.fullnameView.setText(user.getDisplayName());
     binding.handleView.setText("@".concat(user.getHandle()));
 

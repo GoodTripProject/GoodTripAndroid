@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * DialogWindows holder used as namespace for PlanTrip dialog windows.
+ */
 public class PlanTripDialogWindows {
 
   /**

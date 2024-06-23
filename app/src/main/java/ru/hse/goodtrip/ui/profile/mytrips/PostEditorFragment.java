@@ -3,6 +3,7 @@ package ru.hse.goodtrip.ui.profile.mytrips;
 import static android.view.View.GONE;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -49,7 +50,7 @@ import ru.hse.goodtrip.ui.profile.mytrips.PostEditorDialogWindows.AddNewNoteDial
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
 
 /**
- * A post editor fragment.
+ * PostEditorFragment screen.
  */
 public class PostEditorFragment extends Fragment {
 
@@ -73,6 +74,7 @@ public class PostEditorFragment extends Fragment {
             String newPhoto = data.getData().toString();
             Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
                 data.getData());
+            assert bitmap != null;
             FirebaseUtils.uploadImageToFirebase(
                 bitmap,
                 (uri) -> {
@@ -98,7 +100,6 @@ public class PostEditorFragment extends Fragment {
             setImageByUrl(currentNoteImageView, newPhoto);
             currentNoteImageView.setVisibility(View.VISIBLE);
             Log.d(TAG, newPhoto);
-            // TODO
           }
         }
       });
@@ -107,20 +108,14 @@ public class PostEditorFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
   }
 
@@ -132,6 +127,7 @@ public class PostEditorFragment extends Fragment {
     return binding.getRoot();
   }
 
+  @SuppressLint("SetTextI18n")
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -217,15 +213,15 @@ public class PostEditorFragment extends Fragment {
    * @param newNoteDialogFragment current dialog.
    */
   private void showAddNewNoteDialog(AddNewNoteDialogFragment newNoteDialogFragment) {
-    newNoteDialogFragment.show(getChildFragmentManager(), "dialog..."); // TODO
+    newNoteDialogFragment.show(getChildFragmentManager(), "AddNewNoteDialogFragment");
     getChildFragmentManager().executePendingTransactions();
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
-    newNoteDialogFragment.getDialog().getWindow()
+    Objects.requireNonNull(newNoteDialogFragment.requireDialog().getWindow())
         .setLayout((8 * width) / 9, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     setupAddNoteDialog(newNoteDialogFragment);
-    newNoteDialogFragment.getDialog().getWindow()
+    Objects.requireNonNull(newNoteDialogFragment.requireDialog().getWindow())
         .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
   }
 
@@ -254,6 +250,7 @@ public class PostEditorFragment extends Fragment {
       if (newNotePhotoUrl != null) {
         Bitmap bitmap = FirebaseUtils.serializeImage(requireContext().getContentResolver(),
             Uri.parse(currentNoteImageUrl));
+        assert bitmap != null;
         FirebaseUtils.uploadImageToFirebase(
             bitmap,
             (uri) -> addNote(headline, text, place, uri.toString())
@@ -279,15 +276,16 @@ public class PostEditorFragment extends Fragment {
    */
   private void showAddNewDestinationDialog(
       AddNewDestinationDialogFragment addNewDestinationDialogFragment) {
-    addNewDestinationDialogFragment.show(getChildFragmentManager(), "dialog..."); // TODO
+    addNewDestinationDialogFragment.show(getChildFragmentManager(),
+        "AddNewDestinationDialog");
     getChildFragmentManager().executePendingTransactions();
     DisplayMetrics metrics = getResources().getDisplayMetrics();
     int width = metrics.widthPixels;
-    addNewDestinationDialogFragment.getDialog().getWindow()
-        .setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
+    Objects.requireNonNull(addNewDestinationDialogFragment.requireDialog().getWindow())
+        .setLayout((8 * width) / 9, ViewGroup.LayoutParams.WRAP_CONTENT);
     setupAddCountryDialog(addNewDestinationDialogFragment);
 
-    addNewDestinationDialogFragment.getDialog().getWindow()
+    Objects.requireNonNull(addNewDestinationDialogFragment.requireDialog().getWindow())
         .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
   }
@@ -322,7 +320,7 @@ public class PostEditorFragment extends Fragment {
     });
 
     addCity.setOnClickListener(v -> {
-      View view = LayoutInflater.from(requireContext())
+      @SuppressLint("InflateParams") View view = LayoutInflater.from(requireContext())
           .inflate(R.layout.item_add_city, null);
       view.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -429,7 +427,7 @@ public class PostEditorFragment extends Fragment {
    * @param cities  cities in country
    */
   private void addCountryView(String country, List<String> cities) {
-    View countryView = LayoutInflater.from(requireContext())
+    @SuppressLint("InflateParams") View countryView = LayoutInflater.from(requireContext())
         .inflate(R.layout.item_country, null);
     TextView countryTitle = countryView.findViewById(R.id.titleCountry);
     countryTitle.setText(country);
@@ -441,7 +439,7 @@ public class PostEditorFragment extends Fragment {
       if (city.trim().isEmpty()) {
         continue;
       }
-      View cityView = LayoutInflater.from(requireContext())
+      @SuppressLint("InflateParams") View cityView = LayoutInflater.from(requireContext())
           .inflate(R.layout.item_city, null);
       ((TextView) cityView.findViewById(R.id.cityelement)).setText(city);
       citiesLayout.addView(cityView);

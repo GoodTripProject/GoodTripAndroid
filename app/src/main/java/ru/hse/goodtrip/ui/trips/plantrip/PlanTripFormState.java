@@ -5,9 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 
+/**
+ * PlanTripFormState check if entered data is valid.
+ */
 @Getter
 class PlanTripFormState {
 
+  private final boolean isDataValid;
   @Nullable
   private Integer tripNameError;
   @Nullable
@@ -20,7 +24,6 @@ class PlanTripFormState {
   private Integer cityError;
   @Nullable
   private Integer moneyError;
-  private final boolean isDataValid;
 
   PlanTripFormState(@Nullable Integer tripNameError, @Nullable Integer departureDateError,
       @Nullable Integer arrivalDateError, @Nullable Integer countryError,

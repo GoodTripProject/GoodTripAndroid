@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,9 @@ import ru.hse.goodtrip.data.model.trips.CountryVisit;
 import ru.hse.goodtrip.data.model.trips.Trip;
 import ru.hse.goodtrip.network.trips.model.TripState;
 
+/**
+ * MapsFragment.
+ */
 public class MapsFragment extends Fragment {
 
   MapsViewModel mapsViewModel;
@@ -60,6 +62,11 @@ public class MapsFragment extends Fragment {
     mapsViewModel = new ViewModelProvider(this).get(MapsViewModel.class);
   }
 
+  /**
+   * Show marks and paths of trip in map.
+   *
+   * @param googleMap googleMap.
+   */
   private void showTripPaths(GoogleMap googleMap) {
     ExecutorService service = Executors.newSingleThreadExecutor();
     service.submit(() -> {
@@ -69,7 +76,6 @@ public class MapsFragment extends Fragment {
           continue;
         }
 
-        Log.d("asd", "зашел");
         Handler handler = Handler.createAsync(Looper.getMainLooper());
         handler.post(() -> {
           if (!trip.getCountries().isEmpty()) {
@@ -80,7 +86,7 @@ public class MapsFragment extends Fragment {
                     city.getCoordinates().getLongitude());
                 Marker mark = googleMap.addMarker(
                     new MarkerOptions().position(marker).title(trip.getTitle()));
-                assert mark != null; //TODO: ??
+                assert mark != null;
 
                 mark.setTag(trip);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));

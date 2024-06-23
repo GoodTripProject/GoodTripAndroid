@@ -2,7 +2,6 @@ package ru.hse.goodtrip.room;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 /**
  * AppPreferences that provides access to SharedPreferences.
@@ -19,7 +18,6 @@ public class AppPreferences {
   }
 
   public static void setUserLoggedIn(Context ctx, Boolean value) {
-    Log.d("pref", "setting!");
     SharedPreferences prefs = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
     SharedPreferences.Editor prefsEditor = prefs.edit();
     prefsEditor.putBoolean(IS_USER_LOGGED_IN, value);

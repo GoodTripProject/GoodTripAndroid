@@ -37,13 +37,13 @@ public class FeedFragment extends Fragment {
       feedRecyclerViewHolder.refreshFeed(false);
     }
 
-    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).hide();
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).hide();
   }
 
 

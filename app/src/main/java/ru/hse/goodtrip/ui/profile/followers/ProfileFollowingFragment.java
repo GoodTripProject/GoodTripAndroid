@@ -16,13 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.data.UsersRepository;
 import ru.hse.goodtrip.data.model.User;
 import ru.hse.goodtrip.databinding.FragmentProfileFollowingBinding;
 import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 
+/**
+ * ProfileFollowingFragment.
+ */
 public class ProfileFollowingFragment extends Fragment {
 
   public final static String USER_ARG = "user";
@@ -39,11 +41,7 @@ public class ProfileFollowingFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).show();
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayHomeAsUpEnabled(true);
-    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar())
-        .setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
   }
 
   @Override
@@ -130,10 +128,8 @@ public class ProfileFollowingFragment extends Fragment {
   @SuppressLint("SetTextI18n")
   private void setUserInfo() {
     if (user.getMainPhotoUrl() != null) {
-      setImageByUrl(binding.profileImage, user.getMainPhotoUrl().toString());
-    } else {
-      setImageByUrl(binding.profileImage, // TODO:
-          "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg");
+      setImageByUrl(binding.profileImage,
+          (user.getMainPhotoUrl() != null) ? user.getMainPhotoUrl().toString() : null);
     }
     binding.displayName.setText(user.getDisplayName());
     binding.handler.setText("@".concat(user.getHandle()));

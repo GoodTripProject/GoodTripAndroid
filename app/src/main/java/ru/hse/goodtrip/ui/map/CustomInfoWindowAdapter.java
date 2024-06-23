@@ -3,6 +3,7 @@ package ru.hse.goodtrip.ui.map;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.getDuration;
 import static ru.hse.goodtrip.ui.trips.feed.utils.Utils.setImageByUrl;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,12 +15,18 @@ import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.Trip;
 
+/**
+ * CustomInfoWindowAdapter to show a InfoWindow when mark is clicked.
+ */
 class CustomInfoWindowAdapter implements InfoWindowAdapter {
 
+  private static final String TAG = "MAP";
   private final View contents;
+  @SuppressLint("InflateParams")
   private final View window;
   private final MainActivity context;
 
+  @SuppressLint("InflateParams")
   CustomInfoWindowAdapter(MainActivity context) {
     this.context = context;
     window = context.getLayoutInflater().inflate(R.layout.custom_info_window, null);
@@ -54,18 +61,29 @@ class CustomInfoWindowAdapter implements InfoWindowAdapter {
     titleTextView.setText(marker.getTitle());
   }
 
+  /**
+   * Show window if clicked or hide if clicked twice.
+   *
+   * @param m marked clicked.
+   * @return true.
+   */
   public boolean markerClickListener(Marker m) {
     if (m.isInfoWindowShown()) {
       m.hideInfoWindow();
     } else {
       m.showInfoWindow();
     }
-    Log.d("map", "marker clicked");
+    Log.d(TAG, "Mark clicked");
     return true;
   }
 
+  /**
+   * Navigates to post clicked.
+   *
+   * @param marker marker clicked.
+   */
   public void infoWindowClickListener(Marker marker) {
-    Log.d("map", "infowindow clicked");
+    Log.d(TAG, "InfoWindow clicked");
 
     Trip trip = (Trip) marker.getTag();
     if (trip != null) {

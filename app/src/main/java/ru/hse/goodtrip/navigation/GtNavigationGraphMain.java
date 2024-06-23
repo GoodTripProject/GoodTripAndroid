@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import java.util.ArrayList;
+import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.User;
@@ -16,10 +17,6 @@ import ru.hse.goodtrip.databinding.ActivityMainBinding;
 import ru.hse.goodtrip.ui.profile.followers.FollowingFragment.PAGE_TYPE;
 import ru.hse.goodtrip.ui.profile.followers.ProfileFollowingFragment;
 import ru.hse.goodtrip.ui.trips.feed.FeedAdapter;
-
-/*
-TODO: JavaDocs
-*/
 
 /**
  * Main application navigation fragment.
@@ -46,7 +43,7 @@ public class GtNavigationGraphMain extends NavHostFragment {
   public void initializeNavigation() {
     Toolbar actionBar = activity.findViewById(R.id.my_toolbar);
     activity.setSupportActionBar(actionBar);
-    activity.getSupportActionBar().hide();
+    Objects.requireNonNull(activity.getSupportActionBar()).hide();
 
     // Set up top level destinations.
     AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -72,8 +69,11 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.navigation_sign_up);
   }
 
+  /**
+   * Navigates to main navigation graph.
+   */
   public void navigateToMainGraph() {
-    activity.getSupportActionBar().hide();
+    Objects.requireNonNull(activity.getSupportActionBar()).hide();
     navController.navigate(R.id.main_navigation_graph);
   }
 
@@ -88,6 +88,11 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.navigation_map_following, bundle);
   }
 
+  /**
+   * Navigate to MainNavigationGraph and then navigate to PostPage.
+   *
+   * @param trip trip to appear.
+   */
   public void navigateToPostPageExternal(Trip trip) {
     activity.getNavigationGraph().navigateToMainGraph();
     activity.getNavigationGraph().navigateToPostPage(trip);
@@ -97,12 +102,15 @@ public class GtNavigationGraphMain extends NavHostFragment {
     navController.navigate(R.id.navigation_add_following);
   }
 
+  /**
+   * Opens MyTripsFragment.
+   */
   public void navigateToMyTrips() {
     navController.navigate(R.id.navigation_my_trips);
   }
 
   /**
-   * Opens FollowingFragment.
+   * Opens FollowingFragment with provided user and lists of users to appear.
    */
   public void navigateToFollowing(User user, ArrayList<User> follows, PAGE_TYPE pageType) {
     Bundle bundle = new Bundle();
@@ -119,7 +127,7 @@ public class GtNavigationGraphMain extends NavHostFragment {
    * @param following user to show.
    */
   public void navigateToFollowingProfilePage(User following) {
-    activity.getSupportActionBar().hide();
+    Objects.requireNonNull(activity.getSupportActionBar()).hide();
 
     Bundle bundle = new Bundle();
     bundle.putSerializable(ProfileFollowingFragment.USER_ARG, following);

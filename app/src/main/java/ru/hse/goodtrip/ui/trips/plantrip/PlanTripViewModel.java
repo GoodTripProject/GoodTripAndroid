@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -26,10 +25,12 @@ import ru.hse.goodtrip.data.model.trips.City;
 import ru.hse.goodtrip.data.model.trips.Coordinates;
 import ru.hse.goodtrip.data.model.trips.Country;
 import ru.hse.goodtrip.data.model.trips.CountryVisit;
-import ru.hse.goodtrip.data.model.trips.ShowPlace;
 import ru.hse.goodtrip.network.trips.model.AddTripRequest;
 import ru.hse.goodtrip.network.trips.model.TripState;
 
+/**
+ * ViewModel that save planned trip with TripRepository.
+ */
 public class PlanTripViewModel extends ViewModel {
 
   private final TripRepository tripRepository = TripRepository.getInstance();
@@ -74,16 +75,15 @@ public class PlanTripViewModel extends ViewModel {
   /**
    * Creates trip and checks that trip values is correct.
    *
-   * @param name                     name of trip.
-   * @param startTripDate            departure date in string.
-   * @param endTripDate              departure date in string.
-   * @param mainPhotoUrl             photo of trip - optional.
-   * @param moneyInUsd               budget of trip.
-   * @param interestingPlacesToVisit places.
+   * @param name          name of trip.
+   * @param startTripDate departure date in string.
+   * @param endTripDate   departure date in string.
+   * @param mainPhotoUrl  photo of trip - optional.
+   * @param moneyInUsd    budget of trip.
    */
   public void createTrip(String name, String startTripDate,
       String endTripDate, @Nullable String mainPhotoUrl, String moneyInUsd,
-      Set<ShowPlace> interestingPlacesToVisit, User user) {
+      User user) {
     if (isNameNotValid(name)) {
       planTripFormState.setValue(
           new PlanTripFormState(R.string.not_valid_name, null, null, null, null, null));
@@ -126,8 +126,8 @@ public class PlanTripViewModel extends ViewModel {
   /**
    * Check if date format is dd.mm.yyyy.
    *
-   * @param dateString
-   * @return
+   * @param dateString dateString
+   * @return true if date is formatted correct.
    */
   private boolean isDateNotValid(String dateString) {
     try {

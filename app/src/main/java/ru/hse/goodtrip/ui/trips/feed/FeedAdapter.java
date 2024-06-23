@@ -35,6 +35,9 @@ import ru.hse.goodtrip.network.trips.model.TripView;
 import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedLoadingViewHolder;
 import ru.hse.goodtrip.ui.trips.feed.FeedViewHolders.FeedPostViewHolder;
 
+/**
+ * FeedAdapter provide a binding from posts set to views that are displayed within a RecyclerView.
+ */
 public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
     View.OnClickListener {
 
@@ -74,15 +77,24 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
   }
 
+  /**
+   * @param viewHolder provides trip binding to set up.
+   * @param position   trip position in adapter items.
+   */
   private void showPostView(FeedPostViewHolder viewHolder, int position) {
     TripView trip = items.get(position);
     viewHolder.itemView.setOnClickListener(this);
     viewHolder.itemView.setTag(trip);
     ItemPostTripBinding binding = viewHolder.getBinding();
     setPostInfoWithTrip(trip, binding);
-
   }
 
+  /**
+   * Set up binding with trip.
+   *
+   * @param trip    trip to appear.
+   * @param binding binding for appearing.
+   */
   private void setPostInfoWithTrip(TripView trip, ItemPostTripBinding binding) {
     String dateFormat = "dd.MM.yyyy";
     StringBuilder countries = new StringBuilder();
@@ -101,15 +113,8 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     binding.dateOfPublication.setText(getDateFormatted(trip.getPublicationTimestamp().toInstant()
         .atZone(ZoneId.systemDefault()).toLocalDate(), dateFormat));
     binding.countriesText.setText(countries);
-    if (trip.getUserMainPhotoUrl() != null) {
-      setImageByUrlCropped(binding.profileImageView, trip.getUserMainPhotoUrl(),
-          R.drawable.baseline_account_circle_24);
-    } else {
-      setImageByUrlCropped(binding.profileImageView,
-          "https://hosting.photobucket.com/albums/ii87/aikhrabrov/Paris%20la%20nuit/img_6910.jpg",
-          R.drawable.baseline_account_circle_24);
-    }
-
+    setImageByUrlCropped(binding.profileImageView, trip.getUserMainPhotoUrl(),
+        R.drawable.baseline_account_circle_24);
     setImageByUrl(binding.postImageView, trip.getMainPhotoUrl(), R.drawable.kazantip);
   }
 

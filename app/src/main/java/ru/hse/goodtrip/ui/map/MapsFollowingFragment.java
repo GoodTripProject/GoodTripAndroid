@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,14 +44,13 @@ public class MapsFollowingFragment extends Fragment {
     googleMap.setOnMarkerClickListener(customInfoWindowAdapter::markerClickListener);
     googleMap.setOnInfoWindowClickListener(customInfoWindowAdapter::infoWindowClickListener);
   };
+  @SuppressWarnings("FieldCanBeLocal")
   private User user;
 
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
   }
 
   @Nullable
@@ -79,6 +77,11 @@ public class MapsFollowingFragment extends Fragment {
     }
   }
 
+  /**
+   * Show marks and paths of trip in map.
+   *
+   * @param googleMap googleMap.
+   */
   private void showTripPaths(GoogleMap googleMap) {
     ExecutorService service = Executors.newSingleThreadExecutor();
     service.submit(() -> {
@@ -88,7 +91,6 @@ public class MapsFollowingFragment extends Fragment {
           continue;
         }
 
-        Log.d("asd", "зашел");
         Handler handler = Handler.createAsync(Looper.getMainLooper());
         handler.post(() -> {
           if (!trip.getCountries().isEmpty()) {
@@ -99,7 +101,7 @@ public class MapsFollowingFragment extends Fragment {
                     city.getCoordinates().getLongitude());
                 Marker mark = googleMap.addMarker(
                     new MarkerOptions().position(marker).title(trip.getTitle()));
-                assert mark != null; //TODO: ??
+                assert mark != null;
 
                 mark.setTag(trip);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));

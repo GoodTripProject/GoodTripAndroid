@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import java.util.Objects;
 import ru.hse.goodtrip.MainActivity;
 import ru.hse.goodtrip.R;
 import ru.hse.goodtrip.data.model.trips.Trip;
@@ -32,9 +33,7 @@ public class PostFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((MainActivity) requireActivity()).getSupportActionBar().show();
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((MainActivity) requireActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    ((MainActivity) requireActivity()).showActionBar();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.GONE);
     requireActivity().findViewById(R.id.bottomToolsBarPost).setVisibility(View.VISIBLE);
   }
@@ -42,7 +41,7 @@ public class PostFragment extends Fragment {
   @Override
   public void onStop() {
     super.onStop();
-    ((MainActivity) requireActivity()).getSupportActionBar().hide();
+    Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).hide();
     requireActivity().findViewById(R.id.bottomToolsBar).setVisibility(View.VISIBLE);
     requireActivity().findViewById(R.id.bottomToolsBarPost).setVisibility(View.GONE);
   }
